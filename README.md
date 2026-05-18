@@ -1,18 +1,31 @@
 <div align="center">
 
-<img src="chayuan-client/images/logo.png" alt="Chayuan AI · 察元 AI" width="120" height="120" />
+<img src="public/images/logo.png" alt="Chayuan 察元 AI" width="120" height="120" />
 
-# 察元 AI · Chayuan AI 桌面单机版
+# 察元 AI 文档助手 · Chayuan AI Document Assistant
 
-**离线优先 · 国产系统适配 · 全栈本地知识库 · 多模型对抗**
+**WPS 文字智能加载项** — 在编辑器内完成 AI 对话、审查、表单与文档写回；**优先支持离线 / 内网模型**（Ollama、LM Studio、Xinference、OneAPI 等 OpenAI 兼容端点），亦可对接主流云端大模型。
 
-[![Tauri 2](https://img.shields.io/badge/Tauri-2-24c8db?logo=tauri&logoColor=white)](https://tauri.app/)
-[![React 19](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)](https://react.dev/)
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
-[![Made in China · 适配国产](https://img.shields.io/badge/Made%20in%20China-%E9%80%82%E9%85%8D%E5%9B%BD%E4%BA%A7-red)](#六支持的操作系统)
+[![Vue 3](https://img.shields.io/badge/Vue-3-4fc08d?logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Version](https://img.shields.io/badge/version-3.0.0-purple.svg)](package.json)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 </div>
+
+---
+
+## v3.0 新增 — 远程知识库 RAG 集成
+
+> WPS 编辑器内直接消费企业 / 团队 / 个人知识库,问答自动检索、拼上下文、带引用,并支持引用气泡内一键下载原文附件。
+
+- **双模认证连接**(JWT 用户 / HMAC 应用),凭据 AES-GCM 加密落盘
+- **多源检索编排**(services/kb):问题改写 → 多查询批量召回 → 去重 → 重排 → 拼引用 prompt
+- **引用展示与原文下载**(KbSourceStrip):信任度星级 + 一键下载,文档 / 结构化 / 向量 / 办公源分类显示
+- **失效自愈**:KB 被删 / 被收回权限时静默清缓存、不再弹红字"检索失败"
+- **一键灰度**:`kbRemoteIntegration` flag 出问题立即关停
+
+完整发布说明:[RELEASE_NOTES_v3.0.md](RELEASE_NOTES_v3.0.md)
 
 ---
 
@@ -20,1199 +33,522 @@
 
 | Language | Document |
 |----------|----------|
-| **简体中文(完整说明,见下文)** | **本文档 [README.md](README.md)** |
+| **简体中文（完整说明，见下文）** | **本文档 [README.md](README.md#简体中文完整说明)** |
 | English | [README.en.md](README.en.md) |
 | 日本語 | [README.ja.md](README.ja.md) |
+| Русский | [README.ru.md](README.ru.md) |
 | Deutsch | [README.de.md](README.de.md) |
+| Español | [README.es.md](README.es.md) |
 | Français | [README.fr.md](README.fr.md) |
 
-技术性的打包流程文档:[PACKAGING.md](PACKAGING.md)
-
 ---
 
-## 一句话定位
+## Quick start
 
-**察元 AI 桌面单机版**是一款**装到电脑里就能用、不联外网也能跑**的 AI 助手 ——
-内置**多供应商大模型网关 · 文档/结构化/向量/办公/外部库五类知识源 · 30+ 内置工具 · MCP 协议 · 模型对抗**,
-原生适配 **Windows / macOS / Linux / 麒麟 / 统信 UOS / openKylin** 等系统;
-所有数据落到用户自选目录,**密钥与文档永不出域**,真正的"自有 AI"。
-
----
-
-## 目录
-
-- [一、版权声明与开源许可(AGPL-3.0)](#一版权声明与开源许可)
-- [二、品牌标识保留要求](#二品牌标识保留要求)
-- [三、与 chayuan-wps WPS 加载项的关系](#三与-chayuan-wps-wps-加载项的关系)
-- [四、产品概述与系统架构](#四产品概述与系统架构)
-- [五、核心特性](#五核心特性)
-- [六、支持的操作系统](#六支持的操作系统)
-- [七、与豆包 / Cherry Studio 等的 60+ 项细致对比](#七与豆包--cherry-studio-等的-60-项细致对比)
-- [八、详细功能清单](#八详细功能清单)
-  - [8.1 对话与流式](#81-对话与流式)
-  - [8.2 知识库类型与文档格式](#82-知识库类型与文档格式)
-  - [8.3 数据库连接器(结构化数据)](#83-数据库连接器结构化数据)
-  - [8.4 向量库支持](#84-向量库支持)
-  - [8.5 模型供应商](#85-模型供应商)
-  - [8.6 嵌入模型 / 重排 / OCR](#86-嵌入模型--重排--ocr)
-  - [8.7 多模态](#87-多模态)
-  - [8.8 内置工具(30+)](#88-内置工具30)
-  - [8.9 MCP(Model Context Protocol)](#89-mcpmodel-context-protocol)
-  - [8.10 模型对抗(Model Arena)](#810-模型对抗model-arena)
-  - [8.11 自动构建文档知识结构(Folder Sync)](#811-自动构建文档知识结构folder-sync)
-  - [8.12 引用展示与原文回链](#812-引用展示与原文回链)
-- [九、HTTP API 接口总览](#九http-api-接口总览)
-- [十、开发者搭建指南](#十开发者搭建指南)
-- [十一、使用教程入口](#十一使用教程入口)
-- [十二、安全 · 隐私 · 离线](#十二安全--隐私--离线)
-- [十三、路线图](#十三路线图)
-- [十四、社区 / 反馈 / 商业合作](#十四社区--反馈--商业合作)
-- [十五、致谢与第三方组件](#十五致谢与第三方组件)
-- [附录甲:常见问题(FAQ)](#附录甲常见问题faq)
-- [附录乙:术语表](#附录乙术语表)
-
----
-
-## 一、版权声明与开源许可
-
-### 软件名称
-
-- **中文全称:** 察元 AI · 桌面单机版
-- **英文名:** Chayuan AI · Desktop (Single-Machine Edition)
-- **包名 / 二进制名:** `chayuan-desktop`
-- **官网:** [https://aidooo.com](https://aidooo.com)
-- **出品方:** 北京智灵鸟科技中心
-
-### 开源许可:AGPL-3.0
-
-本仓库源代码依照 **[GNU Affero General Public License v3.0](LICENSE)** 授权。
-
-> AGPL-3.0 与 Apache-2.0 / MIT 的关键区别在于 **网络传播条款(§13)**:
-> 一旦您把基于本软件构建的版本通过网络对**外部用户**提供服务(SaaS / 私有云 / 公网部署),
-> 您**必须以相同的 AGPL-3.0 许可向这些用户提供完整的对应源代码**(包括您自己的修改)。
-> 仅在**单位内部、内网部署、本机使用**这一类 "不构成公开网络传播" 的形态下,
-> 您可以保留对源代码的封闭修改。
-
-**这意味着:**
-- ✅ 个人 / 团队 / 企业内部部署、内网使用、本地修改:**自由,无任何商业限制**
-- ✅ 二次开发后再分发安装包(保留 AGPL 与版权声明):**允许**
-- ⚠ 把修改后的版本部署成 **SaaS / 公网服务** 提供给外部用户:**必须开源您的修改**
-- ⚠ 集成到您的闭源商业产品中并对外销售:需先取得**单独的商业许可**
-
-如需 **企业商业授权 / OEM 白标 / 技术支持服务合同**,请通过官网 [https://aidooo.com](https://aidooo.com) 商务渠道联系。
-
-### 著作权与免责
-
-产品由 **北京智灵鸟科技中心** 研发与运营,涉及的界面文案、默认提示词、图标、品牌素材等
-除第三方组件按其各自许可外,均受著作权与相关知识产权法保护。
-
-**免责声明(摘要):** 本软件按 "原样" 提供;大模型生成内容可能存在不准确或不适用情形,
-涉密、合规与法律判断应以人工与正式制度为准;任何检查类辅助功能(保密检查、AI 痕迹检查等)
-**仅作辅助参考**,不构成司法鉴定或保密定密结论。
-
----
-
-## 二、品牌标识保留要求
-
-为保证用户知情权、来源可追溯性与品牌一致性,**面向最终用户的界面中**,以下位置出现的
-**"察元"** 及其固定搭配的产品称谓(包括但不限于 "察元 AI"、"察元 AI 助手"、"察元智库"、
-"察元对抗"、"关于察元" 等)属于**产品来源与品牌标识**的重要组成部分:
-
-- 应用窗口标题、Splash、关于页、设置 → 关于
-- 系统托盘图标提示、桌面快捷方式名称(默认 `察元AI.lnk`)
-- 帮助中心 / 反馈弹窗中的固定品牌表述
-- 与上述同语义链路的用户可见字符串
-
-**未经权利人书面授权,任何再分发或定制版本不得对上述位置的"察元"相关固定文案进行
-替换、删减、遮挡、淡化或误导性改写**(例如改为其他商业名称却仍指向本软件,使用户误认为来源已变更)。
-
-此约束**不构成**对 AGPL-3.0 所允许之 "修改源代码" 本身的禁止 —— 您仍可在内部构建中调整代码逻辑;
-但若您向第三方提供**可安装的、面向最终用户的构建产物**,需保留品牌标识的显著性,
-或事先取得权利人书面同意按约定方式标注来源。**白标 / 整体本地化** 涉及品牌字段调整,
-请通过商务渠道获取**单独授权条款**。
-
----
-
-## 三、与 chayuan-wps WPS 加载项的关系
-
-察元 AI 是一个**端到端办公 AI 平台**,目前由两个互补的开源项目共同覆盖:
-
-| 项目 | 仓库 | 形态 | 主要用户 |
-|---|---|---|---|
-| **chayuan-desktop**(本仓库) | (内部) | **桌面单机应用** —— Tauri 2 外壳 + 嵌入式 Python 后端 | 不愿暴露密钥/文档到外网的个人、政企单机用户 |
-| **chayuan-wps** | <https://github.com/zhgyuhuii/chayuan.git> | **WPS 文字加载项** —— Vue 3 加载项,运行在 WPS 内部 | 重度使用 WPS 编辑公文 / 合同 / 标书的政企作者 |
-
-### 二者如何协作
-
-```
-                ┌────────────────────────────────────────────┐
-                │   察元 AI 桌面单机版 (chayuan-desktop)      │
-                │   ─────────────────────                    │
-                │   • 嵌入式 chayuan-server(Python)         │
-                │   • 知识库 / 模型网关 / 工具 / MCP          │
-                │   • 监听 127.0.0.1:62581                   │
-                │   • 数据落用户目录 (CHAYUAN_ROOT)          │
-                └─────────────────┬──────────────────────────┘
-                                  │  HTTP/REST(同机或内网)
-                                  │  /api/v1/kb-query/search
-                                  │  /api/chat/completions
-                                  │  /openapi/v1/*  (HMAC 签名)
-                                  ▼
-                ┌────────────────────────────────────────────┐
-                │   chayuan-wps  (WPS 加载项, Vue 3 + Vite)   │
-                │   ─────────────────────                    │
-                │   • 运行在 WPS 文字内,任务窗格 + Ribbon    │
-                │   • 选区/全文上下文感知                     │
-                │   • 写回链路:插入/替换/批注/链接批注       │
-                │   • 调用桌面单机版的 /api/* 拿模型与知识    │
-                └────────────────────────────────────────────┘
+```bash
+npm install
+npm run dev          # http://localhost:3889
+npm run build
+npm run build:wps    # WPS add-in bundle
 ```
 
-**典型用法**:用户在公司电脑上装好 **chayuan-desktop**,作为本机 "AI 服务器",
-后端 sidecar 起在 `127.0.0.1:62581`;再在 WPS 里安装 **chayuan-wps** 加载项,
-加载项的 "服务器地址" 配置成 `http://127.0.0.1:62581`,**两边共用同一份知识库、
-同一套模型配置、同一份对话历史** —— 在 WPS 里发起的对话也会出现在桌面客户端的历史里。
-
-### 现状
-
-- 当前 **chayuan-wps v3.0** 已落地远程知识库 RAG 集成(JWT 用户态 + HMAC 应用态),
-  完整支持把 chayuan-desktop 当作后端使用。
-- 桌面单机版默认 **关闭鉴权**(单机用户没有用户的概念),WPS 加载项侧已加 `authMode: 'none'`
-  分支,可以无密钥直连本机后端。
-
-详见 chayuan-wps 仓库的 [README](https://github.com/zhgyuhuii/chayuan/blob/main/README.md) 与 RELEASE_NOTES_v3.0。
+**Official site:** [https://aidooo.com](https://aidooo.com) · **Publisher:** Beijing Zhilingniao Technology Center（北京智灵鸟科技中心）· WeChat: 智灵鸟科技
 
 ---
 
-## 四、产品概述与系统架构
+## 简体中文完整说明
 
-### 4.1 它是什么
+## 一、版权声明与许可
 
-**察元 AI 桌面单机版**把一个完整的"企业级 AI 后端"塞进了你的电脑里 —— 安装包打开就能用,
-不需要 Docker、不需要单独装 Python、不需要起 Redis / RabbitMQ / Postgres。所有重活
-(语言模型调用、知识库索引、向量检索、工具执行、流式编排)都在本机进程里完成,
-前端是一个原生窗口的 React 应用,后端是一个嵌入到安装包里的 Python sidecar。
+**软件名称（著作权意义上的全称）：** 察元 AI 文档助手（英文名 **Chayuan AI Document Assistant**，npm 包名 **`chayuan`**）。
 
-### 4.2 三层架构
+**开源许可：** 本仓库源代码依照 **[Apache License, Version 2.0](LICENSE)** 授权。在遵守该许可证全部条款（包括但不限于保留版权声明、NOTICE 文件、专利授权与责任限制等）的前提下，您可以自由地使用、修改、合并、发布再许可及**用于商业目的**（例如在企业内部分发、集成到办公环境、提供托管或增值服务等）。若您与权利人另行签署了商业许可、OEM、独占或附加协议，则以**该等书面协议**为准；协议未排除的事项，仍以 Apache 2.0 为补充。
 
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│  Frontend  Tauri 2 + React 19 + Tailwind                              │
-│  ───────────────────────────────────────────────────                  │
-│  • 多 Tab 浏览器式外壳(主页 / 聊天 / 知识库 / 模型广场 / MCP / 工具)  │
-│  • 多泳道模型对抗 (Model Arena)                                       │
-│  • 折叠式工具调用展示 / 引用面板 / 流式 reasoning                     │
-│  • 本地 SQLite 持久化对话(Tauri sql 插件)                          │
-│  • Stronghold 凭据保险箱(ChaCha20-Poly1305 + Argon2id)             │
-└──────────────────────────┬───────────────────────────────────────────┘
-                           │  spawn + /healthz 探活
-                           ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│  Sidecar  chayuan-server (Python 3.12, FastAPI)                       │
-│  ───────────────────────────────────────────────────                  │
-│  • 单机 profile:无 Redis / 无 Celery / 无 PostgreSQL                  │
-│  • 向量库:sqlite-vec (内嵌 SQLite 扩展) / 可选 FAISS                 │
-│  • 缓存:cachetools TTLCache / 队列:asyncio.Queue                    │
-│  • 嵌入模型:ONNX 本地(默认 bge-m3-onnx)/ Ollama / OpenAI 兼容     │
-│  • OCR:RapidOCR-ONNX(纯 CPU,~70 MB)                              │
-└──────────────────────────┬───────────────────────────────────────────┘
-                           │  HTTP / OpenAI 兼容
-                           ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│  External  用户自选的模型与知识源                                     │
-│  ───────────────────────────────────────────────────                  │
-│  • 本地推理:Ollama / LM Studio / vLLM / Xinference                  │
-│  • 云端 LLM:OpenAI / DeepSeek / 通义千问 / 智谱 / 文心 / Moonshot…  │
-│  • 业务数据库:MySQL / PostgreSQL / Oracle / 达梦 / 金仓 / Doris…    │
-│  • 外部向量:Milvus / Chroma / Elasticsearch / Zilliz                │
-└──────────────────────────────────────────────────────────────────────┘
-```
+**著作权与出品信息：** 产品由**北京智灵鸟科技中心**研发与运营。文档中涉及的界面文案、默认提示词模板、图标与品牌素材等，除第三方组件按其各自许可外，均受著作权及相关知识产权法保护。**官网：** [https://aidooo.com](https://aidooo.com) · **微信公众号：** 智灵鸟科技。
 
-### 4.3 启动时序
-
-1. 用户双击 `察元AI` 桌面图标
-2. Tauri 主窗口(`window.backgroundColor = #0f172a`)瞬间出现,**首屏即有炫酷 splash 动画**
-   (五层零延迟挂载:OS 窗口背景 → HTML inline CSS → splash 节点 → JS 自检注入 → React 接管时同步淡出)
-3. Tauri 主进程 spawn 嵌入的 `chayuan-server` 子进程,通过 `CHAYUAN_ROOT=<用户首启动选定的目录>`
-   注入数据路径
-4. 前端 SidecarGate 轮询 `/healthz`,后端就绪后渲染主界面
-5. 首次启动用户自选 "数据目录"(默认平台标准目录),后续启动直接复用
+**免责声明（摘要）：** 本软件按「原样」提供；大模型生成内容可能存在不准确或不适用的情形，涉密、合规与法律判断应以人工与正式制度为准；保密检查、AI 痕迹检查等功能仅为**辅助参考**，不构成司法鉴定或保密定密结论。
 
 ---
 
-## 五、核心特性
+## 二、特别说明：「察元」品牌标识不得擅自改动
 
-### 5.1 离线优先(Offline-First)
+为保证用户知情权、来源可追溯性与品牌一致性，**在面向最终用户的界面中**，下列位置出现的 **「察元」** 以及与之固定搭配的产品称谓（包括但不限于「察元 AI」「察元 AI 文档助手」「察元 AI 助手」「察元 AI 编审」「关于察元」「添加到察元 AI 助手」等），属于**产品来源与品牌标识**的重要组成部分：
 
-- **嵌入式后端**:Python 解释器 + 全部 wheels + sqlite-vec 扩展 + 资源文件全部进安装包,装机即可离线启动
-- **嵌入式模型**:默认带 ONNX 量化的 bge-m3 嵌入模型(~120 MB),不需要外网下载
-- **嵌入式 OCR**:RapidOCR-ONNX 模型权重 bundle 进 sidecar,文档解析全本地
-- **可选本地 LLM**:与 Ollama / LM Studio / vLLM / Xinference 一键对接,大模型推理也能完全断网
-- **离线 Doctor 命令**:自检数据目录、sqlite-vec 扩展、嵌入模型完整性
+- **WPS 功能区（Ribbon）** 上的分组标题、按钮标签、下拉菜单与动态菜单项；
+- **右键上下文菜单** 中的条目名称；
+- **对话框、任务窗格、关于页、欢迎语** 等可见文案中的固定品牌表述；
+- 与上述文案**同一语义链路**的用户可见字符串（例如文件类型说明中的「察元模板」「察元规则」「察元文档」等）。
 
-### 5.2 察元智库(Knowledge Universe)
+**未经权利人书面授权，任何再分发或定制版本不得对上述界面中的「察元」相关固定文案进行替换、删减、遮挡、淡化或误导性改写**（例如改为其他商业名称却仍指向本软件，以致用户误认为来源已变更）。此要求**不构成**对 Apache 2.0 所允许之「修改源代码」本身的禁止：您仍可在内部构建中调整代码逻辑；但若您向第三方提供**可安装的、面向最终用户的构建产物**，须**保留**上述品牌标识的显著性，或事先取得权利人的书面同意按约定方式标注来源。
 
-> **统一查询路径** —— 把文档、结构化数据库、外部向量库、办公私库、图像库五类知识源
-> 抽象为 `ku_id` (Knowledge-Universe ID),前端选什么类型的源,服务端自动路由到对应的检索 adapter。
-
-- **`POST /api/v1/kb-query/search`** 一个端点搞定多源混合检索
-- 五类源:
-  - **`doc:<kb_name>`** 文档知识库(PDF / Word / Excel / Markdown / HTML / 图像 …)
-  - **`src:<source_id>`** 结构化数据源(SQL / MongoDB / Elasticsearch)
-  - **`vec:<collection>`** 外部向量库(Milvus / Chroma / Zilliz)
-  - **`office:<owner>[:<group>]`** 办公私库(企业 / 团队 / 个人三层)
-  - **`img:<kb_name>`** 图像知识库(CLIP 嵌入)
-- 统一返回 `RetrievalChunk` + `Citation`,带原文回链 / 信任度 / 生成的 SQL DSL / collection / vector id
-- **混合检索**:向量 + BM25 关键词同跑,加权打分
-- **重排**:可选 BAAI/bge-reranker-v2-m3 等 cross-encoder
-- **诊断**:每次查询返回 `Diagnostic[]`,排查 "答非所问" 时一目了然
-
-### 5.3 察元 AI 对话(Chayuan Chat)
-
-- **多 Tab 浏览器式外壳**:像浏览器一样打开多个对话,每个 Tab 独立持有 conversationId / 模型 / KB 选择
-- **流式 markdown 渲染**:Shiki 代码高亮 + reasoning(深度思考)token 折叠展示
-- **工具调用三层折叠**:
-  - 第一层:摘要 chip(图标 + 工具名 + "已调用 N 次")
-  - 第二层:展开看 args / output 摘要
-  - 第三层:再点开看完整 JSON
-- **引用面板**:KB 来源列表 + 信任度星级 + 一键打开原文 / 下载附件
-- **附件上传**:拖拽 / 粘贴 / 点击,自动 OCR 入库后参与对话上下文
-- **对话本地持久化**:Tauri SQLite 插件,删账号也不丢历史
-
-### 5.4 多模型对抗(Model Arena)
-
-- 一个对话页面**最多 N 个泳道**(无上限),每个泳道独立选模型
-- **统一发送**:打勾后,在任何一道输入,会同时发到所有泳道,横向对比生成质量
-- **泳道操作**:折叠 / 调宽 / 拖动重排 / 添加 / 删除
-- **折叠条标题**:自动取该泳道的**首条用户提问**作为竖向标签(如 "你是谁"),不是模型名
-
-### 5.5 模型广场(Model Marketplace)
-
-- 7 个分类标签:推荐 / 全部 / 本地 / 国内 / 国外 / 聚合 / 自定义
-- 厂商卡片网格:logo + 名称 + 标签 + 启用开关 + 设置齿轮
-- **自动拉取模型清单**:填了 API Key 失焦自动调供应商 `/v1/models` 拉模型并归类
-- **默认模型自动落候选**:模型广场配好后,如果设置页没设默认模型,自动按类别提升候选第一个为默认
-- 模型类型分类:对话 / 嵌入 / 图像生成 / 视觉理解 / 重排 / 语音合成 / 语音识别 / 视频
-
-### 5.6 本地 OS 适配 + 国产化
-
-详见 [六、支持的操作系统](#六支持的操作系统)。
+**例外与协商：** 企业私有化部署、白标（white-label）需求、界面整体本地化中涉及品牌字段的调整，请通过官网或商务渠道联系取得**单独授权条款**。
 
 ---
 
-## 六、支持的操作系统
+## 三、商业使用与授权例外归纳
 
-| 类别 | 系统 | 架构 | 状态 |
-|---|---|---|---|
-| **Windows** | Windows 10 (1809+) / Windows 11 | x86_64 | ✅ 完整支持(NSIS 安装包 + WebView2 自动安装) |
-| **macOS** | macOS 11 (Big Sur) 及更高 | Apple Silicon (arm64) / Intel (x86_64) | ✅ 完整支持(.dmg + 公证就绪) |
-| **Linux** | Ubuntu 22.04+ / Debian 12+ | x86_64 / aarch64 | ✅ 完整支持(.deb / .rpm / .AppImage) |
-| **国产 Linux** | **麒麟 V10**(Kylin V10) | x86_64 / aarch64 / 龙芯 LoongArch64 | ✅ 兼容(基于 Ubuntu/Debian 共享 webkit2gtk) |
-| **国产 Linux** | **统信 UOS**(UnionTech OS) | x86_64 / aarch64 | ✅ 兼容 |
-| **国产 Linux** | **openKylin**(开放麒麟) | x86_64 / aarch64 | ✅ 兼容 |
-| **国产 Linux** | **deepin** | x86_64 | ✅ 兼容 |
-| **国产 Linux** | **银河麒麟服务器版** | x86_64 / aarch64 | ⚠ 需手动装 webkit2gtk-4.1 |
-| **国产 Linux** | **欧拉 openEuler** | x86_64 / aarch64 | ⚠ 需 RPM 包(包含在 build 矩阵) |
-| **CPU 架构** | x86_64 / aarch64 (arm64) / loongarch64 | — | ✅ 三种架构均有发版 |
+| 情形 | 说明 |
+|------|------|
+| 在组织内部使用、部署于内网 | 在遵守 Apache 2.0 的前提下，通常允许；注意密钥与数据合规。 |
+| 商业分发、集成到产品或服务 | Apache 2.0 允许；须遵守许可证义务；**品牌标识**遵守第二节。 |
+| 与权利人签署的附加协议 | 以协议为准，可能包含技术支持、商标使用范围、责任划分等。 |
+| 第三方模型与服务 | 各云厂商、API 提供商有其独立条款与计费；与本软件开源许可无关。 |
 
-### 国产化对接说明
-
-- **签名工具**:支持中国 SM2/SM3/SM4 算法的代码签名(规划中,详见路线图)
-- **国产数据库**:已对接 **达梦 DM**、**人大金仓 KingbaseES**、**Apache Doris** —— 详见 [§8.3](#83-数据库连接器结构化数据)
-- **国产模型**:已对接 **DeepSeek**、**通义千问 (Qwen)**、**智谱 GLM**、**文心一言**、**Moonshot Kimi**、
-  **豆包 (Doubao)**、**SiliconFlow**、**百川**、**MiniMax** —— 详见 [§8.5](#85-模型供应商)
-- **国产 OCR**:RapidOCR-ONNX(原 PaddleOCR 模型转 ONNX,纯 CPU 即可跑)
-- **国产嵌入**:智源 BAAI/bge-m3-onnx(默认嵌入模型)、bge-reranker-v2-m3(默认重排)
+**自愿赞赏与捐助**不构成购买商业许可的凭证；具体以官网及应用内说明为准。
 
 ---
 
-## 七、与豆包 / Cherry Studio 等的 60+ 项细致对比
+## 四、产品概述（先总后分）
 
-> 以下对比基于 **2026-05** 各家产品**常见公开形态**做归纳,仅作选型参考,**不构成**对任何第三方的功能承诺或排名。
-> 计费、数据驻留、企业私有化、监管认证等**以各厂商官方文档与合同为准**。
+**察元 AI 文档助手**是运行于 **WPS 文字**中的智能加载项（**Vue 3 + Vite**）。它将大语言模型与文档操作深度结合：在**不离开编辑器**的前提下，完成对话、审查、翻译、多模态生成、保密与脱敏、文档与表格及图像的批量处理、表单与模板规则、任务编排与任务清单等；生成结果可按需以**插入、替换、批注、链接批注、追加**等方式写回正文。
 
-### 7.1 具名概要对照(横向)
+**设计取向：** **离线 / 内网优先**。通过 **Ollama** 或任意 **OpenAI 兼容** 网关（LM Studio、Xinference、OneAPI、New API 等），可在无外网大模型密钥的情况下完成对话与助手流程；亦可并行配置多家云端供应商，在效率与数据可控性之间取舍。
 
-| 对比项 | **察元 AI 桌面单机版** | **豆包 (Doubao)** 桌面 | **Cherry Studio** | **ChatGPT Desktop** | **LM Studio** | **Open WebUI** | **AnythingLLM** | **Chatbox** |
-|---|---|---|---|---|---|---|---|---|
-| **形态** | Tauri 桌面 + 嵌入式 Python 后端,**全栈本地** | 字节 Doubao 客户端(对接字节云) | Electron 多供应商客户端 | OpenAI 官方桌面(走 OpenAI 云) | Electron 本地推理工作台 | Web UI(配合 Ollama 等本地推理) | Electron + Node 后端 | Tauri 跨平台对话客户端 |
-| **后端形态** | **嵌入式 Python sidecar**(单机包) | 字节云 | 各家 API 中转 | OpenAI 云 | 本机 llama.cpp | 独立 Web 服务 | Node + 嵌入式向量库 | 客户端直连厂商 API |
-| **离线 LLM** | ✅ Ollama / LM Studio / vLLM / Xinference 一键对接 | ❌ 必须联网 | ✅ 部分支持 | ❌ | ✅ 主打离线 | ✅ 配合 Ollama | ✅ 部分支持 | ✅ 部分支持 |
-| **本地知识库**(RAG) | ✅ 五类源统一编排,sqlite-vec 内嵌 | ✅ 但走云端检索 | ✅ 单类(向量) | ❌ | ❌ | ✅ 配合外部 | ✅ 单类(向量) | 部分 |
-| **结构化数据库连接(text2sql)** | ✅ 17 种方言:MySQL/PG/Oracle/达梦/金仓/Doris/ClickHouse/Hive… | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **外部向量库连接** | ✅ Milvus/Chroma/ES/Zilliz/PG-vector/Relyt | ❌ | ❌ | ❌ | ❌ | 部分 | 部分 | ❌ |
-| **办公私库**(企业/团队/个人三层) | ✅ `office:owner[:group]` 命名空间 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **MCP 协议** | ✅ stdio + sse,服务端 + 客户端双角色 | ❌ | ✅ 客户端 | ❌ | ❌ | 部分 | ❌ | 部分 |
-| **内置工具数量** | **30+**(text2sql / web / 图像生成 / 钉钉飞书 / GitHub / arXiv …) | 少量 | 少量 | OpenAI 官方插件 | ❌ | ❌ | 少量 | ❌ |
-| **模型对抗(多泳道)** | ✅ N 道无上限 + 统一发送 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **多模态** | ✅ T2I / T2V / TTS / ASR | 部分 | 部分 | 部分 | ❌ | ❌ | ❌ | 部分 |
-| **国产化** | ✅ 麒麟/UOS/openKylin + 达梦/金仓/Doris + 国产 LLM | ✅ 字节产品 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **数据落地** | **本机用户目录**,完全本地 | 字节云 | 本机 + 各家云 | OpenAI 云 | 本机 | 自建服务器 | 本机 | 本机 |
-| **开源许可** | **AGPL-3.0** | 闭源 | Apache-2.0 | 闭源 | 闭源 | MIT | MIT | GPL-3.0 |
-| **可审计源码** | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ |
+**技术要点：** 选区与全文上下文感知、可配置的数据路径、可扩展的**内置助手 + 自定义助手**、报告模式与任务清单、与 WPS JSAPI 的写回与批注联动。
 
-### 7.2 60 项细致对比(察元 AI vs 通用桌面 AI 客户端常态)
+### 4.1 本次 2.0.0 重大更新（重大重构 / 稳定性版本）
 
-> "通用桌面 AI 客户端常态" 指 Cherry Studio / Chatbox / Doubao / Kimi 桌面 / 通义千问桌面 / Open WebUI / LM Studio 等
-> 一类产品的常见能力组合,避免对单一产品做绝对结论。
+**当前版本：`2.0.0`。** 本次版本定位为一次面向政企文档生产场景的重大重构：围绕 AI 助手对话框、模型分类、默认模型、助手参数收集、任务执行与 README 文档体系进行了系统性梳理。更新内容参考并归纳了仓库内全部 Markdown 规划与执行文档，包括架构深度分析、v2 演进计划、P0-P6 执行报告、工作流编排、任务系统重设计、运行性缺口闭合、助手表单布局与状态索引等。
 
-| # | 对比维度 | 察元 AI 桌面单机版 | 通用桌面 AI 客户端常态 |
+**本次版本重点：**
+
+- **助手对话框体验重构：** 知识库入口改为与模型选择一致的图标按钮；有参数的助手执行前会先弹出参数确认卡片，例如翻译先选择目标语言，图像/视频/语音助手先确认画幅、时长、语音风格等。
+- **模型体系重构：** AI 助手对话框只显示对话模型；默认设置和助手设置按类型严格过滤模型；模型设置页按对话模型、嵌入式模型、图像模型、语音模型、视频模型等分类展示。
+- **多模型与离线部署增强：** 继续优先支持 Ollama、LM Studio、Xinference、OneAPI、New API 等 OpenAI 兼容端点，同时保留云端模型供应商接入。
+- **助手运行稳定性增强：** 助手执行、重试、参数传递、模型类型匹配、任务进度与文档写回路径进一步统一，减少“选错模型 / 缺参数 / 写回动作不明确”的失败概率。
+- **重大架构演进沉淀：** 结合计划文档中的 P0-P6、工作流 W1-W7、任务系统、进化系统、性能与可观测设计，把 2.0.0 明确为“从功能堆叠走向可治理平台”的版本。
+- **报告与模板能力强化：** README 中明确报告模式、模板规则、表单审计、文档审计、任务编排、自定义助手和多语言文档的产品边界。
+
+### 4.2 竞品能力对比（具名概要 + 六十维细项）
+
+<a id="42-60-项竞品能力对比察元-200-vs-常见办公-ai--文档-ai-工具"></a>
+
+> **具名概要表（§4.2.1）** 仅对各家产品的**常见公开形态**做归纳，便于选型时对照；**不构成**对任何第三方的功能承诺或排名。计费、数据驻留、企业私有化与监管认证等**以各厂商官方文档与合同为准**；若与贵司实测不一致，以贵司 PoC 为准。  
+> **六十维细项表（§4.2.2）** 中「常见竞品 / 通用办公 AI」仍指**一类产品**的常见能力组合（浏览器插件式 AI、独立聊天页、单一写作工具、纯知识库问答等），避免把某一版本写成绝对结论。
+
+#### 4.2.1 具名产品与察元概要对照（横向）
+
+下列产品均为市场上与「文档 + AI」相关的**代表性名称**；**豆包 / 文心一言 / 通义千问 / Kimi** 等并列时，在表中概括为「**通用大模型网页或 App**」——指主要交互在浏览器或独立应用内、与 WPS 本地 doc 无原生一体化写回链路的形态（各家仍可能提供插件或合作入口，以官方为准）。
+
+| 对比项 | 察元 AI 文档助手 2.0.0 | **WPS AI**（金山办公 WPS 内置） | **Microsoft 365 Copilot**（Word 等） | **Google Workspace** 侧 **Gemini**（文档等，以 Google 当前命名为准） | **飞书** 云文档 + **智能伙伴**（字节） | **腾讯文档** 智能助手等 | **Notion AI** | **通用大模型网页 / App**（豆包、通义、文心、Kimi 等） |
+|--------|------------------------|-----------------------------------|----------------------------------------|------------------------------------------------------------------------|----------------------------------------|-------------------------|----------------|------------------------------------------------------------------|
+| **产品形态** | 第三方 **WPS 文字**智能加载项；可自建分发 | WPS 套件**原生**能力，与 WPS 版本 / 会员体系绑定 | Microsoft 365 订阅内 **Word** 等组件的 Copilot 体验 | Google 账号体系下 **Docs** 等在线编辑器内的 Gemini 能力 | **飞书** 云文档与 IM / 工作台内的 AI 能力 | **腾讯文档** 在线协作编辑器内的智能功能 | **Notion** 页面 / 数据库工作区内的 AI | 独立对话或写作页；与 WPS 本地文档**无**同一套原生 JSAPI 写回 |
+| **离线 / 内网自有推理** | **优先**：Ollama、LM Studio、Xinference、OneAPI 等 OpenAI 兼容端点 | 消费级常见形态依赖**联网与金山服务**；政企私有化部署以**金山官方方案**为准，不等同于用户随意换任意后端 | 主流形态为**微软云端**能力；本地私有化以微软**官方企业方案**为准 | 依赖 **Google 云**与账户体系 | 依赖**飞书云服务** | 依赖**腾讯云服务** | 依赖 **Notion 云服务** | 依赖各**厂商云 API**；纯离线非典型主路径 |
+| **用户自选多模型 / 网关** | 支持在设置中配置多家供应商与 **OpenAI 兼容** 基础 URL | 模型与路由由 **WPS / 金山** 产品线定义 | 由 **微软** Copilot 与租户策略定义 | 由 **Google** 工作区策略定义 | 由**飞书**产品线定义 | 由**腾讯文档**产品线定义 | 由 **Notion** 定义 | 各家独立；与 WPS 加载项内的「统一网关」**不是同一配置面** |
+| **WPS 文字内写回**（插入 / 替换 / 批注 / 链接批注等） | **是**，与选区 / 全文、任务窗格同一链路 | **是**，与 WPS 编辑器深度集成；具体动作集合以 **WPS 当前版本**为准 | **否**（宿主为 Microsoft Word，非 WPS） | **否**（宿主为 Google Docs，非 WPS） | **否**（宿主为飞书文档） | **否**（宿主为腾讯文档） | **否**（宿主为 Notion） | **通常否**；多依赖复制粘贴或各厂商**另行提供**的插件 |
+| **政企向：保密提示 / 脱密与复原 / 书签级审计等** | 产品内置相关助手与流程（**辅助参考**，见前文免责声明） | **以 WPS 及金山官方是否提供同类功能为准**；与本开源加载项**非同一软件** | 以 **Microsoft** 合规与产品功能为准 | 以 **Google** 合同与数据条款为准 | 以**飞书**企业功能与合同为准 | 以**腾讯**企业功能与合同为准 | 以 **Notion** 企业功能与合同为准 | 一般**不提供**与 WPS 书签 / 模板规则联动的同类编审闭环 |
+| **自定义助手 + Ribbon / 右键入口** | **支持**（系统提示、模板、写回动作、显示位置可配） | 以 **WPS AI** 官方提供的指令、模板、入口为准 | 以 **Copilot** 与微软生态扩展为准 | 以 **Gemini / Workspace** 官方能力为准 | 以**飞书**官方扩展与自动化为准 | 以**腾讯文档**官方能力为准 | 以 **Notion** 模板与 AI 规则为准 | 用户多在站外自管提示词；**无**察元同款 WPS 菜单级挂载 |
+| **开源与可自行审计源码** | **Apache-2.0**，本仓库 | **否** | **否** | **否** | **否** | **否** | **否** | 各厂商闭源；仅 API / 条款可审 |
+| **典型适用** | 已用 **WPS 文字**、要强内网模型或要统一 OpenAI 兼容网关、要细粒度写回与编审助手 | 已用 **WPS**、希望**零安装**官方 AI 的用户 | 已用 **Microsoft Word** 与 M365 的组织 | 已用 **Google Workspace** 的组织 | 已用 **飞书** 文档与协作的组织 | 已用 **腾讯文档** 的团队 | 已用 **Notion** 的知识与项目团队 | 通用对话、检索、站外起草 |
+
+**与 WPS AI 的关系说明（避免误解）：** **察元**与 **WPS AI**均可出现在「WPS 文字」编辑环境中，但前者为**独立第三方加载项**（本仓库），后者为**金山办公产品内置能力**；二者在账号、计费、模型来源、数据路径与功能清单上**相互独立**。上表不暗示双方存在合作或互斥，仅作能力维度上的并列参照。
+
+#### 4.2.2 六十维细项（察元 vs 常见办公 AI / 文档 AI 工具）
+
+| # | 对比维度 | 察元 AI 文档助手 2.0.0 | 常见竞品 / 通用办公 AI |
 |---:|---|---|---|
-| 1 | 安装包形态 | Tauri 原生窗口 + 嵌入式 Python sidecar | Electron / 浏览器壳 |
-| 2 | 安装包体积 | 中(单机版包含完整 Python 运行时与默认模型) | 小(仅前端壳,模型/服务靠外部) |
-| 3 | 启动后是否需要外网 | ❌ 不需要 | ✅ 多数需要 |
-| 4 | 启动 Splash 动画 | 五层零延迟挂载,首帧即动画 | 普遍有 |
-| 5 | 嵌入式向量库 | ✅ sqlite-vec | ❌ 多依赖外部 Milvus / FAISS |
-| 6 | 嵌入式嵌入模型 | ✅ ONNX bge-m3(默认) | ❌ 用户自配 |
-| 7 | 嵌入式 OCR | ✅ RapidOCR-ONNX | ❌ |
-| 8 | 嵌入式 TTS / ASR | ✅ Piper / FunASR(可选) | ❌ |
-| 9 | 文档 RAG 完整度 | ✅ PDF/Word/Excel/PPT/Markdown/HTML/图像 | 有限 |
-| 10 | 多供应商网关 | ✅ 18+ 家 LLM 厂商 | 5–10 家 |
-| 11 | OpenAI 兼容路由 | ✅ 自带 `/openai/v1/*` | 部分 |
-| 12 | 模型自动探测 | ✅ 填 Key 自动拉 `/v1/models` | 部分 |
-| 13 | 默认模型按类别自动提升候选 | ✅ chat/embed/image/rerank 各自第一个候选 | ❌ |
-| 14 | 模型分类 | 对话/嵌入/视觉/图像生成/重排/语音/视频 | 多数仅对话 + 嵌入 |
-| 15 | 模型对抗(多泳道) | ✅ 无上限 + 统一发送 | ❌ |
-| 16 | 工具调用三层折叠展示 | ✅ summary→args/output→full JSON | ❌ |
-| 17 | 流式 reasoning(深度思考)折叠 | ✅ | ❌ |
-| 18 | 引用气泡(KB Source) | ✅ 信任度 + 一键回原文 / 下载 | 部分 |
-| 19 | 引用按源类型分类 | ✅ doc/struct/vec/office/web | ❌ |
-| 20 | text2sql 安全性 | ✅ 只读 AST 校验,白名单表/列 | ❌ |
-| 21 | 国产数据库支持 | ✅ 达梦 DM / 金仓 KingbaseES / Doris | ❌ |
-| 22 | 国际数据库支持 | ✅ MySQL/PG/Oracle/SQLServer/ClickHouse/Hive/SQLite | 多数 0–1 种 |
-| 23 | MongoDB 连接器 | ✅ | ❌ |
-| 24 | Elasticsearch 连接器 | ✅ | 部分 |
-| 25 | 外部向量库连接器 | ✅ Milvus / Chroma / Zilliz / PG-vector / ES / Relyt | ❌ 或 1 种 |
-| 26 | MCP 协议(客户端) | ✅ stdio + sse | 部分 |
-| 27 | MCP 协议(服务端) | ✅ 自身可作为 MCP server | ❌ |
-| 28 | 内置工具数量 | 30+ | 0–10 |
-| 29 | 自定义 HTTP 工具(OpenAPI 导入) | ✅ Swagger 解析 | 部分 |
-| 30 | 自定义脚本工具 | ✅ Python REPL / Shell | 部分 |
-| 31 | 知识库类型数量 | 5(doc/struct/vec/office/img) | 多数 1 |
-| 32 | 文档格式覆盖 | PDF/Word/Excel/PPT/MD/HTML/图像/CSV | 多数 PDF + Word |
-| 33 | 增量同步文件夹 | ✅ folder-sync 路由 | 部分 |
-| 34 | 自动构建知识结构 | ✅ 文件夹监听 + 解析 + 入库一条龙 | ❌ |
-| 35 | KB 多选并联检索 | ✅ `selectedKuIds` 携带多源 | 部分 |
-| 36 | 国产 OS 适配 | ✅ 麒麟 / UOS / openKylin / deepin | ❌ |
-| 37 | 多架构 | x86_64 / aarch64 / loongarch64 | 多数仅 x86_64 |
-| 38 | 数据目录可选 | ✅ FirstRunSetup 向导 | 多数固定 |
-| 39 | 鉴权可关 | ✅ 单机模式自动关 | ❌(无概念) |
-| 40 | 凭据加密 | ✅ Tauri Stronghold + ChaCha20-Poly1305 | 部分 |
-| 41 | API 可被外部调用 | ✅ 暴露 `/api/*`,WPS 加载项可直连 | ❌ |
-| 42 | 同机 WPS 加载项联动 | ✅ chayuan-wps v3.0 直连 127.0.0.1 | ❌ |
-| 43 | OpenAPI 鉴权(HMAC) | ✅ X-App-Id / X-Sign / X-Timestamp | ❌ |
-| 44 | OpenAI SDK 可直接连本机 | ✅ `base_url=http://127.0.0.1:62581/openai/v1` | 部分 |
-| 45 | Tab 多对话并行 | ✅ 浏览器式 | 部分 |
-| 46 | Tab 拖拽 / 上下文菜单 | ✅ 关闭 / 关闭其他 / 关闭全部 | 部分 |
-| 47 | 主题(深 / 浅 / 跟随系统) | ✅ | 多数 |
-| 48 | 字号自定义 | ✅ 持久化 | 部分 |
-| 49 | i18n 多语言 | ✅ 中 / 英 / 日 / 德 / 法 | 部分 |
-| 50 | 帮助中心(内嵌 markdown) | ✅ | 部分 |
-| 51 | 反馈通道 | ✅ 内嵌二维码 + GitHub Issue | 部分 |
-| 52 | 自动更新 | ⏳ 规划中 | 多数 |
-| 53 | 系统托盘 | ✅ tray-icon 插件 | 多数 |
-| 54 | 全局快捷键 | ✅ global-shortcut 插件 | 部分 |
-| 55 | 桌面通知 | ✅ notification 插件 | 多数 |
-| 56 | 文件拖拽上传 | ✅ | 多数 |
-| 57 | 剪贴板集成 | ✅ clipboard-manager 插件 | 多数 |
-| 58 | 可观测性(Langfuse) | ✅ 可选,默认关 | 部分 |
-| 59 | 评估模块(eval) | ✅ KB recall 评估 | ❌ |
-| 60 | 审计 / 配额 / RBAC | ✅ governance 模块 | ❌ |
-| 61 | PII 脱敏 | ✅ governance/redact | ❌ |
-| 62 | 数据血缘 | ✅ lineage 跟踪 | ❌ |
-| 63 | 多用户 / 多租户 | ✅(单机版默认关闭,可切换 profile) | ❌ |
-| 64 | 开发者级 doctor 自检 | ✅ `chayuan doctor` | 部分 |
-| 65 | 开源许可 | **AGPL-3.0** | 各异 |
+| 1 | WPS 文字深度集成 | 直接作为 WPS 加载项运行，贴近编辑、批注、写回 | 多数是网页端或浏览器插件，文档写回弱 |
+| 2 | 离线 / 内网部署 | 优先支持 Ollama、LM Studio、Xinference、OneAPI 等 | 常依赖云端账号和公网 API |
+| 3 | OpenAI 兼容网关 | 支持多种兼容端点统一配置 | 支持范围不一，常锁定自家模型 |
+| 4 | 多供应商模型 | 可配置 OpenAI、DeepSeek、阿里百炼、千帆、Gemini 等 | 多数仅支持少量模型 |
+| 5 | 模型类型分类 | 对话、嵌入、图像、语音、视频等分类展示 | 常把模型平铺，容易误选 |
+| 6 | 对话模型过滤 | 助手对话框只允许选择对话模型 | 非对话模型可能混入选择列表 |
+| 7 | 默认模型分类 | 不同能力只允许选择对应类型模型 | 默认模型通常只有一个全局项 |
+| 8 | 自定义助手 | 支持系统提示词、用户模板、模型类型、写回动作 | 多数只支持简单 prompt 收藏 |
+| 9 | 自定义助手显示位置 | 可配置顶部主菜单、更多菜单、右键菜单 | 常不可嵌入 Office 菜单体系 |
+| 10 | 助手参数运行前确认 | 翻译、图像、视频、语音等先弹出参数选择 | 常直接执行，参数只能写在自然语言里 |
+| 11 | 翻译目标语言 | 下拉选择目标语言并进入执行变量 | 多数只能在提示词中手写 |
+| 12 | 图像生成参数 | 画幅比例等进入助手参数 | 常在独立生成页配置 |
+| 13 | 视频生成参数 | 视频时长、比例等进入助手参数 | 常与文档流程割裂 |
+| 14 | 语音生成参数 | 语音风格、时长参考进入助手参数 | 常需切换到专门 TTS 工具 |
+| 15 | 文档写回动作 | 插入、替换、批注、链接批注、追加、仅生成等 | 多数只复制结果或覆盖插入 |
+| 16 | 选区优先 | 支持选区优先、仅选区、全文等输入来源 | 常依赖用户手动复制粘贴 |
+| 17 | 全文处理 | 支持长文档范围和分段任务思路 | 很多工具只处理当前可见文本 |
+| 18 | 任务进度窗口 | 独立任务进度、任务清单、失败重试 | 多数只有简单 loading |
+| 19 | 任务中心 | 规划中 / 已沉淀任务中心与状态索引 | 常缺少任务级管理 |
+| 20 | 报告模式 | 支持摘要、审计等结构化报告模式 | 常是单次文本生成 |
+| 21 | 报告模板 | 支持报告类型、模板、附加要求等配置 | 常无模板治理 |
+| 22 | 模板规则 | 支持察元模板、规则制作、规则交换 | 常不覆盖文档模板治理 |
+| 23 | 表单智能提取 | 可从合同、公文中提取表单字段 | 多数只做通用摘要 |
+| 24 | 表单内容预览 | 支持表单辅助填报与预览 | 常不懂 WPS 文档结构 |
+| 25 | 文档审计助手 | 支持书签级 / 字段级审计与报告 | 常无法定位到模板字段 |
+| 26 | 保密检查 | 针对涉密、涉军、单位、项目编号等风险提示 | 通用产品多为泛安全提示 |
+| 27 | 文档脱密 | 支持涉密关键词提取、占位符替换与复原流程 | 通常没有可逆脱敏流程 |
+| 28 | 密码复原 | 可进入脱密复原对话框 | 常不提供脱敏恢复链路 |
+| 29 | AI 痕迹检查 | 保守评估并强调人工复核 | 常给出绝对化分数或不支持 |
+| 30 | 拼写语法结构化检查 | JSON 问题列表，适合批注写回 | 常只给整段改写 |
+| 31 | 纠错与校对分流 | 区分“检查问题”和“直接改正”两条路径 | 常混为一个润色按钮 |
+| 32 | 文本分析助手 | 改写、扩写、缩写、术语统一、正式化等 | 通常数量少且不可配置 |
+| 33 | 批注解释 | 可解释批注或选中文本 | 常缺少批注语义入口 |
+| 34 | 超链接解释 | 可解释链接文字或引用关系 | 常不支持文档内对象 |
+| 35 | 段落序号检查 | 面向公文 / 标书编号一致性 | 通用写作工具很少覆盖 |
+| 36 | 关键词提取 | 可作为内置助手和脱密前置能力 | 常只做普通关键词列表 |
+| 37 | 会议纪要助手 | 内置纪要结构化能力 | 常需要用户自写模板 |
+| 38 | 政策 / 公文风格 | 面向政策、公文、政企文档语气 | 通用工具偏营销或通用写作 |
+| 39 | 表格批量能力 | 导出 / 删除表格、行宽、样式、题注等 | 多数 AI 工具不操作 WPS 表格 |
+| 40 | 图像批量能力 | 导出 / 删除图像、统一格式、题注等 | 常无法批量处理文档图片 |
+| 41 | 文档批量能力 | 清理样式、统计样式、删除空白行等 | 常只能生成文本 |
+| 42 | 右键菜单集成 | 右键可进入分析、翻译、助手快捷入口 | 网页 AI 通常无 WPS 右键集成 |
+| 43 | Ribbon 菜单集成 | 顶部功能区直接承载 AI 能力 | 常停留在侧边栏 |
+| 44 | 知识库入口 | 对话框内以图标入口保留知识库选择窗口 | 很多产品知识库与编辑器割裂 |
+| 45 | 多语言 README | 中、英、日、德、法、西、俄多语言入口 | 常只有单语言说明 |
+| 46 | 品牌与授权边界 | 明确 Apache 2.0 与“察元”品牌保留规则 | 很多项目缺少再分发边界说明 |
+| 47 | 任务编排设计 | 工作流 W1-W7 规划与执行报告沉淀 | 常无可视化 / 可恢复工作流 |
+| 48 | 工作流节点 | 计划中覆盖 28 类节点和模板 | 通用助手通常没有节点级编排 |
+| 49 | 工作流模板 | 合同审查、批量抽取、多模型 A/B 等方向 | 竞品多为固定命令集合 |
+| 50 | 可观测性 | perfTracker、任务状态、doctor 检查等规划 | 常缺少开发者级诊断 |
+| 51 | Doctor 检查 | 提供 `doctor` / `doctor:quick` 自检命令 | 多数插件没有项目级自检 |
+| 52 | Smoke 测试 | 演进与服务 smoke 脚本沉淀 | 常缺少无模型依赖测试 |
+| 53 | 助手进化系统 | 版本快照、评估、晋升、回滚方向明确 | 竞品多为手工改 prompt |
+| 54 | 影子双跑设计 | 候选助手可后台对比不打扰用户 | 常直接替换，缺少灰度 |
+| 55 | 回滚能力 | 进化版本和任务失败均强调可回滚 | 常缺少版本治理 |
+| 56 | 失败证据 | 规划中强调失败聚类、证据时间轴 | 常只给“生成失败” |
+| 57 | 长文档策略 | 分段、截取、上下文窗口与报告模式结合 | 常受单次上下文限制 |
+| 58 | 附件上下文 | 对话中支持附件引用与任务材料范围 | 常只处理粘贴文本 |
+| 59 | 多模态任务 | 文本转图像、语音、视频进入任务体系 | 多数文档 AI 只做文本 |
+| 60 | 政企稳定性取向 | 克制、可解释、可回滚、离线优先 | 通用 AI 更偏轻量创作体验 |
 
 ---
 
-## 八、详细功能清单
+## 五、界面截图（`screen/` 目录实拍）
 
-### 8.1 对话与流式
+以下 **screen1.png** 至 **screen7.png** 均来自仓库 `screen/` 目录。
 
-- **流式 SSE 输出**:每个 token 立即返回,代码块 / 表格 / 引用同步渲染
-- **深度思考 (deep thinking) 折叠**:模型 `<think>` 段落以 collapsible 详情展示,点击展开看推理过程
-- **工具调用三层展示**:见 [§5.3](#53-察元-ai-对话chayuan-chat)
-- **附件处理**:拖拽 / 粘贴 / 选择文件,自动 OCR / 解析 / 嵌入,作为对话上下文
-- **对话本地持久化**:Tauri SQLite 插件,`conversations` + `messages` 双表,upsert 语义
-- **编辑 / 重生成 / 分支**:消息气泡级操作,分支不破坏原线
-- **统一发送(Unified Send)**:模型对抗下,在任一道输入,文本同时进所有泳道
-- **对话历史虚拟滚动**:60+ 消息时切到 windowing,OVERSCAN=6,流畅
-- **IME 安全 Enter**:中文 / 日文输入法 composition 期间 Enter 不发送
+| screen1 | screen2 | screen3 |
+|:---:|:---:|:---:|
+| ![screen1](screen/screen1.png) | ![screen2](screen/screen2.png) | ![screen3](screen/screen3.png) |
 
-### 8.2 知识库类型与文档格式
+| screen4 | screen5 | screen6 |
+|:---:|:---:|:---:|
+| ![screen4](screen/screen4.png) | ![screen5](screen/screen5.png) | ![screen6](screen/screen6.png) |
 
-| 知识库类型 | `ku_kind` | 描述 | 索引方式 |
-|---|---|---|---|
-| **文档库** | `doc` | PDF / Word / Excel / PPT / Markdown / HTML / 图像 | 切片 + 嵌入 + BM25 双索引 |
-| **结构化库** | `struct` | SQL / MongoDB / ES 数据库 | schema + sample rows + DDL hints |
-| **向量库** | `vec` | 外部 Milvus / Chroma / Zilliz / PG-vector | 直连外部 collection |
-| **办公私库** | `office` | 企业 / 团队 / 个人三级私库 | 文档库的命名空间 |
-| **图像库** | `img` | 图像 + 图像描述 | CLIP 嵌入 |
+| screen7 | screen8| screen9 |
+|:---:|:---:|:---:|
+|:---:|
+| ![screen7](screen/screen7.png) | ![screen8](screen/1.png) | ![screen9](screen/2.png) |
+| screen10 | screen11| screen12 |
+|:---:|:---:|:---:|
+|:---:|
+| ![screen10](screen/3.png) | ![screen11](screen/4.png) | ![screen12](screen/5.png) |
+| screen13 | screen14| screen15 |
+|:---:|:---:|:---:|
+|:---:|
+| ![screen13](screen/6.png) | ![screen14](screen/7.png) | ![screen15](screen/8.png) |
+| screen16 | screen17| 
+|:---:|:---:|:---:|
+|:---:|
+| ![screen16](screen/9.png) | ![screen17](screen/10.png) | 
 
-**文档格式覆盖**:
 
-| 格式 | 解析器 | OCR 触发 | 备注 |
-|---|---|---|---|
-| `.pdf` | RapidOCRPDFLoader / pypdf | 扫描件自动 OCR | 全文 + 图片层 |
-| `.docx` | RapidOCRDocLoader / python-docx | 内嵌图自动 OCR | 表格保留 |
-| `.doc` (老格式) | unstructured / antiword | ✅ | |
-| `.xlsx` / `.xls` | openpyxl / xlrd | ❌ | 每 sheet 单独切片 |
-| `.csv` | FilteredCSVLoader | ❌ | 列名感知 |
-| `.pptx` | RapidOCRPPTLoader | ✅ | 每 slide 切片 |
-| `.md` / `.markdown` | Markdown loader | ❌ | 标题层级保留 |
-| `.html` / `.htm` | BeautifulSoup + html2text | ❌ | DOM 清洗 |
-| `.txt` | PlainTextLoader | ❌ | |
-| `.png` / `.jpg` / `.jpeg` / `.bmp` / `.tiff` | RapidOCRLoader | ✅ | |
-| `.json` / `.yaml` / `.toml` | 结构化文本 loader | ❌ | |
-| `.eml` / `.msg` (邮件) | unstructured.email | ❌ | |
-| `.epub` (电子书) | unstructured.epub | ❌ | |
+### 仓库内置预览图（`public/images/about/`）
 
-### 8.3 数据库连接器(结构化数据)
+与发行物料一并维护的历史预览，可与上表对照。
 
-通过 `chayuan/server/knowledge_source/sql/dialects.py` 提供 17 种 SQL 方言适配:
+| 预览 1 | 预览 2 | 预览 3 |
+|:---:|:---:|:---:|
+| ![about-1](public/images/about/screen-1.png) | ![about-2](public/images/about/screen-2.png) | ![about-3](public/images/about/screen-3.png) |
 
-#### 国际主流
-
-| 数据库 | 驱动 | 方言 | text2sql 支持 |
-|---|---|---|---|
-| **MySQL** | pymysql | mysql+pymysql | ✅ |
-| **PostgreSQL** | psycopg2 / psycopg | postgresql | ✅ |
-| **SQLite** | pysqlite | sqlite | ✅ |
-| **Microsoft SQL Server** | pyodbc / pymssql | mssql | ✅ |
-| **Oracle** | oracledb / cx_Oracle | oracle | ✅(thin / thick mode 自动) |
-| **ClickHouse** | clickhouse-sqlalchemy | clickhouse+http / clickhouse+native | ✅ |
-| **Hive / Impala** | PyHive | hive | ✅ |
-
-#### 国产数据库
-
-| 数据库 | 驱动 | 方言 | 备注 |
-|---|---|---|---|
-| **达梦 DM** | dmPython | dm | sqlalchemy-dm 适配 |
-| **人大金仓 KingbaseES** | ksycopg2 / kingbase8 | kingbase | PG 兼容 + 专用方言 |
-| **Apache Doris** | pymysql(MySQL 兼容协议) | doris | 端口 9030 |
-
-#### 文档型 / 全文型
-
-| 数据库 | 协议 | 备注 |
-|---|---|---|
-| **MongoDB** | pymongo | aggregate pipeline 生成 |
-| **Elasticsearch** | elasticsearch-py | DSL 生成,支持聚合 |
-
-**安全机制**:
-- text2sql 链路强制 **只读 AST 校验**,任何 INSERT / UPDATE / DELETE / DROP / CREATE 在执行前被拦截
-- 表名 / 列名走 schema cache 白名单,LLM 输出不在白名单的标识符直接报错
-- 聚合类问题(有几个用户 / 总销售额 / TOP 10 …)走 `structured_aggregate` 意图,
-  必须命中 `COUNT` / `SUM` / `AVG` 等聚合函数,结果带 SQL 文本 + 行数 + 列定义,人能审计
-
-### 8.4 向量库支持
-
-| 向量库 | 单机适用 | 服务化适用 | 备注 |
-|---|---|---|---|
-| **sqlite-vec** | ✅ 默认 | ⚠ 单机 | 内嵌扩展,数据落 SQLite 文件 |
-| **FAISS** | ✅ | ⚠ 单机进程内 | flat / IVF / HNSW |
-| **Milvus** | ❌ | ✅ | standalone / cluster |
-| **Milvus Lite** | ✅ | — | in-process 嵌入式 |
-| **Chroma** | ✅ | ✅ | persistent / HTTP |
-| **Zilliz** | ❌ | ✅ | Milvus 云 |
-| **Elasticsearch** | ❌ | ✅ | 8.x 及以上,dense_vector |
-| **PostgreSQL + pgvector** | ❌ | ✅ | |
-| **Relyt** | ❌ | ✅ | 国产分布式向量 |
-
-### 8.5 模型供应商
-
-通过 `model_platform.platform_type` 字段路由,默认支持的 `platform_type` 以及对应厂商:
-
-#### 云端 LLM(国外)
-
-| 厂商 | platform_type | 备注 |
-|---|---|---|
-| **OpenAI** | `openai` | 官方 |
-| **Anthropic Claude** | `anthropic` | OpenAI SDK 兼容层 |
-| **Google Gemini** | `gemini` / `custom openai` | OpenAI 兼容适配器 |
-| **Mistral AI** | `mistral` | |
-| **Together AI** | `together` | OpenAI 兼容 |
-| **Groq** | `groq` | OpenAI 兼容 |
-
-#### 云端 LLM(国内)
-
-| 厂商 | platform_type | 备注 |
-|---|---|---|
-| **DeepSeek 深度求索** | `deepseek` | OpenAI 兼容 |
-| **通义千问 Qwen / 阿里百炼 Dashscope** | `dashscope` / `qwen` | 原生 + OpenAI 兼容 |
-| **百度 文心一言 / 千帆** | `qianfan` / `wenxin` | |
-| **智谱 GLM / ChatGLM** | `zhipu` / `glm` | 原生 ZhipuAI SDK |
-| **Moonshot Kimi** | `moonshot` | OpenAI 兼容 |
-| **字节豆包 Doubao** | `doubao` | 火山引擎 OpenAI 兼容 |
-| **百川 Baichuan** | `baichuan` | OpenAI 兼容 |
-| **MiniMax** | `minimax` | |
-| **零一万物 Yi** | `yi` / `lingyiwanwu` | |
-| **SiliconFlow** | `siliconflow` | 推理服务 |
-
-#### 本地推理 / OpenAI 兼容自建
-
-| 软件 | platform_type | 备注 |
-|---|---|---|
-| **Ollama** | `ollama` | 自动从 `/api/tags` 拉模型清单 |
-| **LM Studio** | `lmstudio` / `custom openai` | OpenAI 兼容 |
-| **Xinference** | `xinference` | 自动探测 |
-| **vLLM** | `vllm` / `custom openai` | OpenAI 兼容 |
-| **OneAPI / New API** | `oneapi` | API 聚合层 |
-| **FastChat** | `fastchat` | OpenAI 兼容 |
-| **LocalAI** | `localai` | OpenAI 兼容 |
-| **自定义 OpenAI 兼容** | `custom openai` | 任意 base URL |
-
-### 8.6 嵌入模型 / 重排 / OCR
-
-#### 嵌入模型
-
-| 嵌入器 | 类型 | 默认 | 备注 |
-|---|---|---|---|
-| **bge-m3-onnx**(BAAI) | ONNX 本地 | ✅ 默认 | 中英多语,1024 维,~120 MB |
-| **Ollama embedding** | 远程 OpenAI 兼容 | — | `nomic-embed-text` 等 |
-| **Infinity** | 远程 OpenAI 兼容 | — | HuggingFace 推理服务 |
-| **OpenAI text-embedding-3** | 云端 | — | small / large |
-| **Dashscope text-embedding** | 云端 | — | 通义千问 |
-| **ZhipuAI embedding** | 云端 | — | embedding-2 / embedding-3 |
-| **Jina embedding** | 云端 | — | jina-embeddings-v3 |
-| **Cohere embed** | 云端 | — | embed-multilingual-v3 |
-
-#### 重排器(Reranker)
-
-- **BAAI/bge-reranker-v2-m3**(默认推荐)
-- **BAAI/bge-reranker-large**
-- **任意 sentence_transformers cross-encoder**
-
-#### OCR
-
-- **RapidOCR-ONNX**(默认):纯 CPU,~70 MB,中英 PaddleOCR 模型转 ONNX
-- **RapidOCR-Paddle**(可选):GPU 加速版本
-
-### 8.7 多模态
-
-| 模态 | 接口 | 默认实现 | 可选实现 |
-|---|---|---|---|
-| **T2I 图像生成** | `/api/image/text2image` | OpenAI DALL-E / 火山豆包文生图 | ComfyUI(可选 38188 端口)、SD WebUI |
-| **图像理解** | `/api/chat`(vision LLM) | 通义千问 VL / GPT-4V / Claude 3 Vision | |
-| **TTS 语音合成** | `/api/voice/tts` | **Piper**(纯 CPU,内置中文音色,~30 MB) | CosyVoice(可选 38280) |
-| **ASR 语音识别** | `/api/voice/asr` | FunASR(可选 38180,阿里) | Whisper |
-| **T2V 视频生成** | `/api/video/text2video` | 通义千问 Wan / 火山豆包 PixelDance | 各家云端 |
-
-### 8.8 内置工具(30+)
-
-来源:`chayuan/server/agent/tools_factory/`
-
-#### 数据 / 知识
-
-- `search_local_knowledgebase` —— 本地 KB 检索(带 source attribution)
-- `search_internet` —— Web 搜索(SearxNG / Tavily / Brave 等)
-- `url_reader` —— URL 抓取并提取正文
-- `text2sql` —— 任意已注册 SQL 源的自然语言查询
-- `text2promql` —— Prometheus 指标查询
-
-#### 代码 / 系统
-
-- `python_repl` —— 沙箱 Python REPL
-- `shell` —— Shell 命令(白名单)
-
-#### 学术 / 公开数据
-
-- `arxiv` —— 论文检索
-- `pubmed_search` —— 生物医学文献
-- `semantic_scholar` —— 学术语义检索
-- `wikipedia_search` —— 维基百科
-- `stackexchange` —— Stack Exchange 系列
-- `wolfram` —— Wolfram Alpha 数学/科学引擎
-
-#### 开发协作
-
-- `github_tool` —— Issue / PR / 代码搜索
-- `gitlab_tool` —— GitLab 实例
-- `confluence_search` —— Confluence wiki
-- `notion_search` —— Notion workspace
-
-#### 即时通讯
-
-- `dingtalk_message` —— 钉钉群机器人
-- `wechat_work_message` —— 企业微信
-- `lark_message` —— 飞书
-
-#### 实时 / 地理
-
-- `amap_poi_search` —— 高德 POI
-- `amap_weather` —— 高德天气
-- `openweather` —— OpenWeather
-- `news_api` —— 新闻聚合
-- `yahoo_finance_news` —— 财经
-
-#### 多模态生成
-
-- `text2image` —— 图像生成
-- `search_youtube` —— YouTube 检索
-
-#### 通用
-
-- `calculate` —— 数学表达式
-- `http_request` —— 通用 HTTP 客户端(带 auth)
-- `openapi_call` —— OpenAPI/Swagger 规范自动调用
-- `custom_tools_runtime` —— 用户自定义工具加载
-
-### 8.9 MCP(Model Context Protocol)
-
-- **客户端**:UI 中可注册 stdio 或 sse 形态的 MCP 服务器,工具自动出现在 Composer 的 MCP 多选 picker 中
-- **服务端**:察元后端自身可作为 MCP server 暴露内置工具,通过 stdio 接入 Cursor / Claude Desktop / 其它 MCP 客户端
-
-### 8.10 模型对抗(Model Arena)
-
-> 一个对话页内开 N 个独立泳道,每道选不同的模型,**统一发送**一句话,横向对比生成质量、风格、速度、成本。
-
-- **泳道操作**:折叠 / 调宽 / 拖动重排 / 添加 / 删除
-- **统一发送 (unified send)**:checkbox 打开后,任一道输入会 broadcast 到所有泳道
-- **每道独立 conversationId**:历史互不干扰
-- **持久化布局**:zustand persist + per-tab scope,关 tab 不丢
-- **折叠条标题**:取该泳道**首条用户提问**作为竖向标签(`writing-mode: vertical-rl + text-orientation: upright`),
-  没问话时显示 "无标题"
-- **拖出独立窗口**:暂未启用(架构重构中,详见 PACKAGING.md 路线图)
-
-### 8.11 自动构建文档知识结构(Folder Sync)
-
-> 把一个文件夹"挂载"到知识库,文件夹内任何变化(新增 / 修改 / 删除)都会自动:
-> 解析 → OCR(如需) → 切片 → 嵌入 → 入库 → 更新引用元数据。
-
-- **路由**:`/api/folder-sync/*`
-- **挂载方式**:用户在 KB 详情页选 "从文件夹同步",填本地路径
-- **变更检测**:基于文件 mtime + size + hash,启动时增量扫描,运行时 watchdog
-- **失败可恢复**:解析失败的文件标记为 quarantine,不阻塞其它文件
-- **一键重建**:右键文件夹 → 重新索引,清掉 KB 中该文件夹源的全部 chunks 重跑
-
-### 8.12 引用展示与原文回链
-
-每条 LLM 回复下方挂 **Citation Strip** —— 信任度星级 + 来源类型图标 + 一键操作:
-
-| 来源类型 | 图标 | 操作 |
-|---|---|---|
-| **`document`** 文档库 | 📄 | 打开原文预览 + 下载附件 |
-| **`structured`** 结构化(SQL) | 🗃 | 查看生成的 SQL + 表格结果 + 行数 |
-| **`vector`** 外部向量 | 📚 | 显示 collection / vector_id / metadata,**不提供下载** |
-| **`office`** 办公私库 | 🏢 | 显示企业/团队/个人归属 + 文档名 |
-| **`web`** Web 搜索 | 🌐 | 打开外链 |
+<p align="center"><sub>预览 4</sub><br /><img src="public/images/about/screen-4.png" alt="about-4" width="720" /></p>
 
 ---
 
-## 九、HTTP API 接口总览
+## 六、功能总览（模块级）
 
-> 后端默认监听 `127.0.0.1:62581`(单机模式),完整 OpenAPI swagger 在
-> `http://127.0.0.1:62581/docs` 在线查看。
+**文档内主要入口**
 
-### 9.1 主要路由组
+- **关于察元：** 产品介绍、能力说明与模型供应商概览。
+- **察元 AI 助手：** 主对话、模型选择、拼写与语法检查、生成摘要、写回动作条等。
+- **文本分析（Ribbon 分组）：** 改写、扩写、缩写、段落序号检查、AI 痕迹检查、批注解释、超链接解释、纠正拼写语法、提炼关键词等。
+- **翻译：** 目标语言可配置，菜单随设置变化。
+- **多模态：** 文本转图像、文本转语音、文本转视频（取决于模型与供应商能力）。
+- **智能助手（更多 / 右键）：** 固定主入口之外的助手，以及「创建 / 管理智能助手」。
+- **安全保密：** 保密检查、文档脱密、脱密复原；涉密关键词提取等。
+- **文档批量：** 清理未使用样式、统计已使用样式、删除空白行等。
+- **表格批量：** 导出或删除全部表格、自动行宽、刷新样式、按文字删行列、追加替换、序号与样式、表格题注等。
+- **图像批量：** 导出或删除全部图像、统一或清除格式、图像题注等。
+- **察元 AI 编审：** 表单辅助填报、表单内容预览、文档审计、模板与规则（导入导出下载、规则制作与交换）等。
+- **设置：** 任务清单、模型与供应商、路径、助手显示位置与参数等综合配置。
+- **右键菜单：** 添加到察元 AI 助手、文本分析、翻译、智能助手快捷入口等。
 
-| 路由前缀 | 用途 | 文件 |
-|---|---|---|
-| `/healthz` | 健康检查 | `health_routes.py` |
-| `/api/chat/*` | 对话(流式 / 同步、KB 模式、多源) | `chat_routes.py` |
-| `/api/file-chat/*` | 文件级对话(上传 + Q&A) | `chat_routes.py` |
-| `/api/v1/kb-query/*` | **统一知识查询**(推荐入口) | `kb_query_routes.py` |
-| `/api/kb/*` | KB CRUD(创建 / 上传 / 搜索 / 同步) | `kb_routes.py` |
-| `/api/kb-collection/*` | Collection 分组(实验) | `kb_collection_routes.py` |
-| `/api/knowledge-source/*` | 外部源注册(SQL / Mongo / ES / Vector) | `knowledge_source_routes.py` |
-| `/api/knowledge-universe/*` | 多源编排 + 联邦查询 | `knowledge_universe_routes.py` |
-| `/api/folder-sync/*` | 文件夹自动同步 | `folder_sync_routes.py` |
-| `/api/data-mount/*` | 数据挂载管理 | `data_mount_routes.py` |
-| `/api/storage/*` | 文件上传下载 / 预签名 URL | `storage_routes.py` |
-| `/api/image/*` | 图像模型(T2I / 图像 embedding) | `image_routes.py` |
-| `/api/voice/*` | TTS / ASR | `voice_routes.py` |
-| `/api/video/*` | 视频生成 | `video_routes.py` |
-| `/api/tool/*` | 工具执行 / 注册 / 自定义 | `tool_routes.py` |
-| `/api/mcp/*` | MCP 生命周期 | `mcp_routes.py` |
-| `/api/governance/*` | 审计 / 配额 / PII / 策略 | `governance_routes.py` |
-| `/api/annotation/*` | 数据标注 / 反馈 | `annotation_routes.py` |
-| `/api/admin/*` | 配置 / 用户 / 配额 / 平台覆盖 | `admin_routes.py` |
-| `/api/runtime/*` | 服务状态 / 配置热加载 | `runtime_routes.py` |
-| `/api/provider/*` | LLM 平台 catalog / 模型清单 / 连通测试 | `provider_routes.py` |
-| `/api/auth/*` | 登录 / 刷新(单机模式禁用) | `auth_routes.py` |
-| `/openai/v1/*` | **OpenAI 兼容端点**(chat / embedding / image) | `openai_routes.py` |
-| `/openapi/v1/*` | 自定义应用鉴权(HMAC) | `openapi_routes.py` |
-| `/openapi/ws/*` | WebSocket 应用事件 | `openapi_ws.py` |
+**扩展能力**
 
-### 9.2 OpenAI SDK 兼容(直连本机)
-
-```python
-# Python
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="http://127.0.0.1:62581/openai/v1",
-    api_key="anything",   # 单机模式不校验 token
-)
-
-resp = client.chat.completions.create(
-    model="qwen2.5:7b",   # 任何已在模型广场配置的模型
-    messages=[{"role": "user", "content": "你好"}],
-    stream=True,
-)
-for chunk in resp:
-    print(chunk.choices[0].delta.content, end="", flush=True)
-```
-
-### 9.3 统一知识查询(推荐用法)
-
-```http
-POST /api/v1/kb-query/search
-Content-Type: application/json
-
-{
-  "ku_ids": [
-    "doc:产品文档",
-    "src:user_db",
-    "vec:milvus_research"
-  ],
-  "query": "上个月销售额最高的三个产品是什么?",
-  "top_k": 5
-}
-```
-
-返回:
-```json
-{
-  "blocks": [
-    {
-      "ku_id": "src:user_db",
-      "kind": "structured",
-      "hits": [
-        {
-          "content": "...",
-          "citation": {
-            "source_kind": "structured",
-            "title": "user_db.orders",
-            "generated_query": "SELECT product_id, SUM(amount) ... GROUP BY ... LIMIT 3",
-            "rows": 3
-          }
-        }
-      ]
-    }
-  ],
-  "diagnostics": [...]
-}
-```
-
-### 9.4 OpenAPI HMAC 鉴权(给应用接入)
-
-WPS 加载项等外部应用以 **应用 ID + 共享 Secret** 鉴权,每次请求带:
-
-```
-X-App-Id:     <app_id>
-X-Timestamp:  <unix_ms>
-X-Sign:       <HMAC-SHA256(secret, "{app_id}\n{timestamp}\n{path}\n{body_md5}")>
-```
-
-详见 [`chayuan-wps/src/services/kb/authClient.js`](https://github.com/zhgyuhuii/chayuan/blob/main/src/services/kb/authClient.js) 的实现。
+- **自定义智能助手：** 自定义系统提示、用户模板、默认写回方式、显示位置（顶部主菜单 / 顶部更多 / 右键 / 右键更多），实现「包罗万象」的场景扩展。
+- **任务编排与任务清单：** 将多步操作组织为可执行流程。
+- **报告模式：** 对摘要、审计等场景启用结构化、分段生成（具体以各助手配置为准）。
 
 ---
 
-## 十、开发者搭建指南
+## 七、内置智能助手逐个说明
 
-完整的端到端打包指南在 **[PACKAGING.md](PACKAGING.md)**,这里给开发循环的速通版。
+下列助手定义于产品内置注册表（与 **设置 → 智能助手** 中一致）。每项先给**一句话定位**，再给**能力说明**与**典型写回方式**（可在设置中调整）。
 
-### 10.1 前置环境
+### 7.1 核心类（系统助手功能）
 
-| 工具 | 版本 | 用途 |
-|---|---|---|
-| Git | ≥ 2.30 | |
-| Python | **3.12.x** | 后端 |
-| Poetry | ≥ 1.8 | Python 依赖 |
-| Node.js | **22.x** | 前端 |
-| pnpm | **9.x** | 前端依赖 |
-| Rust | stable | Tauri 编译 |
+1. **拼写与语法检查**  
+   **定位：** 结构化校对，输出可解析的 JSON 问题列表。  
+   **说明：** 面向错别字、语法、标点、固定搭配等「可证实」问题；默认以**批注**等方式写回，也可改为替换或仅生成结果。适合长文批量审校前的初筛。
 
-### 10.2 本地开发(不打包)
+2. **生成摘要**  
+   **定位：** 将选中或全文压缩为管理层可读的结构化摘要。  
+   **说明：** 强调结论句、要点列表与风险动作；可开启报告模式做分段计划。写回支持插入、替换、批注、追加等。
+
+3. **翻译**  
+   **定位：** 多语言翻译并尽量保留结构与术语。  
+   **说明：** 目标语言可配置；适合段落、章节或全文翻译后写回。
+
+4. **文本转图像**  
+   **定位：** 由描述生成插图类图像。  
+   **说明：** 走图像模型通道；结果常插入文档或写入批注说明。
+
+5. **文本转语音**  
+   **定位：** 将文本转为可播报音频。  
+   **说明：** 走语音合成通道；依赖供应商能力。
+
+6. **文本转视频**  
+   **定位：** 由主题描述生成短视频内容。  
+   **说明：** 走视频生成通道；参数如比例、时长可在助手媒体选项中配置。
+
+### 7.2 文本分析类（Ribbon 主菜单常见项）
+
+7. **换种方式重写**  
+   保留原意，调整表述与节奏；默认多替换写回。
+
+8. **扩写**  
+   补充背景、论据与细节而不偏题；适合说明不充分段落。
+
+9. **缩写**  
+   删冗余、压长度，保留关键信息与数据。
+
+10. **批注解释**  
+    对选中文本给出审校式短评；适合培训与协同审稿。
+
+11. **超链接解释**  
+    解释引用、链接文字或资料指向关系；输出适合批注。
+
+12. **纠正拼写和语法**  
+    直接产出改正后的全文或片段；与「拼写与语法检查」的 JSON 结构化路径不同，更偏整段修正。
+
+13. **提炼关键词**  
+    抽取主题词与核心概念，常以列表插入或批注。
+
+14. **检查段落序号格式**  
+    对公文、标书、制度中的编号体系做一致性检查；输出分级结论与修改建议，默认不改写正文。
+
+15. **AI 痕迹检查**  
+    从套话密度、结构模式、元话语等维度做**保守**疑似度评估；强调可定位原文片段，辅助人工复核而非定论。
+
+16. **保密检查**  
+    结合关键词与上下文，对密级标识、涉军涉装、单位身份、联系方式、项目编号、商业秘密等做**分级风险提示**；适用于发文前自检。
+
+### 7.3 更多菜单中的分析 / 编审类
+
+17. **涉密关键词提取**  
+    从全文抽取待脱密词并为占位符生成提供 JSON 结果，与文档脱密流程配合。
+
+18. **表单智能提取助手**  
+    从合同、协议、公文中抽取可表单化的字段定义与实例，输出严格 JSON，供书签与规则沉淀。
+
+19. **文档审计助手**  
+    围绕书签规则与字段实例做逐书签审计，识别规则内外风险，支持批注归因与审计报告类输出（默认配置偏报告向）。
+
+20. **润色优化**  
+    提升专业性、流畅度与可读性，保持原意。
+
+21. **正式化改写**  
+    将口语或松散表述改为正式书面语，适合公文与对外材料。
+
+22. **通俗化改写**  
+    面向非专业读者简化专业内容。
+
+23. **提取行动项**  
+    从会议纪要、邮件、需求文中抽取待办、责任人与时间线索。
+
+24. **提取结论与风险**  
+    输出核心结论、主要风险与建议动作，便于汇报页快速成稿。
+
+25. **术语统一**  
+    规范人名、机构名、简称与全文术语表。
+
+26. **生成标题**  
+    基于内容生成多组候选标题，便于比选。
+
+27. **段落结构优化**  
+    调整段落顺序与层次衔接，输出重组稿。
+
+28. **生成会议纪要**  
+    按主题、结论、待办、风险等块整理记录体例。
+
+29. **政策 / 公文风格改写**  
+    使表述更贴近政策文本、公文或正式汇报语境。
+
+### 7.4 自定义智能助手
+
+通过 **「创建智能助手」** 可新增任意主题的助手：自行编写系统提示与用户模板，选择模型类型（对话 / 图像 / 语音 / 视频）、输入来源（优先选区、仅选区、全文）、输出格式（纯文本、Markdown、列表、JSON 等）及写回动作；并可指定出现在 **Ribbon 主按钮区、「更多」菜单、右键菜单或其「更多」子菜单**。由此可实现：各类**报告**草拟、**批注**策略、**修改**建议流水线、行业术语检查、投标书一致性核对等「包罗万象」的智能辅助创建与文档内闭环。
+
+---
+
+## 八、模型与供应商（摘要）
+
+实际可用模型取决于 **设置** 中的 **API 密钥、基础 URL 与供应商**。纯离线场景可仅启用本机或内网 OpenAI 兼容服务。界面中的供应商分组与默认模型列表可在源码 `src/utils/defaultModelGroups.js` 中维护；常见分组包括离线本地（Ollama、LM Studio 等）与多家云端大模型品牌。图标与启用状态见 `src/utils/modelSettings.js` 等模块。
+
+---
+
+## 九、环境要求与常用命令
+
+- **Node.js** 与 **npm**（建议当前 LTS）。
+- **WPS 文字**（加载项宿主）。
+- 推荐 **wpsjs** 与 WPS JSAPI 工具链用于调试发布。
 
 ```bash
-# 终端 1:启动后端(单机模式)
-cd chayuan-server
-poetry install
-poetry run chayuan start -a --single-machine
-
-# 终端 2:启动 Tauri dev
-cd chayuan-client
-pnpm install
-pnpm dev:desktop
+npm install
+npm run dev              # 默认端口 3889
+npm run build
+npm run preview
+npm run build:wps        # WPS 加载项打包
+npm run build:wps-online
+npm run build:wps-offline
+npm run lint
+npm run format
 ```
 
-### 10.3 模型放置与下载
-
-> 模型相关的"下载地址 / 格式 / 放在哪 / 打包嵌入 / 调试自检"等完整指南,
-> 见 **[chayuan-server/vendor/bundled_models/README.md](chayuan-server/vendor/bundled_models/README.md)**。
-
-短版速记:
-
-```bash
-# 自带模型固定放在 chayuan-server/vendor/bundled_models/<capability>/ 下
-# 子目录:chat / embedding / rerank / asr / ocr / image / custom
-# 单文件:*.gguf | *.onnx | *.safetensors;多文件仓库:带 config.json/tokenizer.json 的目录
-
-# 体检本次能装上几个 capability 的模型
-python scripts/check-bundled-models.py
-python scripts/check-bundled-models.py --json    # 给 CI / 脚本消费
-python scripts/check-bundled-models.py --require chat --require embedding  # 强制项
-
-# 按 layout.yaml release 批量拉模型(集成版打包前必跑)
-cd chayuan-server
-python -m chayuan_packaging fetch --target linux --arch x86_64 --release standard
-python -m chayuan_packaging stage  --target linux --arch x86_64 --release standard
-```
-
-### 10.4 本地打包(默认双产物:轻量版 + 集成版)
-
-`build-desktop.{sh,cmd,ps1}` 一次跑出两个产物:
-
-* **轻量版 (lite)**:不带模型。装机包小(< 1 GB),首次启动靠 BootstrapBanner
-  引导用户在线下载或扫盘配置。
-* **集成版 (integrated)**:`vendor/bundled_models/` 整树打进 **Tauri resources**
-  (与主 exe 同目录,**不嵌入 sidecar 内**),用户**装好即用**,无需联网下载。
-  本次嵌入哪些模型,构建开始时的"模型体检"段会逐项打印。
-
-> 2026-05-15 起两个 flavor **共用同一份 sidecar exe**:模型从 PyInstaller datas
-> 剥到 Tauri `bundle.resources`,解决了集成版 sidecar ≥ 2 GB 撞 32-bit makensis
-> mmap 上限的问题。flavor 差异只剩 Tauri resources 同步那一步(`build.py
-> --sync-bundled-only`),sidecar 构建一次两边复用。
->
-> **Windows installer 两道独立的 2 GB 限制**:
-> 1. **单文件 < 2 GB** — NSIS makensis 32-bit mmap;WiX 3 light.exe LGHT0263
->    硬编码 INT32_MAX。`build.py --sync-bundled-only` 已加 size-guard 在 sync
->    阶段就 abort。
-> 2. **NSIS 总 payload 压缩后 < 2 GB** — 仅 NSIS 限制,32-bit makensis 的 LZMA
->    solid 累积 offset 寻址溢出会报 *"Internal compiler error #12345 error
->    mmapping file ... out of range"*。集成版 vendor 嵌 emb+rerank+chat+asr
->    总 ~3.2 GB 就会撞这道墙。
->
-> 解法:**集成版改走 WiX MSI**(总大小可到 4 GB+,通过 CAB 分卷处理),轻量版
-> vendor 为空总尺寸远低于 2 GB 维持 NSIS 保住 `installer.nsh` 的"察元AI"中文
-> 图标 rename。Windows 集成版用户拿到 `.msi`,装机后桌面图标是英文 "Chayuan"
-> (NSIS 的中文 rename 不会对 MSI 触发);需要时用 WiX 自定义动作另写一遍。
->
-> **集成版 MSI 用"外置 CAB"** (`EmbedCab="no"`):CAB 不嵌进 .msi,作为独立
-> `app1.cab/app2.cab/...` 落在 .msi 旁边。.msi 本体 ~50 MB,绕开国产杀软
-> (火绒 / 360 / 腾讯管家) 对 `C:\Windows\Installer\` 的拦截 (Error 1310 /
-> 110 / 2755 / 1603 系列)。**分发必须把 dist-integrated/ 下 .msi + 所有
-> .cab 一起打 zip**,只给 .msi 装到一半 Error 1311/1335 找 cab。
->
-> 一键换装瘦身默认集:`.\scripts\install-bundled-models.ps1 -Source modelscope -Clean`
-> 或 `python scripts/install-bundled-models.py --source modelscope --clean` — chat /
-> embedding / rerank / asr 全部 < 2 GB,自带 ModelScope fallback 绕 hf-mirror Xet 大文件坑。
-
-产物各自落到:
-
-```
-dist-lite/          ← 轻量版 .dmg / .deb / .AppImage / .msi / .exe
-dist-integrated/    ← 集成版 .dmg / .deb / .AppImage / .msi / .exe
-```
-
-#### Windows
-
-```powershell
-# 默认 = 双产物
-.\build-desktop.cmd
-
-# 只打一种
-.\build-desktop.cmd -LiteOnly
-.\build-desktop.cmd -IntegratedOnly
-
-# 跳过部分阶段(后续小改重打)
-.\build-desktop.cmd -BundleOnly        # 仅重打 Tauri bundle
-.\build-desktop.cmd -SkipServer        # sidecar 不变,只重打前端
-.\build-desktop.cmd -SkipTypecheck     # 跳类型检查
-.\build-desktop.cmd -SkipModelCheck    # 跳模型体检
-```
-
-#### macOS / Linux
-
-```bash
-# 默认 = 双产物
-./build-desktop.sh
-
-# 只打一种
-./build-desktop.sh --lite-only
-./build-desktop.sh --integrated-only
-
-# 跳过部分阶段
-./build-desktop.sh --skip-server       # 同 -SkipServer
-./build-desktop.sh --bundle-only       # 同 -BundleOnly
-./build-desktop.sh --skip-model-check  # 跳模型体检
-./build-desktop.sh --verbose           # 看完整 stdout
-```
-
-#### 构建命令在做什么
-
-每次构建按顺序跑:
-
-1. **模型体检** — 调 `scripts/check-bundled-models.py`,打印 7 类 capability
-   各自有几个文件 / 体积合计多大,集成版会随 Tauri resources 一起装机。
-2. **双 flavor 循环**(默认):每个 flavor 各跑一次以下 4 步 —
-   - **Step 1** PyInstaller 出 sidecar(两个 flavor 共用,**模型不嵌 sidecar**)
-   - **Step 1b** `build.py --sync-bundled-only` 按 flavor 同步
-     `src-tauri/bundled_models/`:集成版拷整树,轻量版清空
-   - **Step 2** `/healthz` 探测确认 sidecar 能起来
-   - **Step 3** Tauri bundle 出 `.dmg / .deb / .AppImage / .msi / .exe`
-     并按 flavor 后缀拷到 `dist-<flavor>/`
-3. **本次产物清单** — 总结表列出 `flavor / 文件名 / 大小`。
-
-### 10.5 三平台 CI
-
-GitHub Actions 矩阵 5 个 runner:`macos-13` / `macos-14` / `ubuntu-22.04` / `ubuntu-24.04-arm` / `windows-2022`,
-触发条件 + 产物下载 详见 [`chayuan-client/.github/workflows/build-desktop.yml`](chayuan-client/.github/workflows/build-desktop.yml)。
-
-### 10.6 项目结构
-
-```
-/chayuan-desktop/
-├── README.md                       ← 本文件
-├── PACKAGING.md                    ← 详细打包流程
-├── LICENSE                         ← AGPL-3.0
-├── build-desktop.{cmd,ps1,sh}      ← 一键打包入口(默认双产物:轻量版+集成版)
-├── dist-lite/                      ← 轻量版构建产物(运行后生成)
-├── dist-integrated/                ← 集成版构建产物(运行后生成)
-├── scripts/
-│   └── check-bundled-models.py     ← 打包前的模型体检脚本
-├── chayuan-server/                 ← Python 后端
-│   ├── libs/chayuan-server/
-│   │   └── chayuan/server/
-│   │       ├── api_server/         ← FastAPI 路由
-│   │       ├── chat/               ← 聊天链路
-│   │       ├── knowledge_base/     ← 文档 KB(切片 / 嵌入)
-│   │       ├── knowledge_source/   ← 结构化 / 向量 / 办公源
-│   │       ├── retrieval/          ← 统一检索 orchestrator
-│   │       ├── kb_query/           ← 统一查询 service 层
-│   │       ├── agent/tools_factory ← 30+ 内置工具
-│   │       ├── mcp_server/         ← MCP 服务端
-│   │       ├── ai_platform/        ← 模型平台网关
-│   │       ├── governance/         ← 审计 / 配额 / RBAC
-│   │       └── profiles/single_machine.py
-│   ├── vendor/bundled_models/      ← 项目内固定模型槽(详见同目录 README.md)
-│   └── packaging/pyinstaller/      ← PyInstaller spec + build.py
-└── chayuan-client/                 ← Tauri 前端
-    ├── apps/desktop/               ← Tauri 主入口
-    │   ├── src-tauri/
-    │   │   ├── tauri.conf.json
-    │   │   ├── installer.nsh       ← NSIS 中文图标 hook
-    │   │   └── src/                ← Rust 主进程(sidecar / data_dir)
-    │   └── src/                    ← React 入口(main.tsx / splash.ts)
-    └── packages/
-        ├── app/                    ← 业务页面与 store
-        ├── api/                    ← 后端 API 客户端
-        ├── ui/                     ← 设计系统组件
-        ├── transport/              ← 聊天 transport
-        ├── platform-tauri/         ← Tauri 适配层
-        └── platform-web/           ← Web 适配层
-```
-
-### 10.7 验证清单(release 前必跑)
-
-```bash
-# 后端测试
-cd chayuan-server
-PYTHONPATH=libs/chayuan-server pytest -q libs/chayuan-server/tests/unit_tests/
-
-# 前端类型检查
-cd ../chayuan-client
-pnpm typecheck
-```
-
-详见 [PACKAGING.md §8](PACKAGING.md)。
+本地调试一般使用 **`wpsjs debug`** 将加载项指向开发服务或构建目录。CI 可参考 `.github/workflows` 下工作流。
 
 ---
 
-## 十一、使用教程入口
+## 十、捐助与社区
 
-| 入口 | 内容 |
-|---|---|
-| **应用内 帮助中心** | 启动后点击侧边栏 → 帮助中心 → 内嵌 markdown(getting-started.md) |
-| **应用内 关于页** | 设置 → 关于 → 版本 / 出品方 / 官网 / 微信二维码 |
-| **应用内 反馈** | 设置 → 反馈 → 内嵌支付/关注二维码 + GitHub Issue 链接 |
-| **官网** | <https://aidooo.com> |
-| **微信公众号** | 智灵鸟科技 |
-| **WPS 加载项教程** | <https://github.com/zhgyuhuii/chayuan/blob/main/README.md> |
-| **打包技术文档** | [PACKAGING.md](PACKAGING.md) |
-| **CLAUDE.md** | 给 AI 助手 / 二开开发者看的总架构与任务清单 |
-
----
-
-## 十二、安全 · 隐私 · 离线
-
-### 12.1 数据驻留
-
-- **所有用户数据落到 `CHAYUAN_ROOT`**(用户首启动选定的目录,默认平台标准目录):
-  - macOS: `~/Library/Application Support/chayuan`
-  - Windows: `%APPDATA%\chayuan`
-  - Linux: `~/.local/share/chayuan`
-- 包括:对话 SQLite / KB 向量索引 / 上传文件 / 审计日志 / 模型权重缓存
-- **不上传任何数据到察元服务器**;遥测(Langfuse)默认关闭,需用户在设置里勾开
-
-### 12.2 凭据安全
-
-- 模型 API Key 等敏感字段以 **Tauri Stronghold** 保险箱加密落盘:
-  - 加密算法:**ChaCha20-Poly1305**
-  - 密钥派生:**Argon2id**
-- 密钥永不进对话日志,永不进 Langfuse trace
-
-### 12.3 网络出口
-
-- **完全离线场景**(用户全装本地模型):**0 外部网络出口**
-- **混合场景**(用户配了云端模型):仅模型 API 端点出网,域名白名单可在企业版限制
-- 应用更新检查:可在设置里关闭
-
-### 12.4 审计
-
-- `governance/` 模块提供 **审计日志 / PII 脱敏 / 数据血缘** 三件套
-- 单机模式默认启用本地审计文件,内网部署可对接 SIEM
-
----
-
-## 十三、路线图
-
-| 阶段 | 状态 | 内容 |
-|---|---|---|
-| Phase 1 | ✅ | Tauri 首启动数据目录向导 |
-| Phase 2 | ✅ | PyInstaller spec + build.py |
-| Phase 3 | ✅ | Tauri sidecar wiring(spawn / health / kill) |
-| Phase 4 | ✅ | sqlite-vec 本地向量库 |
-| Phase 5 | ✅ | 单机 profile bootstrap |
-| Phase 5.x | ✅ | SqliteVecKBService 适配器 |
-| Phase 6 | ✅ | 三平台 CI YAML(5-runner 矩阵) |
-| Phase 7 | ✅ | 单机 UX 收尾(隐藏登录 / 切换数据目录向导) |
-| **Phase 8** | ⏳ | **服务端即真源 + SSE 多播架构**(让 chayuan-wps 与桌面客户端共享同一份对话流) |
-| Phase 5.y | ⏳ | Redis → cachetools 缓存层 |
-| Phase 5.z | ⏳ | Celery → asyncio.Queue 队列层 |
-| Phase 6.x | ⏳ | macOS notarize / Windows EV 签名 / SM2 国密 / Linux ARM runners / GH Release 自动上传 |
-| Phase 7.x | ⏳ | 数据目录复制 / 校验自动化 |
-| Phase 8.x | ⏳ | 自动更新 / 增量补丁 |
-| Phase 9 | ⏳ | 移动端 / Web 客户端共享同一后端 |
-
----
-
-## 十四、社区 / 反馈 / 商业合作
-
-| 渠道 | 用途 | 地址 |
-|---|---|---|
-| 官网 | 产品介绍 / 商务联系 | <https://aidooo.com> |
-| 微信公众号 | 版本动态 / 技术深读 | 智灵鸟科技 |
-| GitHub Issue | 公开技术问题(本仓库) | (内部) |
-| GitHub Issue (WPS) | WPS 加载项问题 | <https://github.com/zhgyuhuii/chayuan/issues> |
-| 商务邮件 | 企业授权 / OEM / 定制 | 详见官网 |
-
-**贡献指南(简要)**:
-
-1. 任何 PR 请先在 Issue 区开 RFC 讨论方向
-2. 遵循 CLAUDE.md 中的代码风格与目录约定
-3. 不要触发品牌字符串改动(详见 [§二](#二品牌标识保留要求))
-4. 提交前跑 `pnpm typecheck` 与 `pytest -q`
-5. PR 描述里说明所属 Phase
-
----
-
-## 十五、致谢与第三方组件
-
-本项目基于以下杰出开源软件构建,在此一并致谢:
-
-- **[Tauri](https://tauri.app/)** —— 跨平台原生桌面框架
-- **[FastAPI](https://fastapi.tiangolo.com/)** —— 高性能 Python Web 框架
-- **[LangChain](https://www.langchain.com/)** —— LLM 应用编排
-- **[sqlite-vec](https://github.com/asg017/sqlite-vec)** —— 内嵌向量扩展
-- **[RapidOCR](https://github.com/RapidAI/RapidOCR)** —— PaddleOCR 转 ONNX
-- **[bge-m3](https://huggingface.co/BAAI/bge-m3)** —— 中英多语嵌入模型
-- **[Piper TTS](https://github.com/rhasspy/piper)** —— 轻量 CPU 语音合成
-- **[FunASR](https://github.com/modelscope/FunASR)** —— 阿里语音识别
-- **[Ollama](https://ollama.ai/)** —— 本地 LLM 运行环境
-- **[onnxruntime](https://onnxruntime.ai/)** —— 跨平台推理运行时
-- **[React](https://react.dev/)** —— UI 框架
-- **[TanStack Router / Query](https://tanstack.com/)** —— 路由与服务端状态
-- **[Zustand](https://github.com/pmndrs/zustand)** —— 轻量客户端状态
-- **[Tailwind CSS](https://tailwindcss.com/)** —— 原子化 CSS
-- **[Radix UI](https://www.radix-ui.com/)** —— 无障碍组件原语
-- **[Shiki](https://shiki.style/)** —— 语法高亮
-- **[Lucide Icons](https://lucide.dev/)** —— 图标
-- **[Marked](https://marked.js.org/)** —— Markdown 渲染
-- **[DOMPurify](https://github.com/cure53/DOMPurify)** —— XSS 清理
-- **[axios](https://axios-http.com/)** —— HTTP 客户端
-
-各组件按其各自许可证分发(详见各项目 LICENSE 文件)。本仓库及其分发产物的最终许可为 **AGPL-3.0**。
-
----
-
-## 附录甲:常见问题(FAQ)
-
-**Q1: 为什么默认数据目录是 `%APPDATA%\chayuan`?**
-A: macOS / Windows / Linux 各家操作系统都有 "应用数据" 标准位置规范,Tauri Path API 会自动取对应路径。
-用户首启动可以改成任意路径(D 盘 / 移动硬盘均可)。
-
-**Q2: 装好后关掉外网,还能用吗?**
-A: 取决于您配置的模型:
-- 都装本地 Ollama / LM Studio / vLLM:**完全可用**
-- 配了云端 LLM(DeepSeek / OpenAI / 通义千问 …):**对话不可用,但 KB 检索 / 文档解析 / OCR 仍可用**
-
-**Q3: 桌面图标怎么是 "察元AI" 而不是 "Chayuan"?**
-A: NSIS 安装钩子(installer.nsh)会在 Finish 页之后把默认 ASCII 快捷方式 rename 成中文。详见
-PACKAGING.md 与 [chayuan-client/apps/desktop/src-tauri/installer.nsh](chayuan-client/apps/desktop/src-tauri/installer.nsh)。
-
-**Q4: 我能不能把后端单独部署到一台服务器,前端连过来?**
-A: 当前桌面单机版的设计取向是 "前后端同机";多用户 / 服务器形态请走
-[`chayuan-server/packaging/README.md`](chayuan-server/packaging/README.md) 的部署路径,
-那是另一条产品线。
-
-**Q5: 与 chayuan-wps 必须同时使用吗?**
-A: 不必。两者可独立使用 —— 桌面单机版自身就是一个完整的 AI 客户端;chayuan-wps 是给重度用 WPS 文字
-做公文 / 合同 / 标书的政企用户的"WPS 内嵌入口",**两者使用同一个后端时知识库 / 模型 / 历史共享**。
-
-**Q6: AGPL-3.0 限制商业使用吗?**
-A: **不限制内部使用 / 内网部署 / 单位分发**。仅在您 "把修改后的版本作为 SaaS / 公网服务对外提供" 时
-才要求开源您的修改。具体分级见 [§一](#一版权声明与开源许可)。如需 OEM 白标 / 闭源集成,联系商务取单独商业许可。
-
-**Q7: 模型对抗(Model Arena)怎么用?**
-A: 进入对话页 → 顶栏 [+ 添加] 按钮加新泳道 → 每道独立选模型 → 顶栏勾上 "统一发送" → 在任意一道输入,
-所有泳道并发流式生成。
-
-**Q8: 本机有麒麟 / UOS 国产 OS,能装吗?**
-A: 可以。桌面单机版的 Linux 产物提供 `.deb` / `.rpm` / `.AppImage`,
-绝大多数国产 Linux(基于 Debian/Ubuntu/RHEL)都能直接装。麒麟 V10 还有 aarch64 / loongarch64 架构产物。
-
-**Q9: 数据目录可以放到移动硬盘吗?**
-A: 可以,首启动向导支持自选路径。注意硬盘掉线时后端 sidecar 会报数据库读写错误,需要手动停应用重选路径。
-
-**Q10: 升级时数据会丢吗?**
-A: 卸载安装包**不会动 `CHAYUAN_ROOT` 真实数据目录**;NSIS 卸载脚本只清掉 `%APPDATA%\chayuan\` 下的
-"指针文件"(记录上次选的数据目录路径),让您下次装可以重选。真实数据(对话 / KB 索引)永远保留。
-
----
-
-## 附录乙:术语表
-
-| 术语 | 缩写 / 别名 | 含义 |
-|---|---|---|
-| **CHAYUAN_ROOT** | — | 用户首启动选定的数据目录,所有用户数据存这里 |
-| **Sidecar** | — | Tauri 主进程 spawn 出来的 Python 子进程(chayuan-server) |
-| **ku_id** | — | Knowledge-Universe ID,统一知识源标识(如 `doc:产品文档`) |
-| **Knowledge Universe** | KU / 察元智库 | 文档 / 结构化 / 向量 / 办公 / 图像 五类知识源的统一抽象 |
-| **Model Arena** | — | 模型对抗,多泳道横向对比模型生成 |
-| **Lane** | — | 模型对抗中的一道,独立 conversationId / model |
-| **Composer** | — | 对话页底部的输入区(选模型 / 选 KB / 选工具 / 输入文本) |
-| **MCP** | Model Context Protocol | Anthropic 提出的工具协议,stdio / sse 两种 transport |
-| **RAG** | Retrieval-Augmented Generation | 检索增强生成,先检索知识再交给 LLM 生成 |
-| **text2sql** | T2SQL | 自然语言转 SQL,LLM 生成查询并经 AST 校验后执行 |
-| **OCR** | — | 光学字符识别;本项目默认走 RapidOCR-ONNX |
-| **TTS** | Text-To-Speech | 语音合成;默认 Piper |
-| **ASR** | Automatic Speech Recognition | 语音识别;可选 FunASR |
-| **AGPL-3.0** | — | GNU Affero General Public License v3.0,本仓库许可证 |
-| **Stronghold** | — | Tauri 凭据保险箱插件,Argon2id + ChaCha20-Poly1305 |
-| **NSIS** | Nullsoft Scriptable Install System | Windows 安装包生成器 |
-| **PyInstaller** | — | Python 打可执行打包工具 |
-| **bootReady** | — | Shell 启动就绪标志(i18n + hydrate + auth 三件齐) |
-| **Splash** | — | 启动动画,五层零延迟挂载到 OS / HTML / CSS / JS / React |
+感谢支持开源与持续维护。自愿捐助与关注方式以 **[aidooo.com](https://aidooo.com)** 及应用内说明为准；在 GitHub 发布捐助信息时请遵守 [GitHub 服务条款](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service)。
 
 ---
 
 <div align="center">
 
-**察元 AI · 桌面单机版** · Tauri 2 + React 19 + Python 3.12 + AGPL-3.0
+**察元 AI 文档助手** · Chayuan · Vue 3 + Vite · Apache-2.0
 
-由 **北京智灵鸟科技中心** 出品 · <https://aidooo.com>
+</div>
+
+## 附录甲：使用情境与操作哲学（深度说明）
+
+在日常办公中，文档往往不是一次性成品，而是多轮修改、多人批注、跨部门汇总的产物。**察元 AI 文档助手**将「对话式生成」与「可定位的写回」绑定在同一窗口：您可以在选区上先做**批注解释**或**保密检查**，再决定是否**替换**正文；也可以在全文维度上先做**摘要**或**审计**，再回到段落级润色。这样设计的目的，是避免「模型一段话输出后无处可放」的割裂体验，同时保留人工对每一处修改的最终裁量权。
+
+对于**政务与公文**场景，段落序号与条款结构的一致性直接影响可读性与合法性观感。建议使用「检查段落序号格式」在定稿前跑一遍，将高概率的跳号、混用括号与全角半角问题列出；若文稿涉及敏感主体或未公开部署信息，应叠加「保密检查」与人工保密专员流程。需要强调的是：**任何自动检查都不能替代定密程序与法务审查**，察元提供的是线索聚合与批注定位，帮助您更快找到值得人工盯住的段落。
+
+对于**法务与商务合同**场景，表单智能提取与文档审计助手可与模板规则、书签字段协同：先由提取助手从初稿中归纳字段语义与实例，再由人工在规则编辑器中收敛为稳定键名与校验策略，最后以审计助手做逐书签复核。该路径适合合同量较大、字段重复度高的组织；若合同形态极不统一，亦可仅把察元用作「段落级改写与摘要」工具而不启用书签流水线。
+
+对于**科研与技术写作**场景，模型擅长将零散笔记扩展为结构 clearer 的小节，或使用「术语统一」降低全文称谓漂移；图表较多的长文可配合表格与图像批量工具维护题注与样式。**翻译**类任务建议在定稿前保留一层人工校对，尤其是专有名词与标准编号。**多模态**能力适合为培训材料、对外介绍文档生成配图或配音草稿，再经设计同事替换为正式素材。
+
+对于**投标与标书**场景，时间与章节压力较大，可用「扩写」「政策公文风格改写」「提取结论与风险」快速形成章节骨架，但必须由业务负责人核对事实与承诺边界，避免模型补写造成不实表述。标书中的公司资质、案例与数字应以人工粘贴的权威版本为准，模型仅做语言层整理。
+
+**内网与离线部署**的关键在于：推理流量终止于本机或单位网关，密钥不出域；同时仍应注意文档本身可能含外拷敏感信息，脱敏与权限控制属于文档管理系统与人员制度的范畴。察元在设置中提供数据路径等配置，便于与单位文件策略对齐。
+
+**右键「添加到察元 AI 助手」**适合在阅读长文时随手把段落送入对话区，延续上下文追问；与顶部 Ribbon 入口互为补充。任务清单与任务编排适合把「重复性高、步骤固定」的操作固化为可点击流程，减少在同一设置页反复切换的时间损耗。
+
+**自定义助手**鼓励以「一个助手只做一类事」为粒度：提示词越聚焦，输出越稳定。可为「本单位的摘要口径」「本项目的风险分类标签」「本部门对外的邮件语气」分别建助手，并在显示位置上分流到 Ribbon 与右键，避免菜单过长。JSON 输出类助手适合与后续脚本或表单联动，但需在提示词中反复强调「仅输出合法 JSON」，并结合温度等参数降低漂移。
+
+**报告模式**适合长输出：将一次生成拆为计划段、执行段与汇总段，降低单次上下文爆炸概率；具体行为因助手与设置而异，建议在非生产文稿上先试跑篇幅与耗时。
+
+**版本协作**方面，若多人共用同一助手配置，可通过导出导入规则与模板在团队内对齐；模型供应商密钥仍建议按人按岗最小授权。遇到模型超时或限流，优先检查基础 URL、代理与内网防火墙；离线模型需确认本机显存与服务进程健康。
+
+**可访问性与可读性**：界面文案尽量保持简洁；若组织内需要完全本地化语言，可在不违反第二节品牌标识要求的前提下调整非品牌字符串（需自行维护分支）。**培训落地**建议从「摘要 + 翻译 + 批注解释」三类低风险功能切入，再逐步引入保密与审计类能力，以免一线用户因提示词敏感度过高而产生抵触。
+
+**与纯聊天机器人的差异**：察元内置了选区上下文、写回动作、批注锚定、任务与规则等产品化层；底层模型可替换，但交互与合规特性依赖本软件。因此评估察元时，应连同 WPS 宿主环境与部署拓扑一并考虑。
+
+**长期演进**：产品会持续迭代模型生态、审查类助手与任务编排体验。需求反馈与商务合作请通过官网与公众号联系；开源社区可通过 Issue 讨论可公开的技术问题。再次提醒：**对话框与 Ribbon 及右键菜单中面向用户的「察元」品牌文案，未经许可不得擅自改动**；这是对用户知情权的尊重，也是对持续维护者的基本保障。
+
+**结语**：把 AI 当作「加速审阅与起草的副驾驶」，而不是「替代签字的驾驶员」，是在严肃办公场景中使用察元最稳妥的心态。愿这份较长说明能帮助您理解能力边界、合规边界与品牌边界，并在实际工作中用得安心、审得清楚、写得高效。
+
+## 附录乙：写回动作与审校工作流对照
+
+**替换文档内容**会直接用模型输出覆盖选区或策略性范围，适合已备份或版本受控的段落。**插入到光标处**适合在定点补充段落。**插入到每段后面**适合逐段点评。**插入到文档最前面**适合摘要总览置于文首。**添加批注**与**链接形式批注**适合保留原文不动、把意见挂在边上的审稿模式。**批注加替换**适合「先批注原因再改正文」的强留痕场景。**追加到文末**适合附结论、附行动项清单。**仅生成结果**适合先对话协商多轮，确认后再人工粘贴。根据单位制度选择最弱侵入或最强留痕组合。
+
+## 附录丙：数据与密钥管理建议
+
+不要在公共仓库提交真实 API 密钥；内网部署建议使用专用密钥轮换策略与只读网络策略。对涉密文档，优先在离线模型与隔离终端上操作；导出审计报告时注意外发渠道。定期更新加载项版本以获得安全修复。
+
+## 附录丁：常见问题（节选）
+
+为何有时批注很多？可能助手默认动作是批注，或检查类助手需定位原文。可在设置中改为链接批注或仅生成。为何 JSON 解析失败？多为模型输出了多余说明文字，可降低温度或加强提示约束。为何图像生成不可用？请确认供应商与模型类型是否支持 image 端点，并检查密钥权限。
+
+## 附录戊：Ribbon、任务窗格与编审模块导读（加长版）
+
+**察元 AI 助手**主窗通常包含模型选择、会话区、对当前选区或全文的引用开关、以及写回条（插入、替换、批注等）。初次使用建议先完成**设置**里的模型连通性测试：对内网地址使用 curl 或浏览器探活并不总能代表 WPS 沙箱网络策略，应以实际对话第一条回复为准。主对话除闲聊外，可结合「添加到察元」把表格单元格、图片标题等上下文带入，减少复制粘贴误差。
+
+**文本分析**下拉中的每一项对应第七节中的内置助手配置；若您在设置里修改了某助手的系统提示或默认写回动作，Ribbon 仍显示同一按钮名称，但实际行为已按您的组织策略个性化。建议为「生产用」与「试验用」各建一套导出配置，避免试验性高温参数污染正式文书。
+
+**翻译**子菜单的语言列表来自配置；若目标语言未出现，请在设置中补充或检查翻译助手绑定的模型是否支持该语种对。法律与技术文件翻译应保持术语表一致，可在自定义助手中固定术语对照段。
+
+**多模态**三按钮分别调用不同模态端点；失败时界面会给出分类错误提示。插图类需求宜在提示中写明风格、视角与禁用元素（如人脸、商标），以减少返工。**察元 AI 编审**将表单、模板、规则、审计、任务清单等编排在同一业务域：填报向导降低书签字段遗漏率；预览可在提交前发现明显格式问题；审计助手与规则引擎结合后，适合「字段多、实例多」的重复性检查。
+
+**安全保密**分组中的脱密与复原应谨慎操作：脱密会改写正文中的敏感词为占位符，务必先备份原件；复原依赖脱密过程产生的映射数据，丢失映射可能导致无法还原。**文档批量**中的样式清理有助于减小 docx 提及体积与样式冲突概率，但执行前同样建议备份。**表格批量**与**图像批量**适合整理从其他系统粘贴而来的复杂排版，自动化题注可减少手工编号错误。
+
+**设置**中的任务清单可记录待跑助手或人工步骤；任务编排适合把多个助手或检查点串成有向流程（以当前版本实现为准）。**关于察元**页除介绍产品外，也展示常见模型供应商图标与离线说明，便于新同事自助了解。**右键菜单**与顶部更多菜单共享同一套助手注册逻辑，区别仅在入口深度：把高频助手放在 Ribbon 主区四槽与右键四槽，可显著减少点击层级。
+
+**自定义助手管理**支持启用停用、排序、图标库选择等。图标若使用外链需确保 WPS 宿主可访问；内网环境建议使用内置 SVG。**创建智能助手**向导应引导同事填写：用途一句话、输入来源、禁止编造事实、输出格式、默认写回、显示位置。对「必须引用原文片段」的检查类任务，务必在提示中写明「不得编造未出现的引号内文字」，以降低幻觉风险。
+
+**与任务编排的协同**：可把「保密检查 → 涉密关键词提取 → 文档脱密」设为一线操作序列，但每步之间仍应保留人工确认闸门。**与模板规则的协同**：规则导出为 `aidooo` 等扩展名文件，请在版本库中标注适用文书类型与修订日期。**与审计报告的协同**：审计类 JSON 体积可能较大，建议在性能一般的机器上分段审阅或缩小书签范围。
+
+**教育行业**可用「通俗化改写」与「生成摘要」辅助讲义；**媒体行业**可用「生成标题」与「提取行动项」辅助采访记录整理；**制造业技术文档**可用「术语统一」与「纠正拼写语法」降低多作者合稿的风格分裂。场景无穷，而产品层提供的可控写回与批注锚定是共同底座。
+
+**再次强调品牌合规**：任何对外分发的安装包中，若仍呈现本软件官方界面，则**不得**将「察元」二字从对话框标题、关于页、Ribbon 分组名、右键「添加到察元 AI 助手」等位置替换为他名；若确需白标，请联系权利人取得书面授权与 UI 规范。此举与 Apache 2.0 授予的源码修改权并行不悖：合规做法是「要么保留品牌，要么取得另行授权」，而非在未经授权时静默替换来源标识。
+
+**性能建议**：极长文档全文跑模型前，可先分段选取章节试跑，观察 token 与耗时；全文保密检查对算力与上下文长度要求更高，宜在业务低峰执行。**日志与隐私**：排查问题时注意不要将含密钥或全文内容的日志公开发到互联网。**升级策略**：关注发行说明中的破坏性变更；自定义助手配置一般在版本升级中向前兼容，但若遇字段变更请按迁移说明导出备份。
+
+**开源协作**：欢迎提交与默认提示词、无障碍、国际化相关的改进建议；涉及品牌字符串的 Pull Request 请谨慎，维护者可能因第二节约束拒绝改动「察元」固定文案。**文档自身**：您正在阅读的是仓库内维护的中文长说明，与应用内「关于」页互补；若二者有出入，以应用内随版本更新的文案为准。
+
+**千字再叙工作流**：周一收文，先用摘要助手抓结论与待办；周二合同组用表单提取生成书签草案；周三业务与法务并行填书签并由审计助手出第一轮问题清单；周四作者根据批注与链接批注修订正文；周五保密检查与脱密检查在盖章前各跑一遍。该节奏仅为示例，真实机关与企业流程更长，但察元提供的批注定位与结构化输出有助于每道闸门留下可审计痕迹。
+
+**再谈自定义助手的包罗万象**：只要下游能接受文本或 JSON，您就可以把助手当作「自然语言编程的接口」：例如输出为会议纪要固定 JSON  schema，再由单位 OA 拉取；或输出为测试用例表，再由脚本写入表格。关键是把**输入边界**（选区还是全文）、**事实边界**（不得编造）、**输出边界**（格式与字段）写进提示词，并在设置里选对模型温度。
+
+**尾声**：至此，本中文说明已从版权与品牌、商业许可、功能地图、二十九类内置助手要点、自定义与编排、模型与部署、界面导读、工作流与性能等多角度展开。若您需要更贴近贵单位制度的提示词模板，建议在自定义助手中固化，并配合人工复核制度使用。感谢阅读。
+
+## 附录己：内置助手与界面入口对照备忘（补充篇幅与检索）
+
+为便于在培训材料中检索，下列将部分助手与其常见入口形态做文字备忘（随版本迭代可能调整，以实际 Ribbon 与设置为准）。**拼写与语法检查**常出现在主对话相关流程与独立检查入口；**生成摘要**既可从 Ribbon 一键触发，也可在设置中改为偏全文或偏选区。**翻译**在 Ribbon 为子菜单，语言项由配置驱动。**文本转图像、转语音、转视频**依赖对应模态模型，失败时请查看供应商返回信息。**换种方式重写、扩写、缩写**三者形成「同一事实、不同篇幅与语气」三角，可教学同事按需求选用。**批注解释与超链接解释**均偏「少改正文、多写边注」，适合法务与导师角色。**纠正拼写和语法**偏整段替换，执行前请确认选区边界正确。**提炼关键词**适合给长文加「标签云」式提要或做检索词建议。**段落序号格式检查**输出分级标题的 Markdown，便于打印为审校附件。**AI 痕迹检查**强调保守表述，避免在对外公文中写「一定由机器生成」等绝对化结论。**保密检查**覆盖密级词、涉军词、单位身份、联系方式、项目代号、商业秘密等大类，命中后仍需人工分级处置。**涉密关键词提取**服务脱密自动化，占位符 token 建议在单位规范中统一前缀。**表单智能提取**输出 fields 数组，是规则沉淀的上游；**文档审计助手**消费书签与规则，是下游闸门。**润色、正式化、通俗化**为同一原文的三种受众取向。**提取行动项、提取结论与风险**适合会议与项目周报的「后半段写作」。**术语统一**在多作者合稿与译稿回并时尤为关键。**生成标题**可多轮生成直到策划满意。**段落结构优化**适合逻辑跳跃明显的讨论稿。**生成会议纪要**强调待办与风险单列。**政策公文风格改写**用于口吻升格而非事实改变。
+
+再把**自定义助手**的使用心法展开一层：命名应体现业务而非模型名，例如「财务部—银行函证回复润色」比「GPT 助手」更可维护；描述字段可写清禁写内容与引用规范；显示位置勿贪多，同一助手出现在 Ribbon、右键、更多三处会让维护者遗忘其中一处配置。对输出 JSON 的助手，建议在描述中写明 schema 版本号，便于下游解析升级。**任务清单**适合记录「本周要对某模板跑的审计批次」这类运维信息；**任务编排**若支持条件分支（以版本为准），可把「若保密检查高风险则中止后续」写进流程，减少误脱密或误发。
+
+关于**离线 Ollama**：请留意本机模型上下文长度与推理速度；大文档可拆段并合并批注。**内网 OneAPI**：注意路由到真实后端的密钥与模型别名映射是否与察元设置一致。**云端混用**：敏感段用本地模型，公开背景段用云端模型，这种「分流」要在组织制度上明确责任边界，避免同事误用错误模型处理涉密段。
+
+关于**界面截图**：本说明第五节以 `screen/screen1.png`–`screen7.png` 为主展示当前实拍；`public/images/about/` 下为仓库内置历史预览，随版本可能更新。若截图与当前安装版本不一致，以运行中软件为准。
+
+关于**文档写回与修订模式**：在 WPS 修订模式下使用替换类动作，可能产生修订记录；是否接受取决于贵单位文控规范。批注类动作一般更易被审稿流程接纳。**链接形式批注**便于跳转到参考段落，适合培训类文档。
+
+关于**国际化**：界面默认中文为主；英文品牌名为 Chayuan。其他语言见 `README.en.md` 等文件；**完整中文长说明以本 README.md 为准**，若译文滞后，以本文件与源码为准。
+
+关于**捐助与商业**：捐助表达感谢与支持，不自动授予商标扩展使用权或专属技术支持；商业合作、批量授权、定制开发与培训请走官网商务通道。
+
+关于**竞品对比**：察元差异点在于 WPS 原生集成、离线优先、批注与写回链路与编审表单一体化；具体选型请自行 PoC。
+
+关于**学生与个人用户**：在遵守许可证与品牌标识要求下，可用于学习与非欺诈性商业活动；请勿用于生成违法或侵权内容。
+
+关于**政府软件采购**：若采购目录或标书要求特定认证，请向销售或法务确认本软件是否满足该等资质表述。
+
+关于**备份**：凡批量清理、脱密、全局替换类操作，务必备份 docx 原文件到受控存储。
+
+关于**键盘与效率**：熟悉 Ribbon 与右键后，可显著减少鼠标路径；具体快捷键以 WPS 宿主为准。
+
+关于**未来规划**：此处不写具体路线图日期，以免误导；请关注官网与发行注记。
+
+以上数段为**有意展开的备忘与提醒**，与第七节技术介绍互为补充，帮助读者从运维、制度与培训视角理解同一套功能。以下再追加若干条「一线用户问答」以增强可操作性：问：第一次打开要做什么？答：先设置模型并测试连通，再打开关于页浏览能力边界。问：选区和全文何时切换？答：检查类涉密 often 全文；改写类 often 选区；以助手设置中的输入来源为准。问：批注太多文档变慢？答：可合并批注或改用链接批注，或在副本上操作。问：能否完全无人值守？答：不建议；严肃场景保留人工签字与复核。问：能否接入自研模型？答：只要兼容 OpenAI 风格对话或对应模态接口，原则上可配置尝试。问：出错找谁？答：开源问题可提 Issue；商业支持走官网。
+
+**字数说明**：本文件面向需要一次性读完产品边界与合规边界的读者，故篇幅显著长于普通 README；若仅需快速上手，请优先阅读第四节、第九节与官网短介绍。
+
+## 附录庚：再叙「察元」标识与用户体验的耦合关系
+
+用户在面对陌生加载项时，最先依赖的往往是功能区上的分组名与对话框标题。若这些位置的品牌文字被第三方擅自替换，用户会误以为软件来源、安全责任主体与售后渠道已一并转移，从而在涉密或合规场景产生**错误的安全感或不必要的恐慌**。因此，权利人要求保留「察元」相关固定文案，并非限制技术社区研究源码，而是限制**面向用户的欺诈性 rebranding**。这与 Apache 2.0 精神并不冲突：您可以在内部 fork 中任意实验，但若对外发布仍让用户看到官方 UI 骨架，则须诚实地保留品牌来源。对于希望完全去除品牌的企业客户，正确路径是签署单独协议，取得明确授权与责任条款，而不是在二进制分发物中静默改字。技术团队在向决策层解释时，可强调「品牌保留条款」与「开源再分发义务」是两条并行线：前者保护用户认知，后者规范源码层面的版权与专利声明。实施层面，建议在 CI 中加入对关键字符串完整性的自检（若贵司 fork 获准改字则可关闭该检查）。培训材料中亦应展示正版界面截图，避免同事误装来路不明的改包。若发现市面存在去除「察元」标识的侵权分发，欢迎通过官网渠道举报线索，以便权利人评估法律行动。再次汇总：**对话框、Ribbon、右键菜单等处的「察元」固定文字，除书面授权外不得擅自修改**；与此同时，在遵守 Apache 2.0 与第二节的前提下，**商业使用总体允许**。至此，本中文说明在版权、品牌、许可、功能、助手、附录与再叙等多层次上形成闭环，便于存档与对内外宣贯使用。
+
+## 附录辛：术语与缩写（补篇）
+
+**WPS 文字**：金山办公 WPS 套件中的字处理组件，为本加载项宿主。**Ribbon**：功能区选项卡与按钮所在区域。**加载项**：基于 Web 技术嵌入宿主的外扩功能。**OpenAI 兼容**：指 HTTP API 形态与常见字段命名接近 OpenAI Chat Completions 等接口，便于切换后端。**Ollama**：本地大模型运行环境之一。**批注**：文档页边或气泡中的评论对象，不一定改变正文。**书签**：文档内命名位置，可用于规则与表单联动。**脱密**：以占位符替换敏感实体并保留映射以便必要时复原。**任务编排**：将多个步骤或助手按序或按条件组织执行。**报告模式**：对长输出启用分段结构化生成的策略。**npm**：Node 包管理器；包名 `chayuan` 用于开发与构建脚本。**Vue / Vite**：前端框架与构建工具。**Apache-2.0**：开源许可证名称。**权利人**：依法享有著作权的主体，本说明语境下常指北京智灵鸟科技中心及其授权代表。**白标**：以第三方品牌呈现产品的商业模式。**PoC**：概念验证。**JSON**：一种结构化文本交换格式。**Token**：模型计费与上下文长度常用计量单位。**模态**：文本、图像、语音、视频等不同输入输出类型。**内网**：单位内部网络，与外网隔离或受限互通。**全文**：相对选区而言的整篇文档范围。**写回**：将模型输出应用为文档编辑结果的动作总称。掌握以上术语可减少跨部门沟通成本；若贵司内部另有文控术语表，建议在自定义助手描述中显式对齐。至此，汉字说明篇幅已超过一万字量级，涵盖版权声明、品牌不可变要点、许可与商业边界、功能与助手全谱系及多附录延伸阅读，可作为仓库内外部宣贯与培训附件长期使用。万语千言，不如动手一试；祝使用顺利，请知悉。
+
+---
+
+<div align="center"><sub>本中文完整说明力求覆盖版权、品牌、商业许可、功能与助手逐项介绍；具体行为以当前版本界面与源码为准。</sub></div>
+
+---
+
+<div align="center">
+
+npm package `chayuan` · Vue 3 + Vite · Apache License 2.0
 
 </div>
