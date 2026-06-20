@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.vite/
+wps-addon-build/
+
+# Local / secrets
+.env
+.env.*
+*.local
+
+# 软著鉴别材料元数据（权利人、登记用软件全称等，勿提交）
+copyright-meta.json
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Internal / working docs (keep locally; do not publish)
+docs/
+/文生图*.md
+/提示词.txt
+/提示词与功能对应表.md
+
+# Logs
+*.log
+npm-debug.log*
+
+# Large release artifacts (rebuild: npm run build:wps-pkg-macos / build:wps-deb / build:wps-exe)
+release/*.pkg
+release/*.deb
+release/*.exe
+release/*.7z
+release/.mac-pkg-root
+release/.mac-scripts
+/release/
