@@ -53,12 +53,16 @@ install_all() {
 # 同步 jsplugins.xml：WPS(Linux) 实际按 jsplugins.xml 加载本地插件，publish.xml 只是
 # wpsjs 在线安装清单。只更新本产品三条目，其它插件条目原样保留；旧条目指向已清理
 # 删除的版本目录会让 WPS 加载失败/回退旧缓存。
+# 注意：只取 <jsplugin>（本地条目）。publish-merge-fileurl.py 会往 publish.xml 里写
+# <jspluginonline file:///opt/.../chayuan_<版本>>——那是指向具体版本目录的在线条目，
+# 一旦同步进 jsplugins.xml 就形成同名双注册；下次升级版本目录被替换后该条目变成
+# 幽灵 URL，WPS 解析到不存在的路径 → 任务窗格白屏（Kasm 真机实测复现）。
 sync_jsplugins() {
 	dest="$1"
 	pb="$dest/publish.xml"
 	jp="$dest/jsplugins.xml"
 	if ! test -f "$pb"; then return 0; fi
-	entries="$(grep 'name="chayuan' "$pb" || true)"
+	entries="$(grep '<jsplugin name="chayuan' "$pb" || true)"
 	if test -z "$entries"; then return 0; fi
 	if ! test -f "$jp" || ! grep -q '<jsplugins' "$jp" 2>/dev/null; then
 		{
@@ -75,13 +79,62 @@ sync_jsplugins() {
 	{
 		echo '<?xml version="1.0" encoding="UTF-8"?>'
 		echo '<jsplugins>'
-		grep -v 'name="chayuan' "$jp" 2>/dev/null | grep -v '</jsplugins>' | grep -v '<?xml' || true
+		# 剔除旧文件的 xml 声明、开/闭 <jsplugins> 标签与全部 chayuan 条目（本地+online），
+		# 只保留其它插件的条目。开标签不剔会产生双 <jsplugins> 根 → 畸形 XML，
+		# WPS 宽容解析时部分宿主（实测 ET）会丢条目 → 表格/演示端加载项不加载。
+		grep -v 'name="chayuan' "$jp" 2>/dev/null \
+			| grep -vx '<jsplugins>' | grep -vx '</jsplugins>' | grep -v '<?xml' || true
 		echo "$entries"
 		echo '</jsplugins>'
 	} > "$tmp" 2>/dev/null || { rm -f "$tmp"; return 0; }
 	mv -f "$tmp" "$jp" 2>/dev/null || { rm -f "$tmp"; return 0; }
 	chown "$TARGET_USER:$TARGET_USER" "$jp" 2>/dev/null || true
 	echo "chayuan-wps-addon: synced jsplugins.xml -> $dest"
+}
+
+# 刷新 authaddin.json（WPS 的加载项授权登记）：剔除 name=chayuan* 且 path 指向不存在
+# 目录的幽灵记录。升级换版本目录后旧记录若不清理，WPS 会继续按旧 path 加载任务窗格
+# → 目录不存在 → 白屏，且反复弹「加载项已被修改」。记录剔除失败则整个文件删除，
+# 让 WPS 按 jsplugins.xml 重新走首次信任流程（代价仅一次信任弹窗）。
+refresh_authaddin() {
+	dest="$1"
+	aa="$dest/authaddin.json"
+	test -f "$aa" || return 0
+	python3 - "$aa" <<'PYEOF' 2>/dev/null || { rm -f "$aa" 2>/dev/null || true; return 0; }
+import json, os, sys
+
+path = sys.argv[1]
+with open(path, encoding="utf-8") as f:
+    data = json.load(f)
+
+changed = False
+for section in data.values():
+    if not isinstance(section, dict):
+        continue
+    for key, rec in list(section.items()):
+        if key == "namelist" or not isinstance(rec, dict):
+            continue
+        name = str(rec.get("name", ""))
+        rec_path = str(rec.get("path", ""))
+        if name.startswith("chayuan") and rec_path and not os.path.isdir(rec_path):
+            section.pop(key, None)
+            changed = True
+    namelist = section.get("namelist")
+    if changed and isinstance(namelist, str):
+        keep = {k for k in section if k != "namelist"}
+        if len(namelist) % 32 == 0:
+            section["namelist"] = "".join(
+                namelist[i:i + 32] for i in range(0, len(namelist), 32)
+                if namelist[i:i + 32] in keep
+            )
+        else:
+            section.pop("namelist", None)
+
+if changed:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print("authaddin refreshed")
+PYEOF
 }
 
 merge_publish_online() {
@@ -144,6 +197,7 @@ do
 		cp -f "$INSTALL_ROOT/publish.xml" "$ALT/" || true
 		merge_publish_online "$ALT/publish.xml"
 		sync_jsplugins "$ALT"
+		refresh_authaddin "$ALT"
 		chmod -R a+rX "$ALT" 2>/dev/null || true
 		cleanup_old_addons "$ALT"
 		echo "chayuan-wps-addon: also copied to $ALT"
@@ -182,6 +236,47 @@ do
 	chown "$TARGET_USER:$TARGET_USER" "$DEST/publish.xml" 2>/dev/null || true
 	cleanup_old_addons "$DEST"
 	echo "chayuan-wps-addon: installed to $DEST"
+done
+
+# WPS 某些布局会把系统 office6/jsaddons 镜像到用户目录（实测 Kasm WPS 12.1.2 存在
+# ~/.local/share/Kingsoft/office6/jsaddons，且任务窗格按这里注册的版本解析）。
+# 旧版本残留会让升级后任务窗格解析到已删除目录 → 白屏。只在镜像已存在时同步，
+# 不主动新建（避免给未启用该布局的环境引入多余注册源）。大小写两种拼法都覆盖。
+for MIRROR in \
+	"$USER_HOME/.local/share/Kingsoft/office6/jsaddons" \
+	"$USER_HOME/.local/share/kingsoft/office6/jsaddons"
+do
+	test -d "$MIRROR" || continue
+	cleanup_old_addons "$MIRROR"
+	install_all "$MIRROR" || true
+	if test -f "$MIRROR/jsplugins.xml" || test -f "$MIRROR/publish.xml"; then
+		cp -f "$INSTALL_ROOT/publish.xml" "$MIRROR/" || true
+		merge_publish_online "$MIRROR/publish.xml"
+	fi
+	sync_jsplugins "$MIRROR"
+	# office6 根目录还可能残留 wpsjs 调试期的 chayuan 注册（enable_dev / 127.0.0.1 在线条目，
+	# 指向早已不存在的目录/端口），一并剔除，避免干扰正式加载项目录的解析。
+	for STALE in "$MIRROR/../jsplugins.xml" "$MIRROR/../publish.xml"; do
+		test -f "$STALE" || continue
+		grep -q 'name="chayuan' "$STALE" || continue
+		sed -i '/name="chayuan/d' "$STALE" 2>/dev/null || true
+		echo "chayuan-wps-addon: scrubbed stale chayuan entries from $STALE"
+	done
+	for FOLDER in "$ADDON_FOLDER" $HOST_FOLDERS; do
+		test -d "$MIRROR/$FOLDER" && chown -R "$TARGET_USER:$TARGET_USER" "$MIRROR/$FOLDER" 2>/dev/null || true
+	done
+	cleanup_old_addons "$MIRROR"
+	echo "chayuan-wps-addon: synced office6 mirror $MIRROR"
+done
+
+# authaddin.json 的幽灵记录清理（含大小写两种布局下的既有文件）
+for AA_DEST in \
+	"$USER_HOME/.local/share/Kingsoft/wps/jsaddons" \
+	"$USER_HOME/.local/share/kingsoft/wps/jsaddons" \
+	"$USER_HOME/.local/share/Kingsoft/office6/jsaddons" \
+	"$USER_HOME/.local/share/kingsoft/office6/jsaddons"
+do
+	refresh_authaddin "$AA_DEST"
 done
 
 if test -x "/opt/apps/cn.wps.wps-office-pro/files/bin/quickstartoffice"; then

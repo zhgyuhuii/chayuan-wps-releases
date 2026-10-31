@@ -33,7 +33,13 @@ case "$ARCH_ID" in
 	*) echo "不支持的架构: $ARCH_ID（仅支持 x64 / arm64）" >&2; exit 1 ;;
 esac
 
-npm run build:wps-all
+# 跨机构建：在 macOS 上出前端产物、再到 Linux 侧只做打包时，可设 CHAYUAN_DEB_SKIP_BUILD=1
+# 跳过前端构建（要求 release/install-staging 已是当前版本产物）。
+if test "${CHAYUAN_DEB_SKIP_BUILD:-0}" != "1"; then
+	npm run build:wps-all
+else
+	echo "CHAYUAN_DEB_SKIP_BUILD=1: 跳过 build:wps-all，直接使用既有 release/install-staging"
+fi
 
 VERSION="$(node -p "require('./package.json').version")"
 NAME="$(node -p "require('./package.json').name")"
