@@ -1,251 +1,283 @@
 <div align="center">
 
-<img src="public/images/logo.png" alt="Chayuan 察元 AI" width="120" height="120" />
+<img src="public/images/logo.png" alt="察元 AI · Chayuan AI" width="120" height="120" />
 
 # 察元 AI 文档助手 · Chayuan AI Document Assistant
 
-**WPS 文字 / 表格 / 演示三端智能加载项 / WPS 文档智能体** — 以**内嵌智能体**在编辑器内完成 AI 对话、文档审查、表单填报与**正文写回**；文字 / 表格 / 演示三端内置助手（4526 + 66 + 81），**三级生图**与**网络资源搜索**为 PPT 配图保底；内置**本机 MCP 文档智能体服务**，可被 Claude Code、OpenAI Codex、Cursor 等外部 AI 智能体直接调用，读写本机 WPS 文档、做**多文档错别字校对与批量修正**；**优先支持离线 / 内网模型**（Ollama、LM Studio、Xinference、OneAPI 等 OpenAI 兼容端点），亦可对接主流云端大模型。
+**WPS 文字 / WPS 表格 / WPS 演示三端 AI 智能加载项 · 内嵌文档智能体 · 本机 MCP 文档服务器**
+
+在 WPS 编辑器内不换窗口完成 AI 对话、文档校对、批量修正、模板编制、知识库检索与正文写回；内置本机 MCP（Model Context Protocol）服务，可被 Claude Code、OpenAI Codex、Cursor 等外部 AI 智能体直接调用；**离线 / 内网优先**，全面兼容 Ollama、LM Studio、Xinference、OneAPI 等 OpenAI 兼容端点与主流云端大模型。
 
 [![Vue 3](https://img.shields.io/badge/Vue-3-4fc08d?logo=vue.js&logoColor=white)](https://vuejs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5-646cff?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Version](https://img.shields.io/badge/version-6.1.0-purple.svg)](package.json)
+[![Version](https://img.shields.io/badge/version-6.1.2-purple.svg)](package.json)
+[![MCP](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-black?logo=data:image/svg+xml)](#五本机-mcp-文档智能体面向外部-ai-智能体)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)](#四安装与快速上手)
 
 </div>
 
-> **关键词 / Keywords：** WPS 加载项 · WPS 文字 AI · **内嵌智能体** · **文档智能体** · **WPS 智能体** · **模板编制** · **多文档校对与修正** · 错别字检查 · 拼写语法检查 · **MCP / Model Context Protocol** · 离线文档 AI · 本地大模型 · 知识库 RAG · 公文校对 · WPS Office add-in · document AI agent · proofreading · offline LLM · 察元 AI 助手
+> **关键词 / Keywords：** 察元AI · WPS 加载项 · WPS AI 插件 · WPS 智能体 · WPS 文档智能体 · WPS 文字 AI · WPS 表格 AI · WPS 演示 AI · AI 办公 · 文档 AI · 办公大模型 · AI 写作助手 · AI 校对 · 错别字检查 · 拼写检查 · 语法检查 · 公文校对 · 合同审查 · 多文档校对 · 批量修正 · 智能批注 · 文档批注 · 润色改写 · 扩写缩写 · 摘要生成 · 会议纪要 · 多语种翻译 · AI 生成 PPT · 一句话生成 PPT · Excel 公式助手 · 数据清洗 · 数据洞察 · 一键图表 · 模板编制 · 从模板生成文档 · 表单智能提取 · 文档审计 · 保密检查 · 文档脱密 · 敏感信息脱敏 · 知识库 RAG · 检索增强生成 · 本地知识库 · 本地大模型 · 离线大模型 · 内网部署 · 私有化部署 · 政企办公 AI · Ollama · LM Studio · Xinference · OneAPI · DeepSeek · 通义千问 · Qwen · 智谱 GLM · Kimi · OpenAI 兼容 · MCP 服务器 · Model Context Protocol · Claude Code · OpenAI Codex · Cursor · Cline · 文生图 · 文生视频 · 语音合成 · 察元 · 智灵鸟 · aidooo
+
+**Language / 语言**
+
+| Language | Document | 状态 |
+|----------|----------|------|
+| **简体中文（本文件，最完整）** | **[README.md](README.md)** | ✅ 随版本更新 |
+| English | [README.en.md](README.en.md) | ✅ 随版本更新 |
+| 日本語 | [README.ja.md](README.ja.md) | 历史版本，内容可能滞后 |
+| Русский | [README.ru.md](README.ru.md) | 历史版本，内容可能滞后 |
+| Deutsch | [README.de.md](README.de.md) | 历史版本，内容可能滞后 |
+| Español | [README.es.md](README.es.md) | 历史版本，内容可能滞后 |
+| Français | [README.fr.md](README.fr.md) | 历史版本，内容可能滞后 |
 
 ---
 
-## v6.1.0 更新说明 — 模板编制全面升级
+## 目录
 
-> 6.1.0 把「模板编制」升级为主线能力：首页对话直接用你自己的模板文件（.pptx / .docx / .xlsx）出整套文档——形状级剖析按模板版面对位落内容，打开前多轮核对（机器审计 + 自愈 + AI 审查），交付保留模板母版 / 背景 / 字体；目标宿主离线自动拉起，生成完对话自动跟到新文档窗格。
-
-### 首页对话全宿主模板编制
-
-- 对话里给一个模板文件 + 一句话要求：按模板类型自动路由宿主——Word 文档 → WPS 文字、表格 → WPS 表格、演示 → WPS 演示；目标宿主离线时自动拉起并等待就绪，不必先手动打开对应组件
-- 需求可带附件：「根据附件 1 分析附件 2 生成 PPT」按发送时附件快照路由，不再掉回普通聊天
-
-### 形状级剖析与内容映射
-
-- 逐页剖析形状角色（标题 / 副标题 / 正文 / 装饰）与字号、字体、坐标：封面页吃文档标题、内容页吃章节标题、目录条目按序号对位，阅读顺序与模板设计全对位
-- 隐形水印（超小字号 / URL）识别为装饰保持原样；新内容按原形状容量截断，不撑爆版式
-- 字体一致性：新文字写入形状「主文本 run」，继承模板正确的中文字体 / 加粗 / 颜色，不串英文装饰字体
-
-### 打开前多轮核对（机器审计 + 自愈 + AI 审查）
-
-- 每轮先跑确定性机器审计三维体检：占位残留 / 文本溢出（按形状容量计算）/ 字体一致性（以模板字体普查为基准）
-- 自愈闭环：占位残留再清扫、溢出按容量截断重写，修完当轮即复审
-- AI 多维审查：需求符合性、文案质量（空洞 / 拼接 / 语病 / 过长）、生成前勾选的要求逐项核查
-- 默认核对 3 轮（上限 4）；结果消息逐维展示 ✓ / ✗ 与未决问题，收了多少、还差什么一目了然
-
-### 交付与对话跟随
-
-- 交付保留模板设计：产物为模板字节级拷贝再填内容，母版 / 版式 / 背景 / 字体原样保留（不再经「插入文件」重套默认母版丢背景）
-- 原地交付：当前窗口是未命名空白文稿时，生成内容直接填入当前文稿；否则自动打开产物文件，不留空窗
-- 跨文档对话交接：生成完成自动打开新文档后，对话历史跟到新文档窗格（15 分钟内有效），继续追问不用重述背景；下次生成自动记住上次的输入
+- [一、30 秒了解察元 AI 文档助手](#一30-秒了解察元-ai-文档助手)
+- [二、功能全景](#二功能全景)
+- [三、界面截图](#三界面截图)
+- [四、安装与快速上手](#四安装与快速上手)
+- [五、本机 MCP 文档智能体（面向外部 AI 智能体）](#五本机-mcp-文档智能体面向外部-ai-智能体)
+- [六、wps-skill-chayuan 技能包：一条命令，三件事就绪](#六wps-skill-chayuan-技能包一条命令三件事就绪)
+- [七、察元 AI 生态：一套引擎，四档 SKU](#七察元-ai-生态一套引擎四档-sku)
+- [八、版本历史](#八版本历史)
+- [九、模型与供应商](#九模型与供应商)
+- [十、与常见办公 AI 的定位对照](#十与常见办公-ai-的定位对照)
+- [十一、开发指南](#十一开发指南)
+- [十二、常见问题 FAQ](#十二常见问题-faq)
+- [十三、许可、商标与品牌](#十三许可商标与品牌)
+- [十四、下载与社区](#十四下载与社区)
 
 ---
 
-## v6.0.0 更新说明 — 表格助手 · 演示稿助手 · 三级生图
+## 一、30 秒了解察元 AI 文档助手
 
-> 6.0.0 从「文字端智能加载项」升级为「**三端 AI 工作台**」：WPS 表格、WPS 演示与文字端共享同一套智能体内核，新增表格助手 / 演示稿助手 / 三级生图 / 网络资源搜索 / 本机知识库自动发现 / 多文档会话隔离六大主线。完整清单见 [RELEASE_NOTES_v6.0.0.md](RELEASE_NOTES_v6.0.0.md)。
+**察元 AI 文档助手**（npm 包名 `chayuan`）是运行在 **WPS Office** 内的第三方开源智能加载项（**Apache-2.0**，Vue 3 + Vite），由**北京智灵鸟科技中心**研发。它把大语言模型直接嵌进 **WPS 文字（Writer）、WPS 表格（ET/Spreadsheet）、WPS 演示（WPP/Presentation）** 三个组件：对话、校对、翻译、改写、摘要、生图、保密检查、批量操作、模板编制、知识库检索全部**不离开编辑器**完成，结果可按九种方式**写回正文**（插入 / 替换 / 批注 / 链接批注 / 追加等）。
 
-### 表格助手（WPS 表格）
+| 你想要 | 察元给你的 |
+|---|---|
+| 在正写的文档里让 AI 直接干活 | 内嵌智能体对话窗：规划任务 → 调用工具 → **直接写回文档** |
+| 查错别字、标点、病句 | 结构化拼写语法检查 + **多文档批量校对**，批注钉在具体错字上 |
+| 一句话出一套 PPT / Word / Excel | 模板编制：给你的模板文件 + 一句话要求，形状级对位生成整套文档 |
+| 让 Claude Code / Cursor 操作我的 WPS | 本机 **MCP 文档智能体服务**（53 个工具），一行 URL 接入 |
+| 断网 / 内网 / 数据不出域 | Ollama / LM Studio / Xinference 等**本地模型**优先，密钥本地保存 |
+| 公文 / 合同 / 涉密场景 | 保密检查、文档脱密与复原、表单审计，输出**保守可复核** |
+| 处理几十份文档 | MCP 批量读写 + 批量校对 + 任务清单 / 任务编排 |
 
-- 表格域 **21 个 MCP 动作** + **29 个内置助手配方**（通用 8 + 行业 21）：数据洞察、一键图表、公式助手、数据清洗
-- 计算优先写公式（SUMIF / VLOOKUP），数字由表格自己算、可复核；财务场景完成后主动提醒人工复核
-- 数据清洗先报告再动手；跨宿主编排读 Word 生成战报表
-
-### 演示稿助手（WPS 演示）
-
-- 演示域 **20 个 MCP 动作** + **81 个内置助手配方**（通用 19 + 配图 3 + 科研学术 12 + 党务学习 6 + 政务汇报 12 + 行业包 29；每条助手带「?」分步使用说明）
-- 「AI 生成 PPT」：主题一句话 → 大纲确认 → 逐页生成（版式 / 标题 / 正文 / 演讲备注）
-- 文档转 PPT 跨宿主编排、整套摘要、美化统一、口播稿
-
-### 三级生图 + 网络资源搜索
-
-- **三级图源**：模型生图 → 网络搜图 → SVG 矢量自动降级（降级铁律：上级失败才降级，绝不静默换花钱来源）；图源四模式 auto / model / web / svg
-- **网络资源搜索设置**（新）：Serper / Tavily / Linkup / SearXNG + Pexels / Pixabay / Unsplash + 必应 / Openverse 免 Key 兜底——独立开关、Key 本地保存、一键测活，启用清单驱动 `image_search` 搜图链
-- 生图模型直连 agent 生图链（百炼原生 / OpenAI 兼容双通道路由）
-
-### 文件解析（file_parse）——本地文件一键变模型可读文本
-
-- **多路径入口**：一次 1-8 个绝对路径，或**附件别名**——用户 30 分钟内在面板上传过的附件，对话里说「附件1/刚才那个文件」即可解析（面板发送附件时自动落盘登记）
-- **全格式矩阵**：txt/md/csv/json/yaml/log/代码等纯文本（**UTF-8/GBK 自动探测**）+ html（剥标签留标题结构）+ docx/xlsx/xls/csv + pptx（逐页文本+备注）+ pdf（逐页）+ eml/zip/svg；**旧版 doc/ppt/et/dps 自动经对应 WPS 宿主转新格式再解析**（副本操作不碰原文件，宿主离线自动拉起）；图片音视频仍走面板多模态识别管线
-- **token 预算三档**（短/超长模型通吃）：返回体全程带 `tokenEstimate/consumedTokens/budgetTokens`；`mode:auto` 预算内全文直出、超预算给「结构目录(带字符偏移)+头尾采样」；`mode:chunk` cursor 翻页（幂等重切 + fingerprint 文件变更校验）；outline 偏移 `rangeStart/rangeEnd` 随机直取目标段
-- **模型感知预算**：模型卡新增可选「上下文窗口(tokens)」字段（设置 → 管理模型，留空按内置表推断 deepseek/qwen/glm/gpt 等）——面板内部调用自动按 min(窗口×25%, 32k) 定预算，小模型少拿、大模型多拿；外部 MCP 客户端用 `budgetTokens` 自报
-
-### 本机知识库自动发现
-
-- 装有察元AI OS 的机器打开知识库设置即自动发现并接入本机知识库，零配置；服务端口注册表统一编制、严格固定
-- 库列表实时同步：察元OS 侧增删知识库自动反映，无需重配
-
-### 多文档会话隔离 + 三宿主体验统一
-
-- 对话跟随文档（三宿主文件内身份），面板跨窗口切换自动跟随、切回即恢复；隔离三重防线
-- Ribbon 常驻助手按钮语义化图标全量覆盖（118/118）；三宿主停靠（磁吸拖动）行为统一
+**核心数字（当前版本 6.1.2）：** 文字端内置领域助手 **4526 个**（覆盖 228 个行业领域）· 表格端助手配方 **66 个** · 演示端助手配方 **81 个** · 翻译 **52 种语言** · 写回动作 **9 种** · MCP 工具 **53 个**（对外实见）· 三平台安装包 **Windows / macOS / Linux**。
 
 ---
 
-## v5.x 更新说明 — 内嵌智能体 · 接入智能体 · 停靠双形态
+## 二、功能全景
 
-> 5.x 主线三条：**内嵌智能体**——对话窗内置完整智能体循环（agent-core 内核），不只问答，能规划任务、列清单、调工具、直接写回文档；**接入智能体**——本机 MCP 文档智能体服务全面加固，外部 AI 智能体接入更稳、更快、更安全；**停靠双形态**——浮窗 / 左右停靠一键切换，与 WPS 文档平分屏幕。
+### 2.1 三端一体：文字 / 表格 / 演示共用一套智能体内核
 
-### 内嵌智能体（对话窗自带真智能体）
+- **WPS 文字**：功能区两个选项卡——「察元AI助理」（关于 / AI助手 / 安全保密 / 文档批量 / 批量操作 5 个分组）与「察元AI编审」（表单辅助 / 模板管理 / 规则管理 / 察元设置 4 个分组），外加右键菜单快捷入口。
+- **WPS 表格**：「察元AI助理」选项卡——AI表格助手、公式助手、数据洞察、一键图表、数据清洗、报表结论、一键美化、模板新建、文档安全（保密检查 / 加密工作簿 / 解密工作簿）、更多表格助手。
+- **WPS 演示**：「察元AI助理」选项卡——AI演示助手、生成PPT、整套摘要、美化统一、口播稿、整套校对、结构诊断、模板新建、文档安全、更多演示助手。
+- 三宿主停靠行为统一：对话窗支持**浮窗 / 左右停靠一键切换**，停靠面板宽 = 屏幕一半，与文档平分屏幕；Ribbon 按钮 118/118 语义化图标覆盖。
 
-- **智能体内循环**：对话窗内置 chayuan-office agent-core 完整循环——多轮规划、连续工具调用、跨回合记忆，长任务一口气做完，不再"一问一答贴文字"
-- **任务清单先列后做**：智能体首轮必先列 todo 清单，边做边勾（N/M 实时进度），跨回合沿用未完成清单不重复建单
-- **过程全透出**：工具调用与进度流式实时显示；等待卡重构（显示经过时间，不再"卡在 24% 不动"）；回复 Markdown 渲染
-- **多会话并行**：右栏多会话页签，各会话回合状态独立互不干扰；发送键即全车道停止键
+### 2.2 内嵌智能体对话（Agent，不只问答）
 
-### 写回安全（借鉴 Claude Code / opencode 的成熟方案）
+- **完整智能体循环**：对话窗内置 agent-core 内核——多轮规划、连续工具调用（每回合上限 100 步）、跨回合记忆，长任务一口气做完。
+- **任务清单先列后做**：智能体首轮先列 todo 清单，边做边勾（N/M 实时进度），跨回合沿用未完成清单。
+- **过程全透出**：工具调用与进度流式实时显示，等待卡显示经过时间；回复 Markdown 渲染。
+- **多会话并行**：右栏多会话页签，各会话状态独立互不干扰；发送键即全车道停止键。
+- **对话跟随文档**：会话按文档隔离（文件内身份），面板跨窗口切换自动跟随、切回即恢复；跨文档对话交接（生成完成自动打开新文档后，对话历史 15 分钟内跟到新窗格）。
+- **附件与文档感知**：对话可带附件（回形针），可感知当前选区 / 全文；「添加到察元」右键随手把段落送入对话区延续追问；附件上下文贯通智能体管线（对话里说「附件1里有什么」直接可答）。
 
-- **文档写锁 + FIFO 排队 + OCC 写前校验**：内置助手与 MCP 写工具同级串行，多个智能体同写一个文档不再互相覆盖；写回冲突显式确认重试
-- **写前快照 + 一键撤销**：首次写回前自动快照，改坏了随时回退；智能体按指令直接落笔，不再逐笔打断
-- **权限三档可选**：变更前确认（默认）/ 自动执行 / 完全访问
-- **sidecar 最小 token 鉴权 + 调用方审计**：本机进程不再默认等效可信
+### 2.3 校对与写回：查得出，更要改得进文档
 
-### 接入智能体（本机 MCP 服务加固）
+- **九种写回动作**：插入到光标处 / 替换选区 / 添加批注 / 链接形式批注 / 批注加替换 / 插入到每段后面 / 插入到文档最前面 / 追加到文末 / 仅生成结果——按单位留痕制度选择最弱侵入或最强留痕组合。
+- **拼写与语法检查**：结构化输出可解析 JSON 问题清单，覆盖错别字、语法、标点、固定搭配；全文 / 选区两档；可写成批注（钉在具体错字上，表格单元格同样支持）或直接改正文。
+- **多文档批量校对**：经 MCP 打开同一目录多份文档交叉校对，错别字与术语一致性一次处理。
+- **写回安全**：文档写锁 + FIFO 排队 + OCC 写前校验（多个智能体同写一个文档不互相覆盖）；首次写回前自动快照，改坏随时撤销；权限三档可选（变更前确认 / 自动执行 / 完全访问）。
+- **任务进度窗**：独立进度对话框，支持确认写回、逐项撤销、失败重试。
 
-- 外部 AI 智能体（Claude Code / OpenAI Codex / Cursor / Hermes / OpenClaw 等）经 MCP 直读写本机 WPS 文档——对外契约与客户端配置不变，老用户零改动
-- **连不上说得清原因**：服务未就绪三级分诊、环回拦截旁路判定、auto-spike 版本闸门；WPS Agent 离线快速失败，不再白烧模型轮次
-- **全链自愈**：桥接自愈 + sidecar 掉线自愈拉起；真机四大崩溃定案根治，运行日志可查
-- **打包自动重编 sidecar 二进制**：安装包不再可能内置旧版 MCP
+### 2.4 内置助手体系：4526 + 66 + 81，还能自定义
 
-### 停靠双形态
+- **文字端 4526 个领域助手**（228 个行业领域清单，`assistants_search` 可检索、可导出）：按领域直接命中「财务函证 / 党务材料 / 招标文件 / 医疗文书…」专用提示词。
+- **文本分析九件套**（Ribbon「文本分析」菜单）：换种方式重写、扩写、缩写、检查段落序号格式、AI 痕迹检查、批注解释、超链接解释、纠正拼写和语法、提炼关键词。
+- **高频助手**：生成摘要、翻译（**52 种语言**动态菜单）、润色优化、正式化改写、通俗化改写、提取行动项、提取结论与风险、术语统一、生成标题、段落结构优化、生成会议纪要、政策公文风格改写等。
+- **自定义助手**：自写系统提示与用户模板，选模型类型 / 输入来源（选区 / 全文）/ 输出格式（纯文本、Markdown、JSON）/ 写回动作 / 显示位置（Ribbon 主区 4 槽、右键菜单 4 槽、更多菜单）；支持导入导出分享、助手市场。
+- **助手进化中心**：助手版本快照、评估、晋升、回滚；LLM 延迟监控（/perf）与进化大盘（/dashboard）。
 
-- 浮窗 / 左右停靠一键切换（窗口右上角形态菜单），停靠面板宽 = 屏幕一半，与文档平分屏幕；停靠切换提速，停靠时自动折叠侧栏
+### 2.5 多模态生成与配图保底
 
-### 离线与模型
+- **文本转图像 / 文本转视频 / 文本转语音**：按模型类型分流到对应端点，参数（画幅比例、时长、语音风格）在助手参数卡片中确认。
+- **三级生图**（演示端配图链）：模型生图 → 网络搜图 → SVG 矢量自动降级；降级铁律「上级失败才降级，绝不静默换花钱来源」；图源四模式 auto / model / web / svg。
+- **网络资源搜索**：Serper / Tavily / Linkup / SearXNG + Pexels / Pixabay / Unsplash + 必应 / Openverse 免 Key 兜底；独立开关、Key 本地保存、一键测活。
 
-- **本地引擎一键安装**：Ollama / LM Studio 安装检测与引导，国内网络自动探测择优下载源 + 镜像提示
-- **模型端点智能推导**：支持直接粘贴完整 `/chat/completions` 端点（防重复拼接 404）；修复 Xinference 连接探测 404
-- **官网升级提醒**：打开对话窗静默检查 aidooo.com，有新版顶部提醒条点击直达安装包下载，断网静默不打扰
+### 2.6 模板编制：对话直接出整套文档（v6.1 主线）
 
-### 版本补丁
+- **全宿主路由**：首页对话给一个模板文件（.pptx / .docx / .xlsx）+ 一句话要求，按模板类型自动路由到 WPS 文字 / 表格 / 演示；目标宿主离线自动拉起并等待就绪。
+- **形状级剖析**：逐页剖析形状角色（标题 / 副标题 / 正文 / 装饰）与字号字体坐标——封面页吃文档标题、内容页吃章节标题、目录条目按序号对位；隐形水印识别为装饰保持原样；新内容按原形状容量截断，不撑爆版式；新文字写入主文本 run，继承模板中文字体。
+- **打开前多轮核对**：机器审计（占位残留 / 文本溢出 / 字体一致性）+ 自愈闭环 + AI 多维审查（需求符合性、文案质量、逐项核查）；默认 3 轮（上限 4），逐维展示 ✓ / ✗。
+- **交付保真**：产物为模板字节级拷贝再填内容，母版 / 版式 / 背景 / 字体原样保留；原地交付或自动打开产物；生成完对话自动跟到新文档窗格，下次生成自动记住上次的输入。
+- **模板四件套**（Ribbon）：导出模板 / 导入模板 / 从模板新建 / 下载模板；规则制作 / 规则导入 / 导出规则，团队内共享模板与规则。
 
-- **5.1.2（2026-09-18）**：macOS arm64 安装包重打，内置新编 sidecar 二进制
-- **5.1.4（2026-09-25）**：在线客服嵌入（侧栏「反馈及建议」直达官网机器人聊天页，离线回落公众号二维码）；Windows sidecar 改 GUI 子系统，双击直启不再弹黑窗；升级检查版本口径统一取自 package.json，绝不误报
+### 2.7 表格助手（WPS 表格端）
 
-历史版本：[v6.0.0（三端 AI 工作台）](RELEASE_NOTES_v6.0.0.md) · [v6.1.0（模板编制全面升级 · 本篇顶部）](#v610-更新说明--模板编制全面升级) · [v5.x 更新说明（下文）](#v5x-更新说明--内嵌智能体--接入智能体--停靠双形态) · [v4.1（表格结构写回 · 技能双向自启）](RELEASE_NOTES_v4.1.md) · [v4.0.0（本机 MCP 文档智能体）](RELEASE_NOTES_v4.0.md) · [v3.0（远程知识库 RAG）](RELEASE_NOTES_v3.0.md)
+- **66 个内置配方**（通用 8 + 行业 58）：排序汇总、多表合并汇总、两表对比差异、表格翻译、敏感信息脱敏、智能分列、按列拆表、文档抽取成表、数据战报页等，一键直达。
+- **六大主按钮**：数据洞察、一键图表、公式助手、数据清洗、报表结论、一键美化。
+- **计算优先写公式**：SUMIF / VLOOKUP 等由表格自己算、可复核；财务场景完成后主动提醒人工复核；数据清洗先报告再动手。
+- **文档安全**：保密检查、加密工作簿、解密工作簿。
+- **跨宿主编排**：读 Word 生成战报表、文档抽取成表等跨文字/表格操作。
+
+### 2.8 演示助手（WPS 演示端）
+
+- **81 个内置配方**（通用 19 + 配图 3 + 科研学术 12 + 党务学习 6 + 政务汇报 12 + 行业包 29），每条带「?」分步使用说明。
+- **AI 生成 PPT**：主题一句话 → 大纲确认 → 逐页生成（版式 / 标题 / 正文 / 演讲备注）。
+- **整套工具**：文档转 PPT 跨宿主编排、整套摘要、美化统一、口播稿、整套校对、结构诊断、整套翻译、转讲义文档、页码页脚、课件生成、习题互动页、数据战报页。
+
+### 2.9 安全保密（政企 / 涉密场景，辅助参考）
+
+- **保密检查**：密级标识、涉军涉装、单位身份、联系方式、项目编号、商业秘密等分级风险提示；三端均有入口；发文前自检。
+- **文档脱密**：涉密关键词提取 → 占位符替换（可逆脱敏），先预览再落盘，密码保护。
+- **脱密复原**：凭密码还原原文；脱密 / 复原仅本机可信通道可用（外部直调被拒）。
+- **AI 痕迹检查**：从套话密度、结构模式、元话语等维度做**保守**疑似度评估，强调人工复核而非定论。
+- **敏感信息脱敏**（表格端）：工作簿内身份证号、手机号、银行卡号等批注定位与脱敏。
+
+> ⚠️ 保密检查、脱密、AI 痕迹检查均为**辅助参考**，不构成保密定密结论或司法鉴定；涉密、合规与法律判断以人工与正式制度为准。
+
+### 2.10 表单与文档编审（书签级闭环）
+
+- **表单模式**：把文档书签表单化——进入表单模式后逐字段辅助填报，降低书签字段遗漏率。
+- **表单智能提取**：AI 从合同 / 协议 / 公文中抽取可表单化的字段定义与实例（严格 JSON），沉淀为书签规则。
+- **表单内容预览**：提交前预览全部字段实例，提前发现格式问题。
+- **文档审计**：围绕书签规则与字段实例逐书签审计，识别规则内外风险，批注归因 + 审计报告输出。
+- **规则交换**：规则导入 / 导出，团队口径对齐。
+
+### 2.11 批量操作（结构级批处理）
+
+- **表格批量（14 项）**：导出全部表格、删除全部表格、根据内容/窗口自动行宽、刷新表格样式、删除文字所在行/列、追加替换文字、首列添加序号、手动列宽、第一列/第一行指定样式、添加/删除表格题注。
+- **图像批量（6 项）**：导出全部图像、删除全部图像、统一图像格式、清除图像格式、添加/删除图像题注。
+- **文档批量（3 项）**：清理未使用样式、统计已使用样式、删除空白行。
+
+### 2.12 知识库 RAG：本机自动发现 + 远程企业部署
+
+- **本机知识库自动发现**：装有察元AI OS 的机器零配置自动接入（端口 52582 严格固定），库列表实时同步。
+- **远程知识库**：连接 chayuan-server（桌面版单机 / Docker 网络版），JWT 用户态 / HMAC 应用态 / 免鉴权三模认证；多源检索编排、引用气泡、原文一键下载、KB 失效自愈。
+- **对话中使用**：输入区「选择知识库」绑定后对话自动检索；右键「察元AI知识库」对选中段落**核对本段 / 总结本段 / 问答本段**；MCP `kb_retrieve` 供外部智能体检索对照。
+- **适用**：制度对照、条款引用、术语标准名统一——「对照知识库制度检查本文是否违规，引用条文批注」。
+
+### 2.13 任务系统：清单、中心、编排
+
+- **任务清单**：后台任务统一筛选与保密风险概览（Ribbon「任务清单」）。
+- **任务中心**（/task-center，⌘K 呼出）：全部后台任务状态管理。
+- **任务编排**：可视化工作流画布，把多助手 / 多检查点串成有向流程；失败可回滚。
+- **进度可观测**：等待卡显示经过时间、任务逐项确认写回与撤销、perfTracker 延迟监控、doctor 自检。
+
+### 2.14 离线优先与多模型（数据不出域）
+
+- **本地引擎一键安装**：Ollama / LM Studio 安装检测与引导，国内网络自动探测择优下载源；本地端口（Ollama 11434 / LM Studio 1234 / Xinference 9997 / FastChat 8000）自动识别。
+- **OpenAI 兼容网关**：任意兼容端点统一配置（支持直接粘贴完整 `/chat/completions` 端点）；多家云端供应商并行配置。
+- **模型分类治理**：对话 / 嵌入 / 图像 / 语音 / 视频模型分类展示，助手只允许选对应类型；按用途指定默认模型。
+- **模型感知预算**：模型卡可填「上下文窗口(tokens)」，面板自动按窗口定 token 预算，小模型少拿、大模型多拿。
+- **官网升级提醒**：静默检查 aidooo.com 新版，顶部提醒条直达下载，断网静默不打扰。
+
+### 2.15 文件解析（file_parse）：本地文件一键变模型可读文本
+
+- **多路径入口**：一次 1-8 个绝对路径，或**附件别名**（30 分钟内上传过的附件，对话里说「附件1 / 刚才那个文件」即可解析）。
+- **全格式矩阵**：txt/md/csv/json/yaml/log/代码（UTF-8/GBK 自动探测）+ html + docx/xlsx/xls + pptx（逐页文本+备注）+ pdf（逐页）+ eml/zip/svg；**旧版 doc/ppt/et/dps 自动经 WPS 宿主转新格式再解析**（副本操作不碰原文件）。
+- **token 预算三档**：auto 预算内全文直出 / 超预算给结构目录+采样 / chunk 游标翻页（幂等重切 + 文件变更校验）；返回体全程带 token 估算。
+- **附件解析全链路**（v6.1.2 加固）：大 PDF 解析、旧版转换超时对齐 sidecar 预算；批量解析不被单个坏文件拖死。
 
 ---
 
-## Language / 语言
+## 三、界面截图
 
-| Language | Document |
-|----------|----------|
-| **简体中文（完整说明，见下文）** | **本文档 [README.md](README.md#简体中文完整说明)** |
-| English | [README.en.md](README.en.md) |
-| 日本語 | [README.ja.md](README.ja.md) |
-| Русский | [README.ru.md](README.ru.md) |
-| Deutsch | [README.de.md](README.de.md) |
-| Español | [README.es.md](README.es.md) |
-| Français | [README.fr.md](README.fr.md) |
+全部截图集中存放于 [`screenshots/`](screenshots/) 目录（文件名语义化，目录自包含，可整体复制到其它项目复用）。
+
+### WPS 加载项（本产品）
+
+| 截图 | 说明 |
+|:---:|---|
+| ![WPS 文字端 AI 助手面板](screenshots/01-writer-assistant-welcome.png) | WPS 文字端「察元AI助理」打开的 **AI 助手对话面板**（欢迎页） |
+| ![文本分析菜单](screenshots/02-writer-text-analysis-menu.png) | **文本分析**下拉：换种方式重写 / 扩写 / 缩写 / AI 痕迹检查 / 提炼关键词等 |
+| ![更多工具菜单](screenshots/03-writer-more-tools-menu.png) | **更多**菜单：涉密关键词提取 / 表单智能提取 / 润色优化 / 生成会议纪要 / 创建·管理智能助手 |
+| ![编审功能区](screenshots/04-writer-review-ribbon.png) | **察元AI编审**选项卡：表单辅助 / 模板管理 / 规则管理 / 察元设置 |
+| ![模型设置](screenshots/05-settings-model-providers.png) | 设置 → 模型设置：OpenAI / Ollama / 通义千问 / DeepSeek 等**供应商与密钥管理** |
+| ![默认模型](screenshots/06-settings-default-models.png) | 设置 → 默认设置：按用途（对话 / 生图 / 生视频 / 语音 / 截取）指定**默认模型** |
+| ![助手设置](screenshots/07-settings-assistant-config.png) | 设置 → 助手设置：**助手提示词 / 输入范围 / 执行模型**配置 |
+| ![知识库连接](screenshots/08-settings-kb-connection.png) | 设置 → 知识库设置：**知识库连接列表**与可访问知识库 |
+| ![编辑知识库连接](screenshots/09-settings-kb-connection-edit.png) | **编辑知识库连接**：服务地址、JWT / HMAC 鉴权、连通测试 |
+
+### 察元 AI 生态 Web 工作台（桌面版 / 网络版）
+
+| 截图 | 说明 |
+|:---:|---|
+| ![工作台主页](screenshots/10-workbench-home.png) | 察元办公 Web 工作台**主页**（AI 操控 / AI 翻译 / AI 写作快捷入口） |
+| ![Web 对话](screenshots/11-workbench-new-chat.png) | Web 端**新对话**（知识库 / 工具 / MCP 输入入口） |
+| ![多模型对比](screenshots/12-workbench-multi-model-compare.png) | **多模型并排对比**对话 |
+| ![选择知识库](screenshots/13-workbench-kb-select.png) | 知识中心：**选择知识库** |
+| ![新建知识库](screenshots/14-workbench-kb-create.png) | 新建：文档知识库 / 图像库 / 结构化数据库 / 外部向量库 |
+| ![模型广场](screenshots/15-workbench-model-marketplace.png) | **模型广场**：厂商卡片与模型下载 / 配置 / 测试 |
+| ![Flow 编排](screenshots/16-workbench-flow-canvas.png) | 智能空间 **Flow 流程编排画布** |
+| ![训练数据](screenshots/17-workbench-training-data.png) | **训练数据中心**：数据挂载 |
+
+> 截图与当前安装版本可能存在细微差异，以运行中软件为准。应用内「关于」页另内置历史预览图（`public/images/about/`）随包分发。
 
 ---
 
-## Quick start
+## 四、安装与快速上手
+
+### 4.1 三平台安装包（推荐，无需 Node.js）
+
+| 平台 | 安装包 | 说明 |
+|---|---|---|
+| Windows | `chayuan-<版本>-windows-x64.exe` | 自解压安装器；sidecar 为 GUI 子系统，双击直启不弹黑窗 |
+| macOS | `chayuan-<版本>-macos-<arch>.pkg` | 支持 arm64 / x86_64；含容器修复脚本 `scripts/repair-mac-jsaddons-container.sh` |
+| Linux | `chayuan-<版本>-linux-<arch>.deb` | deb 安装；postinst 完成多注册源治理，三端面板即装即用 |
+
+**下载渠道：** 官网 [https://aidooo.com](https://aidooo.com) · [GitHub Releases](https://github.com/zhgyuhuii/chayuan-wps-releases/releases) · [百度网盘](https://pan.baidu.com/s/5kGNUqSLs7-6g8RNh5FsBcA)
+
+安装器自动完成：释放加载项到 jsaddons 目录 + 写 `publish.xml` → 释放 `chayuan-mcp` 二进制并**注册开机自启**（Windows `HKCU\Run` / macOS LaunchAgent `com.chayuan.mcp` / Linux systemd --user）→ 四级体检（jsaddons → `/healthz` → MCP `initialize` 握手 → 桥接工具）。装前自动停旧 agent 服务并清理 62588 端口占用，杜绝「装完还是旧版」。
+
+**上手三步：** ① 安装并打开 WPS → ② 功能区出现「察元AI助理」选项卡，点「AI助手」→ ③ 在设置中配模型（或直接用本地 Ollama），开始对话。
+
+### 4.2 从源码运行（开发者）
 
 ```bash
 npm install
-npm run dev          # http://localhost:3889
+npm run dev            # vite 开发服务，http://localhost:3890
 npm run build
-npm run build:wps    # WPS add-in bundle
+npm run build:wps      # WPS 加载项打包
 ```
 
-**Official site:** [https://aidooo.com](https://aidooo.com) · **Publisher:** Beijing Zhilingniao Technology Center（北京智灵鸟科技中心）· WeChat: 智灵鸟科技
+三宿主（文字/表格/演示）联调请勿使用 `wpsjs debug`（它只注册单宿主）：
+
+```bash
+npm run dev:debug                # 起 vite + 写三宿主调试注册 + 拉起 WPS
+npm run dev:debug -- --restore   # 结束调试，还原正式 publish.xml
+```
+
+> 首次在表格/演示宿主加载时 WPS 可能弹「信任加载项」确认（authaddin.json 按宿主分记），选信任即可。
 
 ---
 
-## 🧩 wps-skill-chayuan 技能 —— 一条命令，双向自启（加载项 ↔ MCP ↔ 技能）
+## 五、本机 MCP 文档智能体（面向外部 AI 智能体）
 
-`wps-skill-chayuan` 是察元的**便携技能包**：一份技能定义（`SKILL.md`）+ 一条 4 步闭环安装脚本，让 **Claude Code / Cursor / OpenAI Codex** 开箱即用察元的 46 个文档工具。**跑一次脚本，三件事同时就绪** —— WPS 加载项、MCP 自启服务、AI 客户端技能文件。
+察元内置一个**本机 MCP（Model Context Protocol）文档智能体服务**：把 WPS 文档的读取、定位、替换、批注、校对、知识库检索、表格与演示操作、模板生成、文件解析等能力暴露为标准 **Streamable HTTP MCP** 接口。任何支持 MCP 的 AI 智能体——**Claude Code、OpenAI Codex、Cursor、Cline、Hermes、OpenClaw** 等——只要填一个 URL，就能**直接在你的 WPS 文档里干活**：打开文档、读取正文、圈错别字写批注、批量替换、按口语「在哪插」插入表格行列 / 合并单元格、多文档交叉校对、按模板生成整套新文档。
 
-> 📖 **从安装到使用的完整图文指南**（安装 → 配置 → 验证 → 使用 + 46 工具功能清单 + 使用场景）：见 [`docs/wps-skill-chayuan-guide.md`](docs/wps-skill-chayuan-guide.md)。
+- **无需鉴权**：仅监听 `127.0.0.1:62588`，本机即信任边界；连接只用一个 URL，无需 Token / 命令行 / stdio。
+- **完全离线**：sidecar 与 WPS 同机，文档与密钥不出域，适配离线 / 内网 / 政企部署。
+- **随安装自启**：安装包自动注册开机自启，**无需 Node.js**（5 平台单文件二进制）。
+- **写确认纪律**：所有写操作「预览 → 确认（`confirmed:true`）→ 落盘」，每次确认写记审计 `audit.jsonl`。
 
-### 双向自启：从哪端装都行
+### 5.1 一行接入（所有 MCP 客户端通用）
 
-| 从哪开始 | 跑安装脚本后得到 |
-| --- | --- |
-| **装技能**（想给 AI 客户端接 WPS） | ✅ 技能文件投放进 Claude/Cursor/Codex　＋　✅ WPS 加载项自动安装　＋　✅ MCP 开机自启 |
-| **装加载项**（WPS 里装了察元） | ✅ 加载项就位　＋　✅ MCP 开机自启　＋　✅ 一键把技能投放到本机 AI 客户端 |
+服务地址：`http://127.0.0.1:62588/mcp` · 健康检查：`GET http://127.0.0.1:62588/healthz`（应返回 `online`）
 
-**装技能 = 装加载项，装加载项 = 带技能。** 两种入口殊途同归：跑完一次脚本，**WPS 加载项 + MCP 自启服务 + AI 客户端技能**三者全部到位，无需分别配置。
-
-### 一行命令安装（终端用户，无需克隆仓库）
-
-直接从 **Gitee（国内优先）** 拉取安装脚本，脚本自动下载便携包并完成四步安装：
-
-**Windows（PowerShell）：**
-
-```powershell
-& {[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12;$w=New-Object Net.WebClient;$w.Encoding=[Text.Encoding]::UTF8;$s=$w.DownloadString('https://gitee.com/cloudshd/chayuan-wps-releases/raw/master/scripts/install-wps-skill-chayuan.ps1');if($s.Length -and $s[0]-eq[char]0xFEFF){$s=$s.Substring(1)};& ([scriptblock]::Create($s)) -Fetch}
-```
-
-> 为什么不直接 `iwr | iex`？Windows PowerShell 5.1 默认按 GBK 解码 `iwr` 返回体，会把脚本的 UTF-8+BOM 首字节解成乱码 `???`、并因 `scriptblock` 无 `$PSScriptRoot` 而报错。这里改用 `WebClient` + 显式 UTF-8 解码（去 BOM）再建 scriptblock，既绕过执行策略、又不会乱码。
-
-**macOS / Linux：**
-
-```bash
-curl -fsSL https://gitee.com/cloudshd/chayuan-wps-releases/raw/master/scripts/install-wps-skill-chayuan.sh | bash -s -- --fetch
-```
-
-> 海外 / GitHub 直连：把 URL 换成 `https://raw.githubusercontent.com/zhgyuhuii/chayuan/main/scripts/install-wps-skill-chayuan.{ps1,sh}`。
->
-> 脚本自动：多源回退下载便携包（Gitee→aidooo→GitHub，**sha256 强校验**）→ 装加载项 + MCP 自启 + 投放技能到 Claude/Cursor/Codex。
-
-**已克隆本仓库** 也可直接跑本地脚本（等价）：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts\install-wps-skill-chayuan.ps1 -Fetch
-```
-```bash
-bash scripts/install-wps-skill-chayuan.sh --fetch
-```
-
-`-SkillOnly` 只投放技能文件，不动加载项 / 服务；`-Version 4.1.2` 可指定版本。
-
-### 脚本干的四步（同一个脚本）
-
-1. **装加载项** —— 释放到 jsaddons 目录 + 写 `publish.xml`，WPS 打开即加载察元。
-2. **MCP 自启** —— 释放 `chayuan-mcp` 二进制 + 注册开机自启（Win `HKCU\Run` / macOS LaunchAgent / Linux systemd --user），**无需 Node.js**。
-3. **四级体检** —— jsaddons → `/healthz` → `initialize` 握手 → 桥接工具，装完即验证可用。
-4. **投放技能** —— 自动探测 Claude / Cursor / Codex，投放技能文件，AI 客户端立刻拥有察元技能。
-
-> 完整安装逻辑、镜像源、参数与排障见 [`plans/wps-skill-chayuan-design.md`](plans/wps-skill-chayuan-design.md) §16，发布说明见 [`RELEASE_NOTES_v4.1.md`](RELEASE_NOTES_v4.1.md)。
-
----
-
-## 🤖 文档智能体（MCP）—— 让外部 AI 智能体直接读写本机 WPS 文档
-
-察元内置一个**本机 MCP（Model Context Protocol）文档智能体服务**：把 WPS 文档的读取、定位、替换、批注、校对、知识库检索、**表格切片与结构写回**、**题注 / 域枚举**等 **46 个工具**暴露为标准 **Streamable HTTP MCP** 接口。任何支持 MCP 的 AI 智能体——**Claude Code、OpenAI Codex、Cursor、Hermes、OpenClaw、Cline** 等——只要填入一个 URL，就能**直接在你的 WPS 文档里干活**：打开文档、读取正文、圈出错别字批注、批量替换、**按口语"在哪插"插入表格行 / 列、合并单元格**、多文档交叉校对。
-
-- **无需鉴权**：仅监听 `127.0.0.1`，本机即信任边界，连接只用一个 URL，无需 Token / 命令 / stdio。
-- **完全离线**：sidecar 与 WPS 同机，文档与密钥不出域，适配离线 / 内网 / 县级部署。
-- **随安装自启**：安装包自动注册开机自启（Windows 注册表 `HKCU\…\Run` / macOS LaunchAgent / Linux systemd --user），开机即常驻，**无需 Node.js**。
-- **46 个工具**覆盖：文档状态 / 启动 / 打开 / 元信息 / 段落与分块读取 / 定位 / 替换 / 插入 / 批注 / 批量写回（≤200 ops）/ 新建 / 保存 / **脱密与复原** / **知识库检索** / **拼写语法校对（可写成批注，也可直接改正文）** / 助手检索与导出 / **表格 12 action（切片读 + 插入行/列 + 合并单元格 + 列宽/重复表头 + 导出）** / **题注 caption.list** / **域 field.list+add** / 图片增强。完整工具清单与参数见 [docs/mcp-connection.md](docs/mcp-connection.md)。
-
-### 一行连接（所有 MCP 智能体通用）
-
-安装察元并打开 WPS 后，服务自动就绪。服务地址：
-
-```
-http://127.0.0.1:62588/mcp
-```
-
-健康检查：`GET http://127.0.0.1:62588/healthz`（应返回 `online`）。
-
-### Claude Code
-
-[Claude Code](https://code.claude.com/docs/en/mcp) 支持 Streamable HTTP。用 CLI 一键注册（`--transport http`，`streamable-http` 为同义别名）：
+**Claude Code：**
 
 ```bash
 claude mcp add --transport http chayuan-wps-mcp http://127.0.0.1:62588/mcp
 ```
 
-或在项目根目录 / 用户级 `.mcp.json` 中写入：
+或写入项目级 / 用户级 `.mcp.json`：
 
 ```json
 {
@@ -255,18 +287,14 @@ claude mcp add --transport http chayuan-wps-mcp http://127.0.0.1:62588/mcp
 }
 ```
 
-### OpenAI Codex（codex CLI）
-
-编辑 `~/.codex/config.toml`，加入一个 Streamable HTTP MCP server：
+**OpenAI Codex（`~/.codex/config.toml`）：**
 
 ```toml
 [mcp_servers.chayuan-wps-mcp]
 url = "http://127.0.0.1:62588/mcp"
 ```
 
-### Cursor
-
-项目级 `.cursor/mcp.json`（或 设置 → MCP → Add）：
+**Cursor（`.cursor/mcp.json` 或 设置 → MCP → Add）：**
 
 ```json
 {
@@ -276,40 +304,43 @@ url = "http://127.0.0.1:62588/mcp"
 }
 ```
 
-### Hermes / OpenClaw
+**Cline / Hermes / OpenClaw / Claude Desktop 等其它客户端：** 新建 MCP 服务，类型选 **HTTP / Streamable HTTP**，URL 填 `http://127.0.0.1:62588/mcp`，无需 Token、无需 stdio。
 
-两者均支持 HTTP 类型 MCP server：新建一个 MCP 服务，**类型选 HTTP / Streamable HTTP**，URL 填：
-
-```
-http://127.0.0.1:62588/mcp
-```
-
-无需 Token、无需命令行、无需 stdio。
-
-### Claude Desktop / 其它 JSON 配置型客户端
-
-```json
-{
-  "mcpServers": {
-    "chayuan-wps-mcp": { "url": "http://127.0.0.1:62588/mcp" }
-  }
-}
-```
-
-### 用 MCP Inspector 手动验证
+**MCP Inspector 手动验证：**
 
 ```bash
 npx @modelcontextprotocol/inspector
 # 选择 Streamable HTTP，填 http://127.0.0.1:62588/mcp，点 Connect
 ```
 
-> **排错**：连不上时，确认 WPS 已打开、察元加载项已加载（`GET /healthz` 返回 `online`）。服务固定监听 `127.0.0.1:62588`；远程机器需经本机代理或设置 `CHAYUAN_MCP_PORT`。完整连接说明、工具参数与资源 / Prompt 清单见 [docs/mcp-connection.md](docs/mcp-connection.md)。
+> **排错**：连不上时确认 WPS 已打开、察元加载项已加载（`/healthz` 返回 `online`）。远程机器需经本机代理或设 `CHAYUAN_MCP_PORT`。完整连接说明见 [docs/mcp-connection.md](docs/mcp-connection.md)，工具面权威清单见 [docs/user-tutorials/W39-MCP工具面总览.md](docs/user-tutorials/W39-MCP工具面总览.md)。
 
-### 常用使用场景与提示词（穷举）
+### 5.2 工具面总览（sidecar v0.13.0）
 
-对接 **Claude Code / Codex / Cursor / Hermes / OpenClaw** 等客户端后，直接对当前打开的 WPS 文档说下面这类话即可（可复制改写）。默认建议：**先预览 / dryRun，再确认写批注或改正正文**；涉密、定稿类务必人工复核。
+**工具规模**：内部定义 **69 个工具**，`tools/list` 对外实见 **53 个**（17 个细粒度工具聚合为域工具，33 个旧名保持别名兼容，可调用名合计 86 个）。
 
-#### 1. 错别字 · 别字 · 同音字
+| 分组 | 工具 | 说明 |
+|---|---|---|
+| 主机与健康 | `wps_status` `wps_launch` | 分层健康（sidecar/Agent/三宿主/活动文档）；冷启动 WPS 并等待加载项连上 |
+| 文档生命周期 | `document_open` `document_ensure_open` `document_list_open` `document_activate` `document_meta` `document_save` | 打开 / 确保打开 / 列出已开 / 切换 / 元信息 / 保存另存 |
+| 读取与定位 | `document_list_paragraphs` `document_chunks` `document_get_text` `document_locate` | 逐段列表带锚点、长文分块翻页、全文/选区文本、定位字词多命中 |
+| 写回 | `document_replace` `document_insert` `document_apply_ops` | 替换锚点段、相对锚点插入、**批量写回 ≤200 ops**（replace/comment/comment-replace/insert-after） |
+| 格式样式 | `format_read` `format_run` `format_para` `format_apply_ops` `system_fonts_list` | 读格式、文字级/段落级格式、批量格式写回、系统字体 |
+| 校对 | `proofread_run` `proofread_apply_comments` `proofread_job_poll` | dryRun 问题清单 → 写成 WPS 批注（需 confirmed）→ 异步任务轮询 |
+| 域聚合（17 个） | `comment` `revision` `layout` `nav` `toc` `bookmark` `table` `caption` `field` `image` `hyperlink` `headerfooter` `watermark` `style` `export` `spreadsheet` `presentation` | 每个工具带 action 子操作；`table` 12 动作（切片读+插行列+合并单元格+列宽+导出）；`spreadsheet`（ET 宿主）23 动作（读 6 写 17，含加密/解密另存、图表）；`presentation`（WPP 宿主）23 动作（读 4 写 19，含逐页生成、整页配图、演讲备注、放映、导出） |
+| 脱密 | `declassify_status` `declassify_preview` `declassify_apply` `declassify_restore` | 预览不落盘 → 确认应用（密码+关键词）→ 凭密码复原；仅本机可信通道 |
+| 知识库与助手 | `kb_retrieve` `assistants_list_domains` `assistants_search` `assistants_get` | 检索知识库片段；4526 个领域助手目录 / 检索 / 导出完整定义 |
+| 生图与素材 | `image_search` `generate_image` | 网络搜图存本地；按已配置生图模型生成（PPT 宿主自动 16:9） |
+| 模板与文件 | `template_generate` `file_parse` | 按模板 pptx/docx/xlsx + 素材后台生成整套新文档并自动打开（多轮核对）；本地文件解析为模型可读文本（docx/xlsx/pptx/pdf/eml/zip 等） |
+| 内部 | `chat_turn` | 助手面板内部对话回合（非对外） |
+
+配套：**Resources**（`chayuan://wps/health`、`chayuan://guide/*`、`chayuan://assistants/*`）· **Prompts**（`para_translate_insert_after` 逐段翻译插段后、`open_local_document`）· **错误码**（`WPS_AGENT_OFFLINE` / `DOCUMENT_TOO_LARGE` / `LOCATE_MISMATCH` / `LICENSE_REQUIRED` / `MODEL_NOT_CONFIGURED` / `CONFIRMATION_REQUIRED`）。
+
+### 5.3 使用场景与提示词（穷举，可直接复制改写）
+
+对接 Claude Code / Codex / Cursor 等客户端后，直接对当前打开的 WPS 文档说下面这类话即可。默认建议：**先预览 / dryRun，再确认写批注或改正文**；涉密、定稿类务必人工复核。
+
+#### ① 错别字 · 别字 · 同音字
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -324,12 +355,12 @@ npx @modelcontextprotocol/inspector
 | 直接改正 | 找出错别字并直接改正正文（先给我预览清单，确认后再执行） |
 | 多文档校对 | 打开目录下这几份文档，交叉检查错别字与术语是否一致 |
 
-#### 2. 标点符号 · 空格 · 编号
+#### ② 标点符号 · 空格 · 编号
 
 | 场景 | 示例提示词 |
 |------|------------|
 | 标点检查 | 帮我检查标点符号是否正确（中英文标点混用、书名号、引号配对等），用批注标出 |
-| 中英文标点 | 把误用的英文逗号/句号改成中文标点（或反过来，按公文规范），先预览 |
+| 中英文标点 | 把误用的英文逗号/句号改成中文标点（或按公文规范反过来），先预览 |
 | 引号书名号 | 检查引号、书名号、括号是否配对完整 |
 | 顿号逗号 | 检查并列成分用顿号还是逗号是否得当 |
 | 省略号破折号 | 规范省略号、破折号写法 |
@@ -338,7 +369,7 @@ npx @modelcontextprotocol/inspector
 | 序号体例 | 检查标题/条款序号（一、（一）、1.）是否层级混乱，批注指出 |
 | 列表标点 | 检查条目末尾句号/分号是否统一 |
 
-#### 3. 语法 · 病句 · 表达
+#### ③ 语法 · 病句 · 表达
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -351,7 +382,7 @@ npx @modelcontextprotocol/inspector
 | 长句拆分 | 过长难句请建议拆分，批注给出拆法 |
 | 衔接过渡 | 检查段落衔接是否生硬，建议过渡句 |
 
-#### 4. 文章正确性 · 逻辑 · 事实核对
+#### ④ 正确性 · 逻辑 · 事实核对
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -365,7 +396,7 @@ npx @modelcontextprotocol/inspector
 | 图表一致 | 核对正文描述与表格内容是否一致 |
 | 版本口径 | 对照上一版/附件，标出口径变化处（打开两份文档对比） |
 
-#### 5. 公文 · 合同 · 规范体例
+#### ⑤ 公文 · 合同 · 规范体例
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -377,7 +408,7 @@ npx @modelcontextprotocol/inspector
 | 落款日期 | 检查成文日期、签发人是否齐全 |
 | 附件引用 | 正文提到的附件是否都有对应附件标题 |
 
-#### 6. 翻译 · 中英转换
+#### ⑥ 翻译 · 中英转换
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -388,7 +419,7 @@ npx @modelcontextprotocol/inspector
 | 保留格式 | 翻译时保留标题层级与表格结构 |
 | 选区翻译 | 只翻译当前选区 |
 
-#### 7. 润色 · 改写 · 摘要 · 扩写
+#### ⑦ 润色 · 改写 · 摘要 · 扩写
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -401,7 +432,7 @@ npx @modelcontextprotocol/inspector
 | 改语气 | 改成更委婉/更强硬的语气（指定一种） |
 | 去 AI 腔 | 弱化「首先其次总之」等模板腔，批注修改建议 |
 
-#### 8. 定位 · 替换 · 批量写回
+#### ⑧ 定位 · 替换 · 批量写回
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -412,7 +443,7 @@ npx @modelcontextprotocol/inspector
 | 批注解释 | 给所有「待确认」字样加上批注「请业务确认」 |
 | 按清单改正 | 按我给你的问题清单，逐条定位并写成批注/替换 |
 
-#### 9. 表格 · 名单 · 名录
+#### ⑨ 表格 · 名单 · 名录
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -422,7 +453,7 @@ npx @modelcontextprotocol/inspector
 | 名单去重 | 检查人员名单是否重名、漏项 |
 | 表转叙述 | 把第一张表概括成一段说明文字插入表前 |
 
-#### 10. 保密 · 脱密 · 敏感信息（辅助，非定密）
+#### ⑩ 保密 · 脱密 · 敏感信息（辅助，非定密）
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -433,7 +464,7 @@ npx @modelcontextprotocol/inspector
 | 复原 | 用密码复原脱密文档 |
 | 外发前检查 | 外发前再扫一遍是否残留内部路径、账号、未脱敏字段 |
 
-#### 11. 知识库 · 制度对照（需已配置 KB）
+#### ⑪ 知识库 · 制度对照（需已配置 KB）
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -441,7 +472,7 @@ npx @modelcontextprotocol/inspector
 | 补全依据 | 给结论句补充可引用的制度依据 |
 | 术语标准名 | 用知识库标准术语统一文中叫法 |
 
-#### 12. 多文档 · 打开 · 保存
+#### ⑫ 多文档 · 打开 · 保存
 
 | 场景 | 示例提示词 |
 |------|------------|
@@ -451,9 +482,7 @@ npx @modelcontextprotocol/inspector
 | 多文件串行 | 依次处理这两个文件：先错别字批注，再统一术语 |
 | 新建草稿 | 新建空白文档，写入会议纪要提纲 |
 
-#### 13. 组合拳（推荐工作流提示词）
-
-可直接整段复制：
+#### ⑬ 组合拳（推荐工作流提示词，可整段复制）
 
 ```text
 你是 WPS 文档校对助手，通过 chayuan-wps-mcp 操作当前文档：
@@ -473,81 +502,85 @@ npx @modelcontextprotocol/inspector
 插入前先预览第一段样例，我确认风格后再全部执行。
 ```
 
-> 更多工具参数与确认字段见 [docs/mcp-connection.md](docs/mcp-connection.md)。加载项内也可直接用「拼写与语法检查 / 智能批注 / 自定义助手」完成同类任务，无需外部 Agent。
+```text
+用我桌面上的「公司模板.pptx」和附件里的产品资料，生成一份 10 页的产品介绍 PPT，
+保留模板的母版和配色；生成前先给我大纲确认。
+```
+
+> 加载项内也可直接用「拼写与语法检查 / 智能批注 / 自定义助手」完成同类任务，无需外部 Agent。
 
 ---
 
-## 简体中文完整说明
+## 六、wps-skill-chayuan 技能包：一条命令，三件事就绪
 
-## 一、版权声明与许可
+`wps-skill-chayuan` 是察元的**便携技能包**：一份技能定义（`SKILL.md`）+ 一条 4 步闭环安装脚本，让 **Claude Code / Cursor / OpenAI Codex** 开箱即用察元的 53 个文档工具。**跑一次脚本，三件事同时就绪**——WPS 加载项、MCP 自启服务、AI 客户端技能文件。
 
-**软件名称（著作权意义上的全称）：** 察元 AI 文档助手（英文名 **Chayuan AI Document Assistant**，npm 包名 **`chayuan`**）。
+> 📖 从安装到使用的完整图文指南：见 [`docs/wps-skill-chayuan-guide.md`](docs/wps-skill-chayuan-guide.md)。
 
-**开源许可：** 本仓库源代码依照 **[Apache License, Version 2.0](LICENSE)** 授权。在遵守该许可证全部条款（包括但不限于保留版权声明、NOTICE 文件、专利授权与责任限制等）的前提下，您可以自由地使用、修改、合并、发布再许可及**用于商业目的**（例如在企业内部分发、集成到办公环境、提供托管或增值服务等）。若您与权利人另行签署了商业许可、OEM、独占或附加协议，则以**该等书面协议**为准；协议未排除的事项，仍以 Apache 2.0 为补充。
+### 双向自启：从哪端装都行
 
-**著作权与出品信息：** 产品由**北京智灵鸟科技中心**研发与运营。文档中涉及的界面文案、默认提示词模板、图标与品牌素材等，除第三方组件按其各自许可外，均受著作权及相关知识产权法保护。**官网：** [https://aidooo.com](https://aidooo.com) · **微信公众号：** 智灵鸟科技。
+| 从哪开始 | 跑安装脚本后得到 |
+| --- | --- |
+| **装技能**（想给 AI 客户端接 WPS） | ✅ 技能文件投放进 Claude/Cursor/Codex　＋　✅ WPS 加载项自动安装　＋　✅ MCP 开机自启 |
+| **装加载项**（WPS 里装了察元） | ✅ 加载项就位　＋　✅ MCP 开机自启　＋　✅ 一键把技能投放到本机 AI 客户端 |
 
-**免责声明（摘要）：** 本软件按「原样」提供；大模型生成内容可能存在不准确或不适用的情形，涉密、合规与法律判断应以人工与正式制度为准；保密检查、AI 痕迹检查等功能仅为**辅助参考**，不构成司法鉴定或保密定密结论。
+**装技能 = 装加载项，装加载项 = 带技能。** 两种入口殊途同归：跑完一次脚本，**WPS 加载项 + MCP 自启服务 + AI 客户端技能**三者全部到位。
+
+### 一行命令安装（终端用户，无需克隆仓库）
+
+**Windows（PowerShell）：**
+
+```powershell
+& {[Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12;$w=New-Object Net.WebClient;$w.Encoding=[Text.Encoding]::UTF8;$s=$w.DownloadString('https://gitee.com/cloudshd/chayuan-wps-releases/raw/master/scripts/install-wps-skill-chayuan.ps1');if($s.Length -and $s[0]-eq[char]0xFEFF){$s=$s.Substring(1)};& ([scriptblock]::Create($s)) -Fetch}
+```
+
+> 为什么不直接 `iwr | iex`？Windows PowerShell 5.1 默认按 GBK 解码 `iwr` 返回体，会因 UTF-8+BOM 首字节乱码报错。这里用 `WebClient` + 显式 UTF-8 解码（去 BOM）再建 scriptblock，既绕过执行策略、又不会乱码。
+
+**macOS / Linux：**
+
+```bash
+curl -fsSL https://gitee.com/cloudshd/chayuan-wps-releases/raw/master/scripts/install-wps-skill-chayuan.sh | bash -s -- --fetch
+```
+
+> 海外 / GitHub 直连：把 URL 换成 `https://raw.githubusercontent.com/zhgyuhuii/chayuan/main/scripts/install-wps-skill-chayuan.{ps1,sh}`。脚本自动多源回退下载便携包（Gitee → aidooo → GitHub，**sha256 强校验**）→ 装加载项 + MCP 自启 + 投放技能到 Claude/Cursor/Codex。
+
+**已克隆本仓库** 也可直接跑本地脚本（等价）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\install-wps-skill-chayuan.ps1 -Fetch
+```
+```bash
+bash scripts/install-wps-skill-chayuan.sh --fetch
+```
+
+`-SkillOnly` 只投放技能文件，不动加载项 / 服务；`-Version 6.1.2` 可指定版本。
+
+### 脚本干的四步（同一个脚本）
+
+1. **装加载项**——释放到 jsaddons 目录 + 写 `publish.xml`，WPS 打开即加载察元。
+2. **MCP 自启**——释放 `chayuan-mcp` 二进制 + 注册开机自启（Win `HKCU\Run` / macOS LaunchAgent / Linux systemd --user），**无需 Node.js**。
+3. **四级体检**——jsaddons → `/healthz` → `initialize` 握手 → 桥接工具，装完即验证可用。
+4. **投放技能**——自动探测 Claude / Cursor / Codex，投放技能文件，AI 客户端立刻拥有察元技能。
 
 ---
 
-## 二、特别说明：「察元」品牌标识不得擅自改动
+## 七、察元 AI 生态：一套引擎，四档 SKU
 
-为保证用户知情权、来源可追溯性与品牌一致性，**在面向最终用户的界面中**，下列位置出现的 **「察元」** 以及与之固定搭配的产品称谓（包括但不限于「察元 AI」「察元 AI 文档助手」「察元 AI 助手」「察元 AI 编审」「关于察元」「添加到察元 AI 助手」等），属于**产品来源与品牌标识**的重要组成部分：
+**察元 AI 文档助手不是一个孤立插件。** 官网把整个察元 AI 概括为「**一套引擎，四档 SKU**」——同一套查询引擎（文档 / 结构化 / 向量 / 办公 / 图像五类知识源）+ 模型网关 + 本地能力，按场景换一种用法。**本加载项就是第一档「文档助手」**，负责把这套能力送进你正在写的 WPS 文档里。
 
-- **WPS 功能区（Ribbon）** 上的分组标题、按钮标签、下拉菜单与动态菜单项；
-- **右键上下文菜单** 中的条目名称；
-- **对话框、任务窗格、关于页、欢迎语** 等可见文案中的固定品牌表述；
-- 与上述文案**同一语义链路**的用户可见字符串（例如文件类型说明中的「察元模板」「察元规则」「察元文档」等）。
-
-**未经权利人书面授权，任何再分发或定制版本不得对上述界面中的「察元」相关固定文案进行替换、删减、遮挡、淡化或误导性改写**（例如改为其他商业名称却仍指向本软件，以致用户误认为来源已变更）。此要求**不构成**对 Apache 2.0 所允许之「修改源代码」本身的禁止：您仍可在内部构建中调整代码逻辑；但若您向第三方提供**可安装的、面向最终用户的构建产物**，须**保留**上述品牌标识的显著性，或事先取得权利人的书面同意按约定方式标注来源。
-
-**例外与协商：** 企业私有化部署、白标（white-label）需求、界面整体本地化中涉及品牌字段的调整，请通过官网或商务渠道联系取得**单独授权条款**。
-
----
-
-## 三、商业使用与授权例外归纳
-
-| 情形 | 说明 |
-|------|------|
-| 在组织内部使用、部署于内网 | 在遵守 Apache 2.0 的前提下，通常允许；注意密钥与数据合规。 |
-| 商业分发、集成到产品或服务 | Apache 2.0 允许；须遵守许可证义务；**品牌标识**遵守第二节。 |
-| 与权利人签署的附加协议 | 以协议为准，可能包含技术支持、商标使用范围、责任划分等。 |
-| 第三方模型与服务 | 各云厂商、API 提供商有其独立条款与计费；与本软件开源许可无关。 |
-
-**自愿赞赏与捐助**不构成购买商业许可的凭证；具体以官网及应用内说明为准。
-
----
-
-## 四、产品概述（先总后分）
-
-**察元 AI 文档助手**是运行于 **WPS 文字**中的智能加载项（**Vue 3 + Vite**）。它将大语言模型与文档操作深度结合：在**不离开编辑器**的前提下，完成对话、审查、翻译、多模态生成、保密与脱敏、文档与表格及图像的批量处理、表单与模板规则、任务编排与任务清单等；生成结果可按需以**插入、替换、批注、链接批注、追加**等方式写回正文。
-
-**设计取向：** **离线 / 内网优先**。通过 **Ollama** 或任意 **OpenAI 兼容** 网关（LM Studio、Xinference、OneAPI、New API 等），可在无外网大模型密钥的情况下完成对话与助手流程；亦可并行配置多家云端供应商，在效率与数据可控性之间取舍。
-
-**技术要点：** 选区与全文上下文感知、可配置的数据路径、可扩展的**内置助手 + 自定义助手**、报告模式与任务清单、与 WPS JSAPI 的写回与批注联动。
-
-### 4.0 在察元 AI 生态中的位置（与桌面版 / 服务版 / 至臻版的关系）
-
-> **察元 AI 文档助手不是一个孤立插件。** 官网把整个察元 AI 概括为「**一套引擎,四档 SKU**」——
-> 同一套查询引擎(文档 / 结构化 / 向量 / 办公 / 图像五类知识源)+ 模型网关(170+ 模型)+ 本地能力,
-> 按场景换一种用法。**本加载项就是其中第一档「文档助手」**,负责把这套能力**送进你正在写的 WPS 文档里**。
-
-> **开源地址:** WPS 文档助手(本项目) → <https://github.com/zhgyuhuii/chayuan-wps-releases> · 桌面版 / 网络版 → <https://github.com/zhgyuhuii/chayuan-desktop-releases>
-
-| # | 形态(SKU) | 项目 / 入口 | 解决的用户心结 |
+| # | 形态（SKU） | 项目 / 入口 | 解决的用户心结 |
 |---|---|---|---|
-| 1 | **察元 AI 文档助手**(本项目) | [chayuan-wps](https://github.com/zhgyuhuii/chayuan-wps-releases)(WPS 加载项) | "AI 别让我在浏览器和文档之间反复横跳 —— 就在我正写的这页公文 / 合同里帮我改、帮我查、帮我写回。" |
-| 2 | **察元 AI 桌面版** | [chayuan-desktop](https://github.com/zhgyuhuii/chayuan-desktop-releases)(单机安装包) | "装我自己电脑里、断网也能跑,密钥和文档一个字节都别出我这台机器。" |
-| 3 | **察元 AI 服务版** | [chayuan-desktop](https://github.com/zhgyuhuii/chayuan-desktop-releases)(Docker 网络版) | "一次部署全科室共用,知识库集中沉淀,别再按人头 / 按调用量收费。" |
-| 4 | **察元 AI 至臻版** | [chayuan-desktop](https://github.com/zhgyuhuii/chayuan-desktop-releases)(Docker 网络版 + 在线办公) | "数百到上万人,打开浏览器每人一个工作空间,管得住、审得清。" |
+| 1 | **察元 AI 文档助手**（本项目） | [chayuan-wps](https://github.com/zhgyuhuii/chayuan-wps-releases)（WPS 加载项） | "AI 别让我在浏览器和文档之间反复横跳——就在我正写的这页公文 / 合同里帮我改、帮我查、帮我写回。" |
+| 2 | **察元 AI 桌面版** | [chayuan-desktop](https://github.com/zhgyuhuii/chayuan-desktop-releases)（单机安装包） | "装我自己电脑里、断网也能跑，密钥和文档一个字节都别出我这台机器。" |
+| 3 | **察元 AI 服务版** | [chayuan-desktop](https://github.com/zhgyuhuii/chayuan-desktop-releases)（Docker 网络版） | "一次部署全科室共用，知识库集中沉淀，别再按人头 / 按调用量收费。" |
+| 4 | **察元 AI 至臻版** | [chayuan-desktop](https://github.com/zhgyuhuii/chayuan-desktop-releases)（Docker 网络版 + 在线办公） | "数百到上万人，打开浏览器每人一个工作空间，管得住、审得清。" |
 
-**本加载项与「桌面版 / 网络版」如何协作:**
+**本加载项与桌面版 / 网络版如何协作：**
 
 ```
         ┌──────────────────────────────────────────────┐
         │  察元 AI 文档助手 (本项目, WPS 加载项)        │
-        │  • 运行在 WPS 文字内:任务窗格 + Ribbon       │
+        │  • 运行在 WPS 文字/表格/演示内:窗格 + Ribbon  │
         │  • 选区 / 全文上下文感知                       │
         │  • 写回:插入 / 替换 / 批注 / 链接批注 / 追加  │
         └───────────────────┬──────────────────────────┘
@@ -564,488 +597,237 @@ npx @modelcontextprotocol/inspector
         └──────────────────────────────────────────────┘
 ```
 
-- **同一份知识库,两处复用**:桌面版 / 网络版跑本机或团队的 sidecar 做嵌入、检索、重排;
-  文档助手在「服务器地址」填一行端点就接上 —— **写文章和对话都用同一份 KB,密钥和文档都不出域**。
-- **v3.0 的远程知识库 RAG 集成**(见文首)正是这条链路的落地:JWT 用户态对接**网络版**多用户部署,
-  HMAC 应用态 / `authMode:'none'` 对接**单机版**免登录本机后端。
-- **能独立用,也能组合用**:只用本加载项 + 你自己的 Ollama / 云端模型即可工作;
-  接上桌面版 / 网络版后,额外获得**五类知识源统一检索、引用气泡、原文一键下载**等企业级能力。
+- **同一份知识库，两处复用**：桌面版 / 网络版跑本机或团队的 sidecar 做嵌入、检索、重排；文档助手在「服务器地址」填一行端点就接上——写文章和对话都用同一份 KB，密钥和文档都不出域。
+- **能独立用，也能组合用**：只用本加载项 + 你自己的 Ollama / 云端模型即可工作；接上桌面版 / 网络版后，额外获得五类知识源统一检索、引用气泡、原文一键下载等企业级能力。
 
-> 桌面版 / 网络版的完整说明见 chayuan-desktop 仓库 README(<https://github.com/zhgyuhuii/chayuan-desktop-releases>)及其 `docker/README.md`(网络版一键部署)。
-
-### 4.1 本次 2.0.0 重大更新（重大重构 / 稳定性版本）
-
-**当前版本：`4.1.2`**（MCP 目录版本 `0.10.0` · 46 工具）。 下面是 **v2.0** 的重构说明（历史归档）；v2.0 定位为面向政企文档生产场景的重大重构：围绕 AI 助手对话框、模型分类、默认模型、助手参数收集、任务执行与 README 文档体系进行了系统性梳理。更新内容参考并归纳了仓库内全部 Markdown 规划与执行文档，包括架构深度分析、v2 演进计划、P0-P6 执行报告、工作流编排、任务系统重设计、运行性缺口闭合、助手表单布局与状态索引等。v4.1 的最新能力（表格结构写回、技能双向自启）见上方 [`🧩 wps-skill-chayuan 技能`](#-wps-skill-chayuan-技能-一条命令双向自启加载项--mcp--技能) 与 [`RELEASE_NOTES_v4.1.md`](RELEASE_NOTES_v4.1.md)。
-
-**本次版本重点：**
-
-- **助手对话框体验重构：** 知识库入口改为与模型选择一致的图标按钮；有参数的助手执行前会先弹出参数确认卡片，例如翻译先选择目标语言，图像/视频/语音助手先确认画幅、时长、语音风格等。
-- **模型体系重构：** AI 助手对话框只显示对话模型；默认设置和助手设置按类型严格过滤模型；模型设置页按对话模型、嵌入式模型、图像模型、语音模型、视频模型等分类展示。
-- **多模型与离线部署增强：** 继续优先支持 Ollama、LM Studio、Xinference、OneAPI、New API 等 OpenAI 兼容端点，同时保留云端模型供应商接入。
-- **助手运行稳定性增强：** 助手执行、重试、参数传递、模型类型匹配、任务进度与文档写回路径进一步统一，减少“选错模型 / 缺参数 / 写回动作不明确”的失败概率。
-- **重大架构演进沉淀：** 结合计划文档中的 P0-P6、工作流 W1-W7、任务系统、进化系统、性能与可观测设计，把 2.0.0 明确为“从功能堆叠走向可治理平台”的版本。
-- **报告与模板能力强化：** README 中明确报告模式、模板规则、表单审计、文档审计、任务编排、自定义助手和多语言文档的产品边界。
-
-### 4.2 竞品能力对比（具名概要 + 六十维细项）
-
-<a id="42-60-项竞品能力对比察元-200-vs-常见办公-ai--文档-ai-工具"></a>
-
-> **具名概要表（§4.2.1）** 仅对各家产品的**常见公开形态**做归纳，便于选型时对照；**不构成**对任何第三方的功能承诺或排名。计费、数据驻留、企业私有化与监管认证等**以各厂商官方文档与合同为准**；若与贵司实测不一致，以贵司 PoC 为准。  
-> **六十维细项表（§4.2.2）** 中「常见竞品 / 通用办公 AI」仍指**一类产品**的常见能力组合（浏览器插件式 AI、独立聊天页、单一写作工具、纯知识库问答等），避免把某一版本写成绝对结论。
-
-#### 4.2.1 具名产品与察元概要对照（横向）
-
-下列产品均为市场上与「文档 + AI」相关的**代表性名称**；**豆包 / 文心一言 / 通义千问 / Kimi** 等并列时，在表中概括为「**通用大模型网页或 App**」——指主要交互在浏览器或独立应用内、与 WPS 本地 doc 无原生一体化写回链路的形态（各家仍可能提供插件或合作入口，以官方为准）。
-
-| 对比项 | 察元 AI 文档助手（v4.1.0） | **WPS AI**（金山办公 WPS 内置） | **Microsoft 365 Copilot**（Word 等） | **Google Workspace** 侧 **Gemini**（文档等，以 Google 当前命名为准） | **飞书** 云文档 + **智能伙伴**（字节） | **腾讯文档** 智能助手等 | **Notion AI** | **通用大模型网页 / App**（豆包、通义、文心、Kimi 等） |
-|--------|------------------------|-----------------------------------|----------------------------------------|------------------------------------------------------------------------|----------------------------------------|-------------------------|----------------|------------------------------------------------------------------|
-| **产品形态** | 第三方 **WPS 文字**智能加载项；可自建分发 | WPS 套件**原生**能力，与 WPS 版本 / 会员体系绑定 | Microsoft 365 订阅内 **Word** 等组件的 Copilot 体验 | Google 账号体系下 **Docs** 等在线编辑器内的 Gemini 能力 | **飞书** 云文档与 IM / 工作台内的 AI 能力 | **腾讯文档** 在线协作编辑器内的智能功能 | **Notion** 页面 / 数据库工作区内的 AI | 独立对话或写作页；与 WPS 本地文档**无**同一套原生 JSAPI 写回 |
-| **离线 / 内网自有推理** | **优先**：Ollama、LM Studio、Xinference、OneAPI 等 OpenAI 兼容端点 | 消费级常见形态依赖**联网与金山服务**；政企私有化部署以**金山官方方案**为准，不等同于用户随意换任意后端 | 主流形态为**微软云端**能力；本地私有化以微软**官方企业方案**为准 | 依赖 **Google 云**与账户体系 | 依赖**飞书云服务** | 依赖**腾讯云服务** | 依赖 **Notion 云服务** | 依赖各**厂商云 API**；纯离线非典型主路径 |
-| **用户自选多模型 / 网关** | 支持在设置中配置多家供应商与 **OpenAI 兼容** 基础 URL | 模型与路由由 **WPS / 金山** 产品线定义 | 由 **微软** Copilot 与租户策略定义 | 由 **Google** 工作区策略定义 | 由**飞书**产品线定义 | 由**腾讯文档**产品线定义 | 由 **Notion** 定义 | 各家独立；与 WPS 加载项内的「统一网关」**不是同一配置面** |
-| **WPS 文字内写回**（插入 / 替换 / 批注 / 链接批注等） | **是**，与选区 / 全文、任务窗格同一链路 | **是**，与 WPS 编辑器深度集成；具体动作集合以 **WPS 当前版本**为准 | **否**（宿主为 Microsoft Word，非 WPS） | **否**（宿主为 Google Docs，非 WPS） | **否**（宿主为飞书文档） | **否**（宿主为腾讯文档） | **否**（宿主为 Notion） | **通常否**；多依赖复制粘贴或各厂商**另行提供**的插件 |
-| **政企向：保密提示 / 脱密与复原 / 书签级审计等** | 产品内置相关助手与流程（**辅助参考**，见前文免责声明） | **以 WPS 及金山官方是否提供同类功能为准**；与本开源加载项**非同一软件** | 以 **Microsoft** 合规与产品功能为准 | 以 **Google** 合同与数据条款为准 | 以**飞书**企业功能与合同为准 | 以**腾讯**企业功能与合同为准 | 以 **Notion** 企业功能与合同为准 | 一般**不提供**与 WPS 书签 / 模板规则联动的同类编审闭环 |
-| **自定义助手 + Ribbon / 右键入口** | **支持**（系统提示、模板、写回动作、显示位置可配） | 以 **WPS AI** 官方提供的指令、模板、入口为准 | 以 **Copilot** 与微软生态扩展为准 | 以 **Gemini / Workspace** 官方能力为准 | 以**飞书**官方扩展与自动化为准 | 以**腾讯文档**官方能力为准 | 以 **Notion** 模板与 AI 规则为准 | 用户多在站外自管提示词；**无**察元同款 WPS 菜单级挂载 |
-| **开源与可自行审计源码** | **Apache-2.0**，本仓库 | **否** | **否** | **否** | **否** | **否** | **否** | 各厂商闭源；仅 API / 条款可审 |
-| **典型适用** | 已用 **WPS 文字**、要强内网模型或要统一 OpenAI 兼容网关、要细粒度写回与编审助手 | 已用 **WPS**、希望**零安装**官方 AI 的用户 | 已用 **Microsoft Word** 与 M365 的组织 | 已用 **Google Workspace** 的组织 | 已用 **飞书** 文档与协作的组织 | 已用 **腾讯文档** 的团队 | 已用 **Notion** 的知识与项目团队 | 通用对话、检索、站外起草 |
-
-**与 WPS AI 的关系说明（避免误解）：** **察元**与 **WPS AI**均可出现在「WPS 文字」编辑环境中，但前者为**独立第三方加载项**（本仓库），后者为**金山办公产品内置能力**；二者在账号、计费、模型来源、数据路径与功能清单上**相互独立**。上表不暗示双方存在合作或互斥，仅作能力维度上的并列参照。
-
-#### 4.2.2 六十维细项（察元 vs 常见办公 AI / 文档 AI 工具）
-
-| # | 对比维度 | 察元 AI 文档助手（v4.1.0） | 常见竞品 / 通用办公 AI |
-|---:|---|---|---|
-| 1 | WPS 文字深度集成 | 直接作为 WPS 加载项运行，贴近编辑、批注、写回 | 多数是网页端或浏览器插件，文档写回弱 |
-| 2 | 离线 / 内网部署 | 优先支持 Ollama、LM Studio、Xinference、OneAPI 等 | 常依赖云端账号和公网 API |
-| 3 | OpenAI 兼容网关 | 支持多种兼容端点统一配置 | 支持范围不一，常锁定自家模型 |
-| 4 | 多供应商模型 | 可配置 OpenAI、DeepSeek、阿里百炼、千帆、Gemini 等 | 多数仅支持少量模型 |
-| 5 | 模型类型分类 | 对话、嵌入、图像、语音、视频等分类展示 | 常把模型平铺，容易误选 |
-| 6 | 对话模型过滤 | 助手对话框只允许选择对话模型 | 非对话模型可能混入选择列表 |
-| 7 | 默认模型分类 | 不同能力只允许选择对应类型模型 | 默认模型通常只有一个全局项 |
-| 8 | 自定义助手 | 支持系统提示词、用户模板、模型类型、写回动作 | 多数只支持简单 prompt 收藏 |
-| 9 | 自定义助手显示位置 | 可配置顶部主菜单、更多菜单、右键菜单 | 常不可嵌入 Office 菜单体系 |
-| 10 | 助手参数运行前确认 | 翻译、图像、视频、语音等先弹出参数选择 | 常直接执行，参数只能写在自然语言里 |
-| 11 | 翻译目标语言 | 下拉选择目标语言并进入执行变量 | 多数只能在提示词中手写 |
-| 12 | 图像生成参数 | 画幅比例等进入助手参数 | 常在独立生成页配置 |
-| 13 | 视频生成参数 | 视频时长、比例等进入助手参数 | 常与文档流程割裂 |
-| 14 | 语音生成参数 | 语音风格、时长参考进入助手参数 | 常需切换到专门 TTS 工具 |
-| 15 | 文档写回动作 | 插入、替换、批注、链接批注、追加、仅生成等 | 多数只复制结果或覆盖插入 |
-| 16 | 选区优先 | 支持选区优先、仅选区、全文等输入来源 | 常依赖用户手动复制粘贴 |
-| 17 | 全文处理 | 支持长文档范围和分段任务思路 | 很多工具只处理当前可见文本 |
-| 18 | 任务进度窗口 | 独立任务进度、任务清单、失败重试 | 多数只有简单 loading |
-| 19 | 任务中心 | 规划中 / 已沉淀任务中心与状态索引 | 常缺少任务级管理 |
-| 20 | 报告模式 | 支持摘要、审计等结构化报告模式 | 常是单次文本生成 |
-| 21 | 报告模板 | 支持报告类型、模板、附加要求等配置 | 常无模板治理 |
-| 22 | 模板规则 | 支持察元模板、规则制作、规则交换 | 常不覆盖文档模板治理 |
-| 23 | 表单智能提取 | 可从合同、公文中提取表单字段 | 多数只做通用摘要 |
-| 24 | 表单内容预览 | 支持表单辅助填报与预览 | 常不懂 WPS 文档结构 |
-| 25 | 文档审计助手 | 支持书签级 / 字段级审计与报告 | 常无法定位到模板字段 |
-| 26 | 保密检查 | 针对涉密、涉军、单位、项目编号等风险提示 | 通用产品多为泛安全提示 |
-| 27 | 文档脱密 | 支持涉密关键词提取、占位符替换与复原流程 | 通常没有可逆脱敏流程 |
-| 28 | 密码复原 | 可进入脱密复原对话框 | 常不提供脱敏恢复链路 |
-| 29 | AI 痕迹检查 | 保守评估并强调人工复核 | 常给出绝对化分数或不支持 |
-| 30 | 拼写语法结构化检查 | JSON 问题列表，适合批注写回 | 常只给整段改写 |
-| 31 | 纠错与校对分流 | 区分“检查问题”和“直接改正”两条路径 | 常混为一个润色按钮 |
-| 32 | 文本分析助手 | 改写、扩写、缩写、术语统一、正式化等 | 通常数量少且不可配置 |
-| 33 | 批注解释 | 可解释批注或选中文本 | 常缺少批注语义入口 |
-| 34 | 超链接解释 | 可解释链接文字或引用关系 | 常不支持文档内对象 |
-| 35 | 段落序号检查 | 面向公文 / 标书编号一致性 | 通用写作工具很少覆盖 |
-| 36 | 关键词提取 | 可作为内置助手和脱密前置能力 | 常只做普通关键词列表 |
-| 37 | 会议纪要助手 | 内置纪要结构化能力 | 常需要用户自写模板 |
-| 38 | 政策 / 公文风格 | 面向政策、公文、政企文档语气 | 通用工具偏营销或通用写作 |
-| 39 | 表格批量能力 | 导出 / 删除表格、行宽、样式、题注等 | 多数 AI 工具不操作 WPS 表格 |
-| 40 | 图像批量能力 | 导出 / 删除图像、统一格式、题注等 | 常无法批量处理文档图片 |
-| 41 | 文档批量能力 | 清理样式、统计样式、删除空白行等 | 常只能生成文本 |
-| 42 | 右键菜单集成 | 右键可进入分析、翻译、助手快捷入口 | 网页 AI 通常无 WPS 右键集成 |
-| 43 | Ribbon 菜单集成 | 顶部功能区直接承载 AI 能力 | 常停留在侧边栏 |
-| 44 | 知识库入口 | 对话框内以图标入口保留知识库选择窗口 | 很多产品知识库与编辑器割裂 |
-| 45 | 多语言 README | 中、英、日、德、法、西、俄多语言入口 | 常只有单语言说明 |
-| 46 | 品牌与授权边界 | 明确 Apache 2.0 与“察元”品牌保留规则 | 很多项目缺少再分发边界说明 |
-| 47 | 任务编排设计 | 工作流 W1-W7 规划与执行报告沉淀 | 常无可视化 / 可恢复工作流 |
-| 48 | 工作流节点 | 计划中覆盖 28 类节点和模板 | 通用助手通常没有节点级编排 |
-| 49 | 工作流模板 | 合同审查、批量抽取、多模型 A/B 等方向 | 竞品多为固定命令集合 |
-| 50 | 可观测性 | perfTracker、任务状态、doctor 检查等规划 | 常缺少开发者级诊断 |
-| 51 | Doctor 检查 | 提供 `doctor` / `doctor:quick` 自检命令 | 多数插件没有项目级自检 |
-| 52 | Smoke 测试 | 演进与服务 smoke 脚本沉淀 | 常缺少无模型依赖测试 |
-| 53 | 助手进化系统 | 版本快照、评估、晋升、回滚方向明确 | 竞品多为手工改 prompt |
-| 54 | 影子双跑设计 | 候选助手可后台对比不打扰用户 | 常直接替换，缺少灰度 |
-| 55 | 回滚能力 | 进化版本和任务失败均强调可回滚 | 常缺少版本治理 |
-| 56 | 失败证据 | 规划中强调失败聚类、证据时间轴 | 常只给“生成失败” |
-| 57 | 长文档策略 | 分段、截取、上下文窗口与报告模式结合 | 常受单次上下文限制 |
-| 58 | 附件上下文 | 对话中支持附件引用与任务材料范围 | 常只处理粘贴文本 |
-| 59 | 多模态任务 | 文本转图像、语音、视频进入任务体系 | 多数文档 AI 只做文本 |
-| 60 | 政企稳定性取向 | 克制、可解释、可回滚、离线优先 | 通用 AI 更偏轻量创作体验 |
+> 桌面版 / 网络版完整说明见 chayuan-desktop 仓库 README 及其 `docker/README.md`（网络版一键部署）。生态 Web 工作台界面预览见上文[截图区](#三界面截图)。
 
 ---
 
-## 五、界面截图（`screen/` 目录实拍）
+## 八、版本历史
 
-以下 **screen1.png** 至 **screen7.png** 均来自仓库 `screen/` 目录。
+**当前版本：`6.1.2`**（2026-10-28）· MCP 目录版本 `0.13.0`
 
-| screen1 | screen2 | screen3 |
-|:---:|:---:|:---:|
-| ![screen1](screen/screen1.png) | ![screen2](screen/screen2.png) | ![screen3](screen/screen3.png) |
+### v6.1.2 — 附件解析全链路修复与安装器加固
 
-| screen4 | screen5 | screen6 |
-|:---:|:---:|:---:|
-| ![screen4](screen/screen4.png) | ![screen5](screen/screen5.png) | ![screen6](screen/screen6.png) |
+- **MCP 文档智能体管线补齐附件上下文**：对话说「附件1里有什么」直接可答——系统提示注入本轮上传附件（含已提取正文），本地循环 / 跨窗口派发 / chatTurnRunner 三条路径全贯通。
+- **任务超时对齐**：大 PDF 解析、旧版 doc/ppt 转换不再被默认超时误杀；脱密看门狗放宽；写锁按 lockId 精确放锁。
+- **安装器装前自动停旧服务**：`launchctl bootout` → `pkill` 四种进程模式 → lsof 强杀 62588 端口占用并等释放；杜绝「装完还是旧版」。
+- **容器假成功不再无声**：macOS 沙盒版 WPS 容器写入失败时安装日志响亮警告 + 修复指引；新增 `scripts/repair-mac-jsaddons-container.sh`（status / 修复 / 回滚三模式）。
+- **Linux deb 升级治理**：postinst 补齐 WPS 多注册源治理，根治升级后三端面板白屏。
 
-| screen7 | screen8| screen9 |
-|:---:|:---:|:---:|
-|:---:|
-| ![screen7](screen/screen7.png) | ![screen8](screen/1.png) | ![screen9](screen/2.png) |
-| screen10 | screen11| screen12 |
-|:---:|:---:|:---:|
-|:---:|
-| ![screen10](screen/3.png) | ![screen11](screen/4.png) | ![screen12](screen/5.png) |
-| screen13 | screen14| screen15 |
-|:---:|:---:|:---:|
-|:---:|
-| ![screen13](screen/6.png) | ![screen14](screen/7.png) | ![screen15](screen/8.png) |
-| screen16 | screen17| 
-|:---:|:---:|:---:|
-|:---:|
-| ![screen16](screen/9.png) | ![screen17](screen/10.png) | 
+### v6.1.0 — 模板编制全面升级
 
+- 首页对话直接用你的模板文件（.pptx / .docx / .xlsx）出整套文档：按模板类型自动路由宿主，目标宿主离线自动拉起。
+- 形状级剖析与内容映射：逐页剖析形状角色与字号字体坐标，按模板版面对位落内容；隐形水印保持原样；新内容继承模板中文字体。
+- 打开前多轮核对：机器审计（占位残留 / 溢出 / 字体一致性）+ 自愈闭环 + AI 多维审查，默认 3 轮（上限 4），逐维展示 ✓ / ✗。
+- 交付保留模板设计：字节级拷贝再填内容，母版 / 背景 / 字体原样保留；生成完对话自动跟到新文档窗格。
 
-### 仓库内置预览图（`public/images/about/`）
+### v6.0.0 — 三端 AI 工作台
 
-与发行物料一并维护的历史预览，可与上表对照。
+- **表格助手**（66 配方 + 六大主按钮 + 文档安全）与**演示助手**（81 配方 + AI 生成 PPT + 整套工具）上线，三端共享同一智能体内核。
+- **三级生图 + 网络资源搜索**：模型生图 → 网络搜图 → SVG 降级；Serper / Tavily / Pexels 等九类搜索源可配。
+- **file_parse 文件解析**：1-8 路径或附件别名，全格式矩阵 + token 预算三档。
+- **本机知识库自动发现**（端口 52582）+ **多文档会话隔离** + 三宿主停靠统一。
 
-| 预览 1 | 预览 2 | 预览 3 |
-|:---:|:---:|:---:|
-| ![about-1](public/images/about/screen-1.png) | ![about-2](public/images/about/screen-2.png) | ![about-3](public/images/about/screen-3.png) |
+### v5.x — 内嵌智能体 · 接入智能体 · 停靠双形态
 
-<p align="center"><sub>预览 4</sub><br /><img src="public/images/about/screen-4.png" alt="about-4" width="720" /></p>
+- **内嵌智能体**：对话窗内置完整智能体循环（规划 / 工具调用 / 跨回合记忆 / 任务清单），不只问答，能直接写回文档。
+- **写回安全**：文档写锁 + FIFO 排队 + OCC 写前校验；写前快照一键撤销；权限三档；sidecar 最小 token 鉴权 + 调用方审计。
+- **MCP 服务加固**：服务未就绪三级分诊、全链自愈、真机四大崩溃定案根治；打包自动重编 sidecar 二进制。
+- **停靠双形态**：浮窗 / 左右停靠一键切换，停靠面板宽 = 屏幕一半。
+- **本地引擎一键安装**：Ollama / LM Studio 检测引导；在线客服嵌入；官网升级提醒。
+
+### 更早版本
+
+[v6.0.0 完整发布说明](RELEASE_NOTES_v6.0.0.md) · [v5.x→v4.1（表格结构写回 · 技能双向自启）](RELEASE_NOTES_v4.1.md) · [v4.0.0（本机 MCP 文档智能体）](RELEASE_NOTES_v4.0.md) · [v3.0（远程知识库 RAG）](RELEASE_NOTES_v3.0.md) · [CHANGELOG.auto.md](CHANGELOG.auto.md)
 
 ---
 
-## 六、功能总览（模块级）
+## 九、模型与供应商
 
-**文档内主要入口**
+实际可用模型取决于**设置**中的 API 密钥、基础 URL 与供应商配置。**纯离线场景可仅启用本机或内网 OpenAI 兼容服务**，密钥全部本地保存。
 
-- **关于察元：** 产品介绍、能力说明与模型供应商概览。
-- **察元 AI 助手：** 主对话、模型选择、拼写与语法检查、生成摘要、写回动作条等。
-- **文本分析（Ribbon 分组）：** 改写、扩写、缩写、段落序号检查、AI 痕迹检查、批注解释、超链接解释、纠正拼写语法、提炼关键词等。
-- **翻译：** 目标语言可配置，菜单随设置变化。
-- **多模态：** 文本转图像、文本转语音、文本转视频（取决于模型与供应商能力）。
-- **智能助手（更多 / 右键）：** 固定主入口之外的助手，以及「创建 / 管理智能助手」。
-- **安全保密：** 保密检查、文档脱密、脱密复原；涉密关键词提取等。
-- **文档批量：** 清理未使用样式、统计已使用样式、删除空白行等。
-- **表格批量：** 导出或删除全部表格、自动行宽、刷新样式、按文字删行列、追加替换、序号与样式、表格题注等。
-- **图像批量：** 导出或删除全部图像、统一或清除格式、图像题注等。
-- **察元 AI 编审：** 表单辅助填报、表单内容预览、文档审计、模板与规则（导入导出下载、规则制作与交换）等。
-- **设置：** 任务清单、模型与供应商、路径、助手显示位置与参数等综合配置。
-- **右键菜单：** 添加到察元 AI 助手、文本分析、翻译、智能助手快捷入口等。
+| 类别 | 代表 |
+|---|---|
+| 本地 / 离线 | **Ollama**（11434）、**LM Studio**（1234）、**Xinference**（9997）、FastChat（8000）、任意 OpenAI 兼容内网网关（**OneAPI**、New API 等） |
+| 云端（OpenAI 兼容） | OpenAI、**DeepSeek**、**阿里云百炼 / 通义千问 Qwen**、**智谱 GLM**、**Kimi（月之暗面）**、千帆、Gemini、其它兼容端点 |
+| 图像 / 语音 / 视频 | 各供应商对应模态端点；生图支持百炼原生 / OpenAI 兼容双通道路由 |
 
-**扩展能力**
-
-- **自定义智能助手：** 自定义系统提示、用户模板、默认写回方式、显示位置（顶部主菜单 / 顶部更多 / 右键 / 右键更多），实现「包罗万象」的场景扩展。
-- **任务编排与任务清单：** 将多步操作组织为可执行流程。
-- **报告模式：** 对摘要、审计等场景启用结构化、分段生成（具体以各助手配置为准）。
+- 供应商分组与默认模型清单维护于 `src/utils/defaultModelGroups.js`；图标与启用状态见 `src/utils/modelSettings.js`。
+- 模型卡可填「上下文窗口(tokens)」，面板按窗口自动定 token 预算（min(窗口×25%, 32k)）；外部 MCP 客户端用 `budgetTokens` 自报。
+- 敏感段用本地模型、公开段用云端模型的「分流」用法可行——责任边界建议在组织制度上明确。
 
 ---
 
-## 七、内置智能助手逐个说明
+## 十、与常见办公 AI 的定位对照
 
-下列助手定义于产品内置注册表（与 **设置 → 智能助手** 中一致）。每项先给**一句话定位**，再给**能力说明**与**典型写回方式**（可在设置中调整）。
+> 下表仅对各家产品的**常见公开形态**做归纳，便于选型对照；不构成对任何第三方的功能承诺或排名。计费、数据驻留与私有化能力以各厂商官方文档与合同为准。
 
-### 7.1 核心类（系统助手功能）
+| 对比项 | **察元 AI 文档助手**（本项目） | **WPS AI**（金山内置） | **Microsoft 365 Copilot** | **飞书 / 腾讯文档 / Notion AI** | **通用大模型网页 / App**（豆包、通义、Kimi 等） |
+|--------|---|---|---|---|---|
+| 产品形态 | 第三方 **WPS** 智能加载项，三端（文字/表格/演示），可自建分发 | WPS 套件原生能力，绑定会员体系 | M365 订阅内 Word 等 Copilot | 在线协作编辑器内 AI | 独立对话页，与本地文档无原生写回链路 |
+| 离线 / 内网自有推理 | **优先支持**：Ollama / LM Studio / Xinference / OneAPI | 以金山官方政企方案为准 | 以微软官方企业方案为准 | 依赖各自云服务 | 依赖各厂商云 API |
+| 用户自选多模型 / 网关 | ✅ 多家供应商 + OpenAI 兼容基础 URL | 由金山产品线定义 | 由微软租户策略定义 | 由各产品线定义 | 各家独立 |
+| WPS 内**写回**（插入/替换/批注/链接批注） | ✅ 九种写回动作 | ✅（动作集合以 WPS 版本为准） | ❌（宿主为 Word） | ❌（宿主为在线文档） | 通常 ❌，依赖复制粘贴 |
+| 开源可审计 | ✅ **Apache-2.0**，本仓库 | ❌ | ❌ | ❌ | ❌ |
+| 外部智能体经 MCP 读写文档 | ✅ 127.0.0.1:62588，53 工具 | ❌ | ❌ | ❌ | ❌ |
+| 典型适用 | 已用 WPS、要内网模型 / OpenAI 兼容网关 / 细粒度写回与编审闭环 | 已用 WPS、要零安装官方 AI | M365 组织 | 在线协作组织 | 通用对话与站外起草 |
 
-1. **拼写与语法检查**  
-   **定位：** 结构化校对，输出可解析的 JSON 问题列表。  
-   **说明：** 面向错别字、语法、标点、固定搭配等「可证实」问题；默认以**批注**等方式写回，也可改为替换或仅生成结果。适合长文批量审校前的初筛。
+**与 WPS AI 的关系**：察元是**独立第三方加载项**（本仓库），WPS AI 是金山办公产品内置能力；二者在账号、计费、模型来源、数据路径与功能清单上**相互独立**，可并存于同一份 WPS。
 
-2. **生成摘要**  
-   **定位：** 将选中或全文压缩为管理层可读的结构化摘要。  
-   **说明：** 强调结论句、要点列表与风险动作；可开启报告模式做分段计划。写回支持插入、替换、批注、追加等。
-
-3. **翻译**  
-   **定位：** 多语言翻译并尽量保留结构与术语。  
-   **说明：** 目标语言可配置；适合段落、章节或全文翻译后写回。
-
-4. **文本转图像**  
-   **定位：** 由描述生成插图类图像。  
-   **说明：** 走图像模型通道；结果常插入文档或写入批注说明。
-
-5. **文本转语音**  
-   **定位：** 将文本转为可播报音频。  
-   **说明：** 走语音合成通道；依赖供应商能力。
-
-6. **文本转视频**  
-   **定位：** 由主题描述生成短视频内容。  
-   **说明：** 走视频生成通道；参数如比例、时长可在助手媒体选项中配置。
-
-### 7.2 文本分析类（Ribbon 主菜单常见项）
-
-7. **换种方式重写**  
-   保留原意，调整表述与节奏；默认多替换写回。
-
-8. **扩写**  
-   补充背景、论据与细节而不偏题；适合说明不充分段落。
-
-9. **缩写**  
-   删冗余、压长度，保留关键信息与数据。
-
-10. **批注解释**  
-    对选中文本给出审校式短评；适合培训与协同审稿。
-
-11. **超链接解释**  
-    解释引用、链接文字或资料指向关系；输出适合批注。
-
-12. **纠正拼写和语法**  
-    直接产出改正后的全文或片段；与「拼写与语法检查」的 JSON 结构化路径不同，更偏整段修正。
-
-13. **提炼关键词**  
-    抽取主题词与核心概念，常以列表插入或批注。
-
-14. **检查段落序号格式**  
-    对公文、标书、制度中的编号体系做一致性检查；输出分级结论与修改建议，默认不改写正文。
-
-15. **AI 痕迹检查**  
-    从套话密度、结构模式、元话语等维度做**保守**疑似度评估；强调可定位原文片段，辅助人工复核而非定论。
-
-16. **保密检查**  
-    结合关键词与上下文，对密级标识、涉军涉装、单位身份、联系方式、项目编号、商业秘密等做**分级风险提示**；适用于发文前自检。
-
-### 7.3 更多菜单中的分析 / 编审类
-
-17. **涉密关键词提取**  
-    从全文抽取待脱密词并为占位符生成提供 JSON 结果，与文档脱密流程配合。
-
-18. **表单智能提取助手**  
-    从合同、协议、公文中抽取可表单化的字段定义与实例，输出严格 JSON，供书签与规则沉淀。
-
-19. **文档审计助手**  
-    围绕书签规则与字段实例做逐书签审计，识别规则内外风险，支持批注归因与审计报告类输出（默认配置偏报告向）。
-
-20. **润色优化**  
-    提升专业性、流畅度与可读性，保持原意。
-
-21. **正式化改写**  
-    将口语或松散表述改为正式书面语，适合公文与对外材料。
-
-22. **通俗化改写**  
-    面向非专业读者简化专业内容。
-
-23. **提取行动项**  
-    从会议纪要、邮件、需求文中抽取待办、责任人与时间线索。
-
-24. **提取结论与风险**  
-    输出核心结论、主要风险与建议动作，便于汇报页快速成稿。
-
-25. **术语统一**  
-    规范人名、机构名、简称与全文术语表。
-
-26. **生成标题**  
-    基于内容生成多组候选标题，便于比选。
-
-27. **段落结构优化**  
-    调整段落顺序与层次衔接，输出重组稿。
-
-28. **生成会议纪要**  
-    按主题、结论、待办、风险等块整理记录体例。
-
-29. **政策 / 公文风格改写**  
-    使表述更贴近政策文本、公文或正式汇报语境。
-
-### 7.4 自定义智能助手
-
-通过 **「创建智能助手」** 可新增任意主题的助手：自行编写系统提示与用户模板，选择模型类型（对话 / 图像 / 语音 / 视频）、输入来源（优先选区、仅选区、全文）、输出格式（纯文本、Markdown、列表、JSON 等）及写回动作；并可指定出现在 **Ribbon 主按钮区、「更多」菜单、右键菜单或其「更多」子菜单**。由此可实现：各类**报告**草拟、**批注**策略、**修改**建议流水线、行业术语检查、投标书一致性核对等「包罗万象」的智能辅助创建与文档内闭环。
+**察元的差异化一句话**：WPS 原生深度集成 + 离线优先 + 九种写回与批注锚定 + 编审表单一体化 + 本机 MCP 可被外部智能体驱动——「可控、可审、可离线」的政企向文档 AI。
 
 ---
 
-## 八、模型与供应商（摘要）
+## 十一、开发指南
 
-实际可用模型取决于 **设置** 中的 **API 密钥、基础 URL 与供应商**。纯离线场景可仅启用本机或内网 OpenAI 兼容服务。界面中的供应商分组与默认模型列表可在源码 `src/utils/defaultModelGroups.js` 中维护；常见分组包括离线本地（Ollama、LM Studio 等）与多家云端大模型品牌。图标与启用状态见 `src/utils/modelSettings.js` 等模块。
+### 环境要求
 
----
+- **Node.js** 与 **npm**（建议当前 LTS）；构建 MCP 二进制需 **Bun**（`npm run mcp:build-binary`）。
+- **WPS Office**（加载项宿主，Windows / macOS / Linux 均可调试）。
+- 推荐 **wpsjs** 工具链用于调试发布。
 
-## 九、环境要求与常用命令
-
-- **Node.js** 与 **npm**（建议当前 LTS）。
-- **WPS 文字**（加载项宿主）。
-- 推荐 **wpsjs** 与 WPS JSAPI 工具链用于调试发布。
+### 常用命令
 
 ```bash
 npm install
-npm run dev              # 默认端口 3889
-npm run build
+npm run dev              # 开发服务 http://localhost:3890
+npm run build            # 前端构建
 npm run preview
-npm run build:wps        # WPS 加载项打包
-npm run build:wps-online
-npm run build:wps-offline
-npm run lint
-npm run format
+npm run build:wps        # WPS 加载项打包（--online / --offline / --debug 变体）
+npm run lint && npm run format
 
-# —— 全量三平台安装包（Windows / macOS / Linux，可在一台机器上交叉构建）——
+# —— 三平台安装包（可在一台机器上交叉构建）——
 npm run build:wps-all        # 前端构建 + 生成 release/install-staging（三平台共享）
 npm run build:wps-exe        # Windows 自解压安装器 release/chayuan-<ver>-windows-x64.exe
-npm run build:wps-pkg-macos  # macOS 安装包     release/chayuan-<ver>-macos-<arch>.pkg
-npm run build:wps-deb        # Linux deb        release/chayuan-<ver>-linux-<arch>.deb
+npm run build:wps-pkg-macos  # macOS 安装包 release/chayuan-<ver>-macos-<arch>.pkg
+npm run build:wps-deb        # Linux deb       release/chayuan-<ver>-linux-<arch>.deb
 
 # —— 本机 MCP 文档智能体服务 ——
-npm run mcp:sidecar          # 开发态直接 node server.mjs（127.0.0.1:62588）
+npm run mcp:sidecar          # 开发态 node server.mjs（127.0.0.1:62588）
 npm run mcp:build-binary     # 交叉编译 5 平台单文件二进制（需 Bun）
+npm run mcp:selftest         # 真机自测（:quick / :tools 变体）
+
+# —— 自检 ——
+npm run doctor               # 项目 doctor 检查（:quick 快速档）
+npm run test:agent-loop      # 智能体循环 smoke
+npm run test:write-lock      # 文档写锁 smoke
 ```
 
-本地调试一般使用 **`wpsjs debug`** 将加载项指向开发服务或构建目录。CI 可参考 `.github/workflows` 下工作流。
+### 项目结构速览
 
-> ⚠️ `wpsjs debug` 只会写入**单宿主**（`type=wps`，即 WPS 文字）的注册，表格/演示宿主不会加载；且它自带的静态服务无法运行 vite 源码工程。**三宿主（文字/表格/演示）联调请用**：
->
-> ```bash
-> npm run dev:debug                # 起 vite + 写三宿主调试注册 + 拉起 WPS
-> npm run dev:debug -- --restore   # 结束调试，还原正式安装的 publish.xml
-> ```
->
-> 首次在表格/演示宿主加载时 WPS 可能弹「信任加载项」确认（authaddin.json 按宿主分记），选信任即可。
+| 路径 | 内容 |
+|---|---|
+| `src/` | Vue 3 前端（46 条路由：AI 助手面板、设置、编审、任务中心、控制台等） |
+| `public/ribbon*.xml` | 三宿主 Ribbon 配置（文字 / 表格 / 演示） |
+| `mcp-sidecar/` | 本机 MCP 服务（`server.mjs` + `lib/toolCatalog.mjs` 69 工具定义） |
+| `docs/user-tutorials/` | **44 篇用户教程**（W01-W44，11 个域，P0-P2 分级），从安装到 MCP 全覆盖 |
+| `docs/mcp-connection.md` | MCP 连接与排错 |
+| `skill-chayuan/` | wps-skill-chayuan 便携技能包 |
+| `scripts/` | 构建安装包 / 自检 / 修复脚本 |
+| `screenshots/` | README 截图（自包含目录） |
 
 ---
 
-## 十、捐助与社区
+## 十二、常见问题 FAQ
 
-感谢支持开源与持续维护。自愿捐助与关注方式以 **[aidooo.com](https://aidooo.com)** 及应用内说明为准；在 GitHub 发布捐助信息时请遵守 [GitHub 服务条款](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service)。
+**Q1：察元 AI 和 WPS AI 是什么关系？需要卸载 WPS AI 吗？**
+察元是**独立第三方开源加载项**，与金山官方 WPS AI 相互独立（账号、计费、模型、数据路径均不同），可并存，无需卸载任何一个。
 
-**获取与下载:**
+**Q2：必须联网吗？数据会传到你们服务器吗？**
+不必联网。**离线 / 内网优先**是产品设计底线：接 Ollama / LM Studio / Xinference 等**本地模型**即可完整使用对话与助手流程，密钥全部保存在本机；文档内容只发给**你自己配置的模型端点**。察元自身不设云端转发。
+
+**Q3：支持哪些大模型？**
+任何 **OpenAI 兼容**对话端点均可配置（DeepSeek、通义千问/Qwen、智谱 GLM、Kimi、OpenAI、Gemini、OneAPI/New API 网关等）；图像 / 语音 / 视频走对应模态端点；生图支持百炼原生与 OpenAI 兼容双通道。
+
+**Q4：怎么让 Claude Code / Cursor / Codex 直接操作我的 WPS 文档？**
+打开 WPS 与察元后，在客户端注册一个 MCP 服务即可：`claude mcp add --transport http chayuan-wps-mcp http://127.0.0.1:62588/mcp`（Cursor / Codex 配置见[第五章](#五本机-mcp-文档智能体面向外部-ai-智能体)）。之后可直接说「检查这份文档的错别字并写批注」。
+
+**Q5：MCP 服务会不会有安全风险？**
+服务仅监听 `127.0.0.1`（本机即信任边界），外部机器无法直连；所有写操作「预览 → 确认 → 落盘」，每次确认写记入 `audit.jsonl` 审计；脱密工具仅本机可信通道可用。企业内如需更强隔离，可设 `CHAYUAN_MCP_PORT` 并配合本机防火墙策略。
+
+**Q6：AI 校对能直接改正文吗？会不会改坏文档？**
+可以，但默认路径是「检查 → 预览问题清单 → 你确认 → 写批注或改正文」。写回有四重保险：写锁串行（不互相覆盖）、写前快照（可一键撤销）、OCC 写前校验（冲突显式提示）、权限三档（默认「变更前确认」）。首次使用建议先跑 dryRun。
+
+**Q7：支持哪些 WPS 版本和操作系统？**
+支持 Windows / macOS（含 Apple Silicon）/ Linux 的 WPS Office。三平台官方安装包见[第四章](#四安装与快速上手)；Linux 为 deb 包，macOS 为 pkg 包，Windows 为自解压 exe。
+
+**Q8：「4526 个内置助手」是什么概念？**
+文字端内置**领域助手清单**：覆盖 228 个行业领域的专业提示词模板（财务、党务、医疗、招标、政务…），在对话中经 `assistants_search` 直接命中并执行，也可在「助手管理」中检索、导出、二次定制。加上表格端 66 配方、演示端 81 配方，并支持**无限自定义助手**。
+
+**Q9：旧版 .doc / .ppt / .et 文件能处理吗？**
+能。`file_parse` 与跨宿主管线会把旧格式**自动经对应 WPS 宿主转新格式再解析**（副本操作，不碰原文件，宿主离线自动拉起）。
+
+**Q10：免费吗？开源协议是什么？商用要授权吗？**
+源代码按 **Apache License 2.0** 开源，可自由使用、修改、商用（详见[许可章节](#十三许可商标与品牌)）。部分进阶能力有**能力门禁**（本地验签激活 + 免费额度），企业 OEM / 白标 / 品牌调整需另行取得书面授权。
+
+**Q11：批量校对几十份文档怎么做？**
+两条路：① 加载项内多文档会话 + 任务清单串行处理；② 外部智能体经 MCP「打开目录下这几份文档，交叉检查错别字与术语」批量处理（`document_apply_ops` 单次最多 200 ops）。
+
+**Q12：升级后功能没变 / 面板白屏怎么办？**
+安装器已内置「装前停旧服务 + 端口清理」。若仍有残留：Windows 重跑安装包；macOS 执行 `bash scripts/repair-mac-jsaddons-container.sh`（容器实况检查 / 修复 / 回滚）；Linux 重跑 deb。升级后请**完全重启 WPS**。
+
+**Q13：接口报 `CONFIRMATION_REQUIRED` / `WPS_AGENT_OFFLINE` 是什么意思？**
+前者表示该写工具需要带 `confirmed:true` 才落盘（安全设计，先看 preview 再确认）；后者表示 WPS / 察元加载项未连上 sidecar——打开 WPS、确认加载项已加载（`GET /healthz` 返回 `online`）即可。
+
+---
+
+## 十三、许可、商标与品牌
+
+### 版权声明与许可
+
+**软件名称（著作权意义上的全称）：** 察元 AI 文档助手（英文名 **Chayuan AI Document Assistant**，npm 包名 **`chayuan`**）。
+
+**开源许可：** 本仓库源代码依照 **[Apache License, Version 2.0](LICENSE)** 授权。在遵守该许可证全部条款（包括保留版权声明、NOTICE 文件、专利授权与责任限制等）的前提下，您可以自由地使用、修改、合并、发布再许可及**用于商业目的**（企业内部分发、集成到办公环境、托管或增值服务等）。若您与权利人另行签署了商业许可、OEM、独占或附加协议，则以**该等书面协议**为准。
+
+**著作权与出品：** 产品由**北京智灵鸟科技中心**研发与运营。界面文案、默认提示词模板、图标与品牌素材受著作权及相关知识产权法保护。**官网：** [https://aidooo.com](https://aidooo.com) · **微信公众号：** 智灵鸟科技
+
+**免责声明：** 本软件按「原样」提供；大模型生成内容可能存在不准确或不适用的情形，涉密、合规与法律判断应以人工与正式制度为准；保密检查、脱密、AI 痕迹检查等功能仅为**辅助参考**，不构成保密定密结论或司法鉴定。
+
+### 「察元」品牌标识约定
+
+在**面向最终用户的界面**中，「察元」及固定搭配称谓（察元 AI / 察元 AI 文档助手 / 察元 AI 编审 / 关于察元 / 添加到察元 AI 助手等）出现在 Ribbon 分组与按钮、右键菜单、对话框与关于页等位置，属于**产品来源与品牌标识**。**未经权利人书面授权，再分发或定制版本不得对上述界面中的「察元」固定文案进行替换、删减、遮挡或误导性改写**（例如改为其他商业名称却仍指向本软件）。此要求不限制 Apache 2.0 允许的源码修改；但若向第三方提供**可安装的、面向最终用户的构建产物**，须保留品牌标识的显著性，或事先取得书面授权。企业私有化部署、白标（white-label）、界面整体本地化的品牌调整，请通过官网商务渠道取得**单独授权条款**。
+
+### 商业使用速查
+
+| 情形 | 说明 |
+|------|------|
+| 组织内部使用、部署于内网 | Apache 2.0 下通常允许；注意密钥与数据合规 |
+| 商业分发、集成到产品或服务 | Apache 2.0 允许，须履行许可证义务；**品牌标识**遵守上文约定 |
+| 与权利人签署附加协议 | 以协议为准（技术支持、商标使用范围、责任划分等） |
+| 第三方模型与服务 | 各云厂商 / API 提供商条款与计费独立，与本软件开源许可无关 |
+
+---
+
+## 十四、下载与社区
 
 | 渠道 | 项目 | 地址 |
 |---|---|---|
-| 官网 | — | <https://aidooo.com> |
-| 开源仓库(本项目) | 察元 AI 文档助手 · WPS 加载项 | <https://github.com/zhgyuhuii/chayuan-wps-releases> |
-| 开源仓库(桌面版 / 网络版) | 察元 AI 桌面版 · 单机 / Docker | <https://github.com/zhgyuhuii/chayuan-desktop-releases> |
-| 百度网盘(安装包下载) | — | <https://pan.baidu.com/s/5kGNUqSLs7-6g8RNh5FsBcA> |
+| 官网 | 下载 / 文档 / 商务 | <https://aidooo.com> |
+| GitHub 主仓（本项目） | 察元 AI 文档助手 · WPS 三端加载项 | <https://github.com/zhgyuhuii/chayuan> |
+| GitHub 发布镜像 | 安装包与便携技能包 Releases | <https://github.com/zhgyuhuii/chayuan-wps-releases> |
+| Gitee 发布仓 | 国内安装脚本与便携包 | <https://gitee.com/cloudshd/chayuan-wps-releases> |
+| 察元 AI 桌面版 / 网络版 | 单机 / Docker / 在线办公 | <https://github.com/zhgyuhuii/chayuan-desktop-releases> |
+| 百度网盘 | 安装包下载 | <https://pan.baidu.com/s/5kGNUqSLs7-6g8RNh5FsBcA> |
 
-公开技术问题欢迎到对应仓库的 GitHub Issue 讨论;商务合作 / 企业授权 / OEM 定制请走官网。
-
----
+- 公开技术问题欢迎到 GitHub Issue 讨论；商务合作 / 企业授权 / OEM 定制请走官网。
+- 应用内侧栏「反馈及建议」直达官网在线客服（离线回落公众号二维码）。
+- 自愿捐助与关注方式以官网及应用内说明为准。
 
 <div align="center">
 
-**察元 AI 文档助手** · Chayuan · Vue 3 + Vite · Apache-2.0
+**察元 AI 文档助手** · Chayuan AI Document Assistant · Vue 3 + Vite · Apache-2.0 · 北京智灵鸟科技中心
 
 </div>
 
-## 附录甲：使用情境与操作哲学（深度说明）
-
-在日常办公中，文档往往不是一次性成品，而是多轮修改、多人批注、跨部门汇总的产物。**察元 AI 文档助手**将「对话式生成」与「可定位的写回」绑定在同一窗口：您可以在选区上先做**批注解释**或**保密检查**，再决定是否**替换**正文；也可以在全文维度上先做**摘要**或**审计**，再回到段落级润色。这样设计的目的，是避免「模型一段话输出后无处可放」的割裂体验，同时保留人工对每一处修改的最终裁量权。
-
-对于**政务与公文**场景，段落序号与条款结构的一致性直接影响可读性与合法性观感。建议使用「检查段落序号格式」在定稿前跑一遍，将高概率的跳号、混用括号与全角半角问题列出；若文稿涉及敏感主体或未公开部署信息，应叠加「保密检查」与人工保密专员流程。需要强调的是：**任何自动检查都不能替代定密程序与法务审查**，察元提供的是线索聚合与批注定位，帮助您更快找到值得人工盯住的段落。
-
-对于**法务与商务合同**场景，表单智能提取与文档审计助手可与模板规则、书签字段协同：先由提取助手从初稿中归纳字段语义与实例，再由人工在规则编辑器中收敛为稳定键名与校验策略，最后以审计助手做逐书签复核。该路径适合合同量较大、字段重复度高的组织；若合同形态极不统一，亦可仅把察元用作「段落级改写与摘要」工具而不启用书签流水线。
-
-对于**科研与技术写作**场景，模型擅长将零散笔记扩展为结构 clearer 的小节，或使用「术语统一」降低全文称谓漂移；图表较多的长文可配合表格与图像批量工具维护题注与样式。**翻译**类任务建议在定稿前保留一层人工校对，尤其是专有名词与标准编号。**多模态**能力适合为培训材料、对外介绍文档生成配图或配音草稿，再经设计同事替换为正式素材。
-
-对于**投标与标书**场景，时间与章节压力较大，可用「扩写」「政策公文风格改写」「提取结论与风险」快速形成章节骨架，但必须由业务负责人核对事实与承诺边界，避免模型补写造成不实表述。标书中的公司资质、案例与数字应以人工粘贴的权威版本为准，模型仅做语言层整理。
-
-**内网与离线部署**的关键在于：推理流量终止于本机或单位网关，密钥不出域；同时仍应注意文档本身可能含外拷敏感信息，脱敏与权限控制属于文档管理系统与人员制度的范畴。察元在设置中提供数据路径等配置，便于与单位文件策略对齐。
-
-**右键「添加到察元 AI 助手」**适合在阅读长文时随手把段落送入对话区，延续上下文追问；与顶部 Ribbon 入口互为补充。任务清单与任务编排适合把「重复性高、步骤固定」的操作固化为可点击流程，减少在同一设置页反复切换的时间损耗。
-
-**自定义助手**鼓励以「一个助手只做一类事」为粒度：提示词越聚焦，输出越稳定。可为「本单位的摘要口径」「本项目的风险分类标签」「本部门对外的邮件语气」分别建助手，并在显示位置上分流到 Ribbon 与右键，避免菜单过长。JSON 输出类助手适合与后续脚本或表单联动，但需在提示词中反复强调「仅输出合法 JSON」，并结合温度等参数降低漂移。
-
-**报告模式**适合长输出：将一次生成拆为计划段、执行段与汇总段，降低单次上下文爆炸概率；具体行为因助手与设置而异，建议在非生产文稿上先试跑篇幅与耗时。
-
-**版本协作**方面，若多人共用同一助手配置，可通过导出导入规则与模板在团队内对齐；模型供应商密钥仍建议按人按岗最小授权。遇到模型超时或限流，优先检查基础 URL、代理与内网防火墙；离线模型需确认本机显存与服务进程健康。
-
-**可访问性与可读性**：界面文案尽量保持简洁；若组织内需要完全本地化语言，可在不违反第二节品牌标识要求的前提下调整非品牌字符串（需自行维护分支）。**培训落地**建议从「摘要 + 翻译 + 批注解释」三类低风险功能切入，再逐步引入保密与审计类能力，以免一线用户因提示词敏感度过高而产生抵触。
-
-**与纯聊天机器人的差异**：察元内置了选区上下文、写回动作、批注锚定、任务与规则等产品化层；底层模型可替换，但交互与合规特性依赖本软件。因此评估察元时，应连同 WPS 宿主环境与部署拓扑一并考虑。
-
-**长期演进**：产品会持续迭代模型生态、审查类助手与任务编排体验。需求反馈与商务合作请通过官网与公众号联系；开源社区可通过 Issue 讨论可公开的技术问题。再次提醒：**对话框与 Ribbon 及右键菜单中面向用户的「察元」品牌文案，未经许可不得擅自改动**；这是对用户知情权的尊重，也是对持续维护者的基本保障。
-
-**结语**：把 AI 当作「加速审阅与起草的副驾驶」，而不是「替代签字的驾驶员」，是在严肃办公场景中使用察元最稳妥的心态。愿这份较长说明能帮助您理解能力边界、合规边界与品牌边界，并在实际工作中用得安心、审得清楚、写得高效。
-
-## 附录乙：写回动作与审校工作流对照
-
-**替换文档内容**会直接用模型输出覆盖选区或策略性范围，适合已备份或版本受控的段落。**插入到光标处**适合在定点补充段落。**插入到每段后面**适合逐段点评。**插入到文档最前面**适合摘要总览置于文首。**添加批注**与**链接形式批注**适合保留原文不动、把意见挂在边上的审稿模式。**批注加替换**适合「先批注原因再改正文」的强留痕场景。**追加到文末**适合附结论、附行动项清单。**仅生成结果**适合先对话协商多轮，确认后再人工粘贴。根据单位制度选择最弱侵入或最强留痕组合。
-
-## 附录丙：数据与密钥管理建议
-
-不要在公共仓库提交真实 API 密钥；内网部署建议使用专用密钥轮换策略与只读网络策略。对涉密文档，优先在离线模型与隔离终端上操作；导出审计报告时注意外发渠道。定期更新加载项版本以获得安全修复。
-
-## 附录丁：常见问题（节选）
-
-为何有时批注很多？可能助手默认动作是批注，或检查类助手需定位原文。可在设置中改为链接批注或仅生成。为何 JSON 解析失败？多为模型输出了多余说明文字，可降低温度或加强提示约束。为何图像生成不可用？请确认供应商与模型类型是否支持 image 端点，并检查密钥权限。
-
-## 附录戊：Ribbon、任务窗格与编审模块导读（加长版）
-
-**察元 AI 助手**主窗通常包含模型选择、会话区、对当前选区或全文的引用开关、以及写回条（插入、替换、批注等）。初次使用建议先完成**设置**里的模型连通性测试：对内网地址使用 curl 或浏览器探活并不总能代表 WPS 沙箱网络策略，应以实际对话第一条回复为准。主对话除闲聊外，可结合「添加到察元」把表格单元格、图片标题等上下文带入，减少复制粘贴误差。
-
-**文本分析**下拉中的每一项对应第七节中的内置助手配置；若您在设置里修改了某助手的系统提示或默认写回动作，Ribbon 仍显示同一按钮名称，但实际行为已按您的组织策略个性化。建议为「生产用」与「试验用」各建一套导出配置，避免试验性高温参数污染正式文书。
-
-**翻译**子菜单的语言列表来自配置；若目标语言未出现，请在设置中补充或检查翻译助手绑定的模型是否支持该语种对。法律与技术文件翻译应保持术语表一致，可在自定义助手中固定术语对照段。
-
-**多模态**三按钮分别调用不同模态端点；失败时界面会给出分类错误提示。插图类需求宜在提示中写明风格、视角与禁用元素（如人脸、商标），以减少返工。**察元 AI 编审**将表单、模板、规则、审计、任务清单等编排在同一业务域：填报向导降低书签字段遗漏率；预览可在提交前发现明显格式问题；审计助手与规则引擎结合后，适合「字段多、实例多」的重复性检查。
-
-**安全保密**分组中的脱密与复原应谨慎操作：脱密会改写正文中的敏感词为占位符，务必先备份原件；复原依赖脱密过程产生的映射数据，丢失映射可能导致无法还原。**文档批量**中的样式清理有助于减小 docx 提及体积与样式冲突概率，但执行前同样建议备份。**表格批量**与**图像批量**适合整理从其他系统粘贴而来的复杂排版，自动化题注可减少手工编号错误。
-
-**设置**中的任务清单可记录待跑助手或人工步骤；任务编排适合把多个助手或检查点串成有向流程（以当前版本实现为准）。**关于察元**页除介绍产品外，也展示常见模型供应商图标与离线说明，便于新同事自助了解。**右键菜单**与顶部更多菜单共享同一套助手注册逻辑，区别仅在入口深度：把高频助手放在 Ribbon 主区四槽与右键四槽，可显著减少点击层级。
-
-**自定义助手管理**支持启用停用、排序、图标库选择等。图标若使用外链需确保 WPS 宿主可访问；内网环境建议使用内置 SVG。**创建智能助手**向导应引导同事填写：用途一句话、输入来源、禁止编造事实、输出格式、默认写回、显示位置。对「必须引用原文片段」的检查类任务，务必在提示中写明「不得编造未出现的引号内文字」，以降低幻觉风险。
-
-**与任务编排的协同**：可把「保密检查 → 涉密关键词提取 → 文档脱密」设为一线操作序列，但每步之间仍应保留人工确认闸门。**与模板规则的协同**：规则导出为 `aidooo` 等扩展名文件，请在版本库中标注适用文书类型与修订日期。**与审计报告的协同**：审计类 JSON 体积可能较大，建议在性能一般的机器上分段审阅或缩小书签范围。
-
-**教育行业**可用「通俗化改写」与「生成摘要」辅助讲义；**媒体行业**可用「生成标题」与「提取行动项」辅助采访记录整理；**制造业技术文档**可用「术语统一」与「纠正拼写语法」降低多作者合稿的风格分裂。场景无穷，而产品层提供的可控写回与批注锚定是共同底座。
-
-**再次强调品牌合规**：任何对外分发的安装包中，若仍呈现本软件官方界面，则**不得**将「察元」二字从对话框标题、关于页、Ribbon 分组名、右键「添加到察元 AI 助手」等位置替换为他名；若确需白标，请联系权利人取得书面授权与 UI 规范。此举与 Apache 2.0 授予的源码修改权并行不悖：合规做法是「要么保留品牌，要么取得另行授权」，而非在未经授权时静默替换来源标识。
-
-**性能建议**：极长文档全文跑模型前，可先分段选取章节试跑，观察 token 与耗时；全文保密检查对算力与上下文长度要求更高，宜在业务低峰执行。**日志与隐私**：排查问题时注意不要将含密钥或全文内容的日志公开发到互联网。**升级策略**：关注发行说明中的破坏性变更；自定义助手配置一般在版本升级中向前兼容，但若遇字段变更请按迁移说明导出备份。
-
-**开源协作**：欢迎提交与默认提示词、无障碍、国际化相关的改进建议；涉及品牌字符串的 Pull Request 请谨慎，维护者可能因第二节约束拒绝改动「察元」固定文案。**文档自身**：您正在阅读的是仓库内维护的中文长说明，与应用内「关于」页互补；若二者有出入，以应用内随版本更新的文案为准。
-
-**千字再叙工作流**：周一收文，先用摘要助手抓结论与待办；周二合同组用表单提取生成书签草案；周三业务与法务并行填书签并由审计助手出第一轮问题清单；周四作者根据批注与链接批注修订正文；周五保密检查与脱密检查在盖章前各跑一遍。该节奏仅为示例，真实机关与企业流程更长，但察元提供的批注定位与结构化输出有助于每道闸门留下可审计痕迹。
-
-**再谈自定义助手的包罗万象**：只要下游能接受文本或 JSON，您就可以把助手当作「自然语言编程的接口」：例如输出为会议纪要固定 JSON  schema，再由单位 OA 拉取；或输出为测试用例表，再由脚本写入表格。关键是把**输入边界**（选区还是全文）、**事实边界**（不得编造）、**输出边界**（格式与字段）写进提示词，并在设置里选对模型温度。
-
-**尾声**：至此，本中文说明已从版权与品牌、商业许可、功能地图、二十九类内置助手要点、自定义与编排、模型与部署、界面导读、工作流与性能等多角度展开。若您需要更贴近贵单位制度的提示词模板，建议在自定义助手中固化，并配合人工复核制度使用。感谢阅读。
-
-## 附录己：内置助手与界面入口对照备忘（补充篇幅与检索）
-
-为便于在培训材料中检索，下列将部分助手与其常见入口形态做文字备忘（随版本迭代可能调整，以实际 Ribbon 与设置为准）。**拼写与语法检查**常出现在主对话相关流程与独立检查入口；**生成摘要**既可从 Ribbon 一键触发，也可在设置中改为偏全文或偏选区。**翻译**在 Ribbon 为子菜单，语言项由配置驱动。**文本转图像、转语音、转视频**依赖对应模态模型，失败时请查看供应商返回信息。**换种方式重写、扩写、缩写**三者形成「同一事实、不同篇幅与语气」三角，可教学同事按需求选用。**批注解释与超链接解释**均偏「少改正文、多写边注」，适合法务与导师角色。**纠正拼写和语法**偏整段替换，执行前请确认选区边界正确。**提炼关键词**适合给长文加「标签云」式提要或做检索词建议。**段落序号格式检查**输出分级标题的 Markdown，便于打印为审校附件。**AI 痕迹检查**强调保守表述，避免在对外公文中写「一定由机器生成」等绝对化结论。**保密检查**覆盖密级词、涉军词、单位身份、联系方式、项目代号、商业秘密等大类，命中后仍需人工分级处置。**涉密关键词提取**服务脱密自动化，占位符 token 建议在单位规范中统一前缀。**表单智能提取**输出 fields 数组，是规则沉淀的上游；**文档审计助手**消费书签与规则，是下游闸门。**润色、正式化、通俗化**为同一原文的三种受众取向。**提取行动项、提取结论与风险**适合会议与项目周报的「后半段写作」。**术语统一**在多作者合稿与译稿回并时尤为关键。**生成标题**可多轮生成直到策划满意。**段落结构优化**适合逻辑跳跃明显的讨论稿。**生成会议纪要**强调待办与风险单列。**政策公文风格改写**用于口吻升格而非事实改变。
-
-再把**自定义助手**的使用心法展开一层：命名应体现业务而非模型名，例如「财务部—银行函证回复润色」比「GPT 助手」更可维护；描述字段可写清禁写内容与引用规范；显示位置勿贪多，同一助手出现在 Ribbon、右键、更多三处会让维护者遗忘其中一处配置。对输出 JSON 的助手，建议在描述中写明 schema 版本号，便于下游解析升级。**任务清单**适合记录「本周要对某模板跑的审计批次」这类运维信息；**任务编排**若支持条件分支（以版本为准），可把「若保密检查高风险则中止后续」写进流程，减少误脱密或误发。
-
-关于**离线 Ollama**：请留意本机模型上下文长度与推理速度；大文档可拆段并合并批注。**内网 OneAPI**：注意路由到真实后端的密钥与模型别名映射是否与察元设置一致。**云端混用**：敏感段用本地模型，公开背景段用云端模型，这种「分流」要在组织制度上明确责任边界，避免同事误用错误模型处理涉密段。
-
-关于**界面截图**：本说明第五节以 `screen/screen1.png`–`screen7.png` 为主展示当前实拍；`public/images/about/` 下为仓库内置历史预览，随版本可能更新。若截图与当前安装版本不一致，以运行中软件为准。
-
-关于**文档写回与修订模式**：在 WPS 修订模式下使用替换类动作，可能产生修订记录；是否接受取决于贵单位文控规范。批注类动作一般更易被审稿流程接纳。**链接形式批注**便于跳转到参考段落，适合培训类文档。
-
-关于**国际化**：界面默认中文为主；英文品牌名为 Chayuan。其他语言见 `README.en.md` 等文件；**完整中文长说明以本 README.md 为准**，若译文滞后，以本文件与源码为准。
-
-关于**捐助与商业**：捐助表达感谢与支持，不自动授予商标扩展使用权或专属技术支持；商业合作、批量授权、定制开发与培训请走官网商务通道。
-
-关于**竞品对比**：察元差异点在于 WPS 原生集成、离线优先、批注与写回链路与编审表单一体化；具体选型请自行 PoC。
-
-关于**学生与个人用户**：在遵守许可证与品牌标识要求下，可用于学习与非欺诈性商业活动；请勿用于生成违法或侵权内容。
-
-关于**政府软件采购**：若采购目录或标书要求特定认证，请向销售或法务确认本软件是否满足该等资质表述。
-
-关于**备份**：凡批量清理、脱密、全局替换类操作，务必备份 docx 原文件到受控存储。
-
-关于**键盘与效率**：熟悉 Ribbon 与右键后，可显著减少鼠标路径；具体快捷键以 WPS 宿主为准。
-
-关于**未来规划**：此处不写具体路线图日期，以免误导；请关注官网与发行注记。
-
-以上数段为**有意展开的备忘与提醒**，与第七节技术介绍互为补充，帮助读者从运维、制度与培训视角理解同一套功能。以下再追加若干条「一线用户问答」以增强可操作性：问：第一次打开要做什么？答：先设置模型并测试连通，再打开关于页浏览能力边界。问：选区和全文何时切换？答：检查类涉密 often 全文；改写类 often 选区；以助手设置中的输入来源为准。问：批注太多文档变慢？答：可合并批注或改用链接批注，或在副本上操作。问：能否完全无人值守？答：不建议；严肃场景保留人工签字与复核。问：能否接入自研模型？答：只要兼容 OpenAI 风格对话或对应模态接口，原则上可配置尝试。问：出错找谁？答：开源问题可提 Issue；商业支持走官网。
-
-**字数说明**：本文件面向需要一次性读完产品边界与合规边界的读者，故篇幅显著长于普通 README；若仅需快速上手，请优先阅读第四节、第九节与官网短介绍。
-
-## 附录庚：再叙「察元」标识与用户体验的耦合关系
-
-用户在面对陌生加载项时，最先依赖的往往是功能区上的分组名与对话框标题。若这些位置的品牌文字被第三方擅自替换，用户会误以为软件来源、安全责任主体与售后渠道已一并转移，从而在涉密或合规场景产生**错误的安全感或不必要的恐慌**。因此，权利人要求保留「察元」相关固定文案，并非限制技术社区研究源码，而是限制**面向用户的欺诈性 rebranding**。这与 Apache 2.0 精神并不冲突：您可以在内部 fork 中任意实验，但若对外发布仍让用户看到官方 UI 骨架，则须诚实地保留品牌来源。对于希望完全去除品牌的企业客户，正确路径是签署单独协议，取得明确授权与责任条款，而不是在二进制分发物中静默改字。技术团队在向决策层解释时，可强调「品牌保留条款」与「开源再分发义务」是两条并行线：前者保护用户认知，后者规范源码层面的版权与专利声明。实施层面，建议在 CI 中加入对关键字符串完整性的自检（若贵司 fork 获准改字则可关闭该检查）。培训材料中亦应展示正版界面截图，避免同事误装来路不明的改包。若发现市面存在去除「察元」标识的侵权分发，欢迎通过官网渠道举报线索，以便权利人评估法律行动。再次汇总：**对话框、Ribbon、右键菜单等处的「察元」固定文字，除书面授权外不得擅自修改**；与此同时，在遵守 Apache 2.0 与第二节的前提下，**商业使用总体允许**。至此，本中文说明在版权、品牌、许可、功能、助手、附录与再叙等多层次上形成闭环，便于存档与对内外宣贯使用。
-
-## 附录辛：术语与缩写（补篇）
-
-**WPS 文字**：金山办公 WPS 套件中的字处理组件，为本加载项宿主。**Ribbon**：功能区选项卡与按钮所在区域。**加载项**：基于 Web 技术嵌入宿主的外扩功能。**OpenAI 兼容**：指 HTTP API 形态与常见字段命名接近 OpenAI Chat Completions 等接口，便于切换后端。**Ollama**：本地大模型运行环境之一。**批注**：文档页边或气泡中的评论对象，不一定改变正文。**书签**：文档内命名位置，可用于规则与表单联动。**脱密**：以占位符替换敏感实体并保留映射以便必要时复原。**任务编排**：将多个步骤或助手按序或按条件组织执行。**报告模式**：对长输出启用分段结构化生成的策略。**npm**：Node 包管理器；包名 `chayuan` 用于开发与构建脚本。**Vue / Vite**：前端框架与构建工具。**Apache-2.0**：开源许可证名称。**权利人**：依法享有著作权的主体，本说明语境下常指北京智灵鸟科技中心及其授权代表。**白标**：以第三方品牌呈现产品的商业模式。**PoC**：概念验证。**JSON**：一种结构化文本交换格式。**Token**：模型计费与上下文长度常用计量单位。**模态**：文本、图像、语音、视频等不同输入输出类型。**内网**：单位内部网络，与外网隔离或受限互通。**全文**：相对选区而言的整篇文档范围。**写回**：将模型输出应用为文档编辑结果的动作总称。掌握以上术语可减少跨部门沟通成本；若贵司内部另有文控术语表，建议在自定义助手描述中显式对齐。至此，汉字说明篇幅已超过一万字量级，涵盖版权声明、品牌不可变要点、许可与商业边界、功能与助手全谱系及多附录延伸阅读，可作为仓库内外部宣贯与培训附件长期使用。万语千言，不如动手一试；祝使用顺利，请知悉。
-
 ---
 
-<div align="center"><sub>本中文完整说明力求覆盖版权、品牌、商业许可、功能与助手逐项介绍；具体行为以当前版本界面与源码为准。</sub></div>
+<details>
+<summary><strong>🔍 搜索关键词索引（展开查看）</strong></summary>
 
----
+**中文：** 察元AI · 察元 · 智灵鸟 · aidooo · WPS 加载项 · WPS 插件 · WPS AI 助手 · WPS 智能体 · WPS 文档智能体 · WPS 文字 AI · WPS 表格 AI · WPS 演示 AI · PPT AI · Excel AI · Word AI · jsaddons · wps-js-addon · AI 办公 · 办公自动化 · 智能办公 · 文档 AI · 文档智能体 · AI 写作 · AI 写作助手 · 写作辅助 · 公文写作 · 公文校对 · 公文格式检查 · 政务 AI · 政企 AI · 国企 AI · 体制内 AI 写作 · 涉密文档 · 保密检查 · 脱密 · 脱敏 · 敏感信息检查 · AI 痕迹检测 · 错别字检查 · 错别字校对 · 拼写检查 · 语法检查 · 病句检查 · 标点检查 · 多文档校对 · 批量校对 · 批量替换 · 批量修正 · 智能批注 · 自动批注 · 文档批注 · 校对软件 · 审校工具 · 润色 · 改写 · 扩写 · 缩写 · 摘要 · 自动摘要 · 会议纪要 · 纪要生成 · 翻译 · 多语种翻译 · 中英翻译 · 术语统一 · AI 翻译 · 生成 PPT · AI 生成 PPT · 一句话生成 PPT · PPT 大纲 · 演讲备注 · 口播稿 · 表格助手 · 公式助手 · VLOOKUP · SUMIF · 数据清洗 · 数据洞察 · 数据分析 · 一键图表 · 战报表 · 报表结论 · 一键美化 · 智能分列 · 按列拆表 · 文档抽取成表 · 模板编制 · 模板生成 · 从模板生成 PPT · 从模板生成 Word · 套红模板 · 表单填报 · 表单提取 · 字段提取 · 书签 · 文档审计 · 审计报告 · 知识库 · 知识库问答 · RAG · 检索增强 · 向量检索 · 本地知识库 · 企业知识库 · 制度对照 · 本地大模型 · 本地模型 · 离线大模型 · 离线 AI · 内网大模型 · 私有化部署 · 数据不出域 · Ollama · LM Studio · Xinference · OneAPI · New API · DeepSeek · 通义千问 · Qwen · 千问 · 智谱 · GLM · ChatGLM · Kimi · 月之暗面 · 百炼 · OpenAI 兼容 · 大模型网关 · MCP · MCP 服务器 · MCP Server · Model Context Protocol · Streamable HTTP · Claude Code · Claude · OpenAI Codex · Codex CLI · Cursor · Cline · Hermes · OpenClaw · 智能体 · AI Agent · Agent 工具 · 文生图 · AI 绘图 · 文生视频 · 语音合成 · TTS · 三级生图 · 网络搜图 · Serper · Tavily · Pexels · 任务编排 · 工作流 · 任务清单 · 任务中心 · 多会话 · 停靠面板 · 任务窗格 · 功能区 · Ribbon · 右键菜单 · Apache 2.0 · 开源办公 · 开源 WPS 插件 · 北京智灵鸟科技中心
 
-<div align="center">
+**English:** Chayuan AI · WPS add-in · WPS plugin · WPS Office AI · WPS Writer AI · WPS Spreadsheet AI · WPS Presentation AI · document AI · document agent · AI document assistant · AI office assistant · office productivity AI · AI writing assistant · Chinese document proofreading · Chinese proofreading tool · typo detection · spell check · grammar check · punctuation check · government document review · official document format · contract review · legal document AI · multi-document proofreading · batch proofreading · batch correction · AI comments · smart annotation · paraphrasing · text expansion · text summarization · summary generator · meeting minutes generator · AI translation · 52 languages · AI PPT generator · generate PPT from one sentence · slide outline · speaker notes · Excel AI assistant · formula assistant · VLOOKUP SUMIF · data cleaning · data insight · one-click chart · template-based document generation · form extraction · field extraction · document audit · bookmark audit · knowledge base · RAG · retrieval augmented generation · local knowledge base · enterprise knowledge base · on-premise AI · air-gapped AI · intranet LLM · offline LLM · local LLM · privacy-first AI · data sovereignty · Ollama · LM Studio · Xinference · OneAPI · OpenAI-compatible · LLM gateway · DeepSeek · Qwen · Tongyi Qianwen · Zhipu GLM · ChatGLM · Kimi Moonshot · Bailian · MCP · MCP server · Model Context Protocol · Streamable HTTP MCP · Claude Code MCP · Codex CLI MCP · Cursor MCP · Cline · AI agent tools · text-to-image · text-to-video · TTS · image search · workflow orchestration · task list · multi-session · dockable panel · task pane · ribbon toolbar · context menu · Vue 3 · Vite · Apache 2.0 · open source WPS addon · Beijing Zhilingniao Technology Center · aidooo.com
 
-npm package `chayuan` · Vue 3 + Vite · Apache License 2.0
-
-</div>
+</details>

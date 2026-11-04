@@ -35,23 +35,23 @@ chayuan-wps/marketing/
 ## 截图素材映射（去重后约 15 张真实界面图）
 
 WPS 加载项：
-- `W-ABOUT` ← screen/screen1.png 关于/欢迎/二维码
-- `W-TEXT` ← screen/screen2.png 文本分析下拉（重写/扩写/缩写/段落序号/AI痕迹/批注解释/超链接解释/纠错/提炼关键词）
-- `W-MORE` ← screen/screen3.png 更多下拉（涉密词提取/表单提取/润色/正式化/通俗化/行动项/结论风险/术语统一/生成标题/段落结构/会议纪要/公文风格/自定义助手）
-- `W-AUDIT` ← screen/screen4.png 察元AI编审（表单模式/表单内容/文档审计/模板/规则/任务清单）
-- `W-MODEL` ← screen/screen5.png 设置-模型供应商（OpenAI/Ollama/通义/DeepSeek/千帆…）
-- `W-DEFAULT` ← screen/screen6.png 设置-默认模型（对话/图像/视频/语音）
-- `W-ASSIST` ← screen/screen7.png 设置-助手设置
-- `W-KB` ← screen/9.png WPS 知识库连接（测试连通/编辑/可访问知识库）
+- `W-ABOUT` ← screenshots/01-writer-assistant-welcome.png 关于/欢迎/二维码
+- `W-TEXT` ← screenshots/02-writer-text-analysis-menu.png 文本分析下拉（重写/扩写/缩写/段落序号/AI痕迹/批注解释/超链接解释/纠错/提炼关键词）
+- `W-MORE` ← screenshots/03-writer-more-tools-menu.png 更多下拉（涉密词提取/表单提取/润色/正式化/通俗化/行动项/结论风险/术语统一/生成标题/段落结构/会议纪要/公文风格/自定义助手）
+- `W-AUDIT` ← screenshots/04-writer-review-ribbon.png 察元AI编审（表单模式/表单内容/文档审计/模板/规则/任务清单）
+- `W-MODEL` ← screenshots/05-settings-model-providers.png 设置-模型供应商（OpenAI/Ollama/通义/DeepSeek/千帆…）
+- `W-DEFAULT` ← screenshots/06-settings-default-models.png 设置-默认模型（对话/图像/视频/语音）
+- `W-ASSIST` ← screenshots/07-settings-assistant-config.png 设置-助手设置
+- `W-KB` ← screenshots/08-settings-kb-connection.png WPS 知识库连接（测试连通/编辑/可访问知识库）
 
 桌面/网络客户端：
-- `C-HOME` ← screen/1.png 工作主页（AI操控/翻译/写作/妙记/同传字幕/修图）
-- `C-CHAT` ← screen/2.png 新对话
-- `C-ARENA` ← screen/3.png 多模型并排对比
-- `C-KBLIST` ← screen/4.png 知识中心
-- `C-KBNEW` ← screen/5.png 新建知识库（文档/图像/结构化/外部向量）
-- `C-MARKET` ← screen/6.png 模型广场
-- `C-FLOW` ← screen/7.png 智能空间工作流编辑器
+- `C-HOME` ← screenshots/10-workbench-home.png 工作主页（AI操控/翻译/写作/妙记/同传字幕/修图）
+- `C-CHAT` ← screenshots/11-workbench-new-chat.png 新对话
+- `C-ARENA` ← screenshots/12-workbench-multi-model-compare.png 多模型并排对比
+- `C-KBLIST` ← screenshots/13-workbench-kb-select.png 知识中心
+- `C-KBNEW` ← screenshots/14-workbench-kb-create.png 新建知识库（文档/图像/结构化/外部向量）
+- `C-MARKET` ← screenshots/15-workbench-model-marketplace.png 模型广场
+- `C-FLOW` ← screenshots/16-workbench-flow-canvas.png 智能空间工作流编辑器
 
 凡现有截图无法覆盖的画面（弹窗内操作、右键菜单、引用条、写回动作等），脚本「可拍清单」
 中显式标注 **需新录屏/截图**，不假装已有。
